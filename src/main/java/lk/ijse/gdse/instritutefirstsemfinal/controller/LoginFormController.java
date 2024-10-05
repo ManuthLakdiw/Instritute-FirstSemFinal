@@ -3,18 +3,20 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.model.LoginFormModel;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,6 +33,10 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private JFXButton loginButton;
+
+    @FXML
+    private Pane contentPane;
+
 
     @FXML
     private Pane loginPageBackgroundPane;
@@ -66,6 +72,22 @@ public class LoginFormController implements Initializable {
                 alert("logging Error!","Your username and password doesn't match.");
             }else{
                 alert("logging Success!","Welcome back.");
+                try {
+                    contentPane.getChildren().clear();
+                    Pane load = FXMLLoader.load(getClass().getResource("/view/dashBoardForm.fxml"));
+                    contentPane.getChildren().add(load);
+                    Stage stage = (Stage) contentPane.getScene().getWindow();
+                    stage.setTitle("Dashboard");
+                }catch (IOException e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Fail to load DashBoard!");
+
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+                    alert.showAndWait();
+                }
             }
         }
     }
@@ -127,7 +149,7 @@ public class LoginFormController implements Initializable {
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
         alert.showAndWait();
-        alert.close();
+
 
     }
 
