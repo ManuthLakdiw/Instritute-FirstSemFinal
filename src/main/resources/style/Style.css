@@ -1,8 +1,9 @@
 .lblDigitalEducation {
     -fx-font-family: 'Poppins';         /* Uses Poppins font */
     -fx-font-weight: bold;               /* Makes the font bold */
-    -fx-text-fill: #03045E;              /* Sets the text color */
-               /* No effect by default */     /* Adds padding around the text */
+    -fx-text-fill: #03045E;
+    /* Sets the text color */
+/*               !* No effect by default *!     !* Adds padding around the text *!*/
 }
 
  .lblBetterFuture{
@@ -19,8 +20,20 @@
     -fx-text-fill: #0077B6;             /* Text color #0077B6 */
 }
 
+.loginPane {
+    -fx-background-color: radial-gradient(
+            center 50% 50%,
+            radius 150%,        /* Adjusted radius for better blending */
+            #00B4D8 0%,       /* Second color starts at 40% */
+            #90E0EF 90%       /* Third color ends at the outer edge */
+    );
+
+}
+
+
+
 .loginPageBackgroundPane {
-    -fx-background-color: rgba(255, 255, 255, 0.85);  /* 80% transparent white background */
+    -fx-background-color: rgba(255, 255, 255, 0.8);  /* 80% transparent white background */
     -fx-border-color: transparent;                   /* Invisible border */
     -fx-border-width: 1px;                           /* Adjust border width */
     -fx-effect: dropshadow(gaussian, #0D78AA, 15, 0.1, 0, 0);  /* Reduced blur to 20, decreased spread to 12% */
@@ -48,11 +61,8 @@
 }
 
 .loginImage {
-
-        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 4, 4),
-        dropshadow(gaussian, rgba(255, 255, 255, 0.7), 6, 0, -4, -4);
-
-
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 4, 4),
+    dropshadow(gaussian, rgba(255, 255, 255, 0.7), 6, 0, -4, -4);
 }
 
 .username-field {
@@ -75,46 +85,10 @@
     -fx-padding: 8;
 }
 
-
-/* Button style */
-.loginButton {
-    -fx-background-color: linear-gradient(#00B4D8, #0077B6);
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-border-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-family: 'Inter';
-    -fx-font-size: 20px;
-    -fx-font-weight: ExtraBold;
-    -fx-padding: 10 20;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0, 2, 2); /* Drop shadow effect */
-
-    -fx-transition: background-color 5s ease, text-fill 5s ease; /* Smooth transition for background and text color */
-}
-
-.loginButton:hover {
-    -fx-background-color: transparent; /* Transparent background on hover */
-    -fx-text-fill: #03045E; /* Change text color to dark blue on hover */
-    -fx-border-color: #000000; /* Border color */
-    -fx-border-width: 1; /* Border width */
-    -fx-effect: none; /* Disable the drop shadow on hover */
-    -fx-font-weight: ExtraBold; /* Keep font extra bold */
-}
-
-
-.loginButton:pressed {
-    -fx-background-color: linear-gradient(#48CAE4, #0077B6); /* Initial gradient color on click */
-    -fx-text-fill: white; /* Ensure text color stays white on click */
-    -fx-border-color: transparent; /* Maintain no visible border on click */
-
-    /* Add slow transition effect after click */
-    -fx-transition: background-color 10s ease, text-fill 0.5s ease; /* Adjust duration as needed */
-}
-
 .lblForgotPassword {
     -fx-font-family: 'Inter'; /* Set font family to Inter */
     -fx-font-size: 13px; /* Set font size to 13 */
-    -fx-font-weight: normal; /* Regular weight */
+    -fx-font-weight: normal;
     -fx-text-fill: #0003FF; /* Set text fill color to blue (#0003FF) */
     -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0); /* No shadow by default */
     -fx-transition: 0.3s ease; /* Smooth transition for hover effect */
@@ -123,6 +97,49 @@
 .lblForgotPassword:hover {
     -fx-effect: dropshadow(gaussian, #0003FF, 0.9, 0.1, 0, 0); /* Neon-like blue glow on hover */
     -fx-cursor: hand; /* Change cursor to pointer when hovering */
+}
+
+
+.dialog-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+    -fx-border-color: #0077B6; /* Border color */
+    -fx-border-width: 2; /* Border width */
+    -fx-padding: 20; /* Padding inside the dialog */
+}
+
+.dialog-pane .header {
+    -fx-font-size: 16px; /* Header font size */
+    -fx-text-fill: white; /* Header text color */
+}
+
+.dialog-pane .content {
+    -fx-font-size: 14px; /* Content font size */
+    -fx-text-fill: white; /* Content text color */
+}
+
+.button {
+    -fx-background-color: #0077B6;
+    -fx-text-fill: white; /* Button text color */
+    -fx-padding: 10 20; /* Button padding */
+    -fx-border-radius: 5; /* Button border radius */
+    -fx-border-width: 0.5px; /* Border width */
+    -fx-border-color: #0077B6; /* Border color */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.4, 0, 0); /* Border shadow */
+
+}
+
+
+.button:hover {
+    -fx-background-color:#00B4D8 ; /* Button hover background color */
+    -fx-text-fill: black;
+}
+
+.button:pressed {
+    -fx-background-color: #006494; /* Darker background when pressed */
+    -fx-padding: 12 20 8 20; /* Adjust padding to simulate depth */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0.1, 0, 2); /* Softer shadow when pressed */
+    -fx-translate-y: 6px; /* Moves the button down to create a "dig" effect */
+    -fx-border-color: #004f80; /* Darker border when pressed */
 }
 
 
