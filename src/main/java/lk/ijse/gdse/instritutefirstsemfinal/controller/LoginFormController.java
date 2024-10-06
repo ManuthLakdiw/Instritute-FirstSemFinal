@@ -23,8 +23,6 @@ import java.util.ResourceBundle;
 public class LoginFormController implements Initializable {
     LoginFormModel loginFormModel = new LoginFormModel();
 
-    String passWord;
-
     @FXML
     private FontIcon hideEye;
 
@@ -36,7 +34,6 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private Pane contentPane;
-
 
     @FXML
     private Pane loginPageBackgroundPane;
@@ -54,9 +51,94 @@ public class LoginFormController implements Initializable {
     private TextField txtUserName;
 
     @FXML
-    void btnLoginClicked(ActionEvent event) {
+    void closeEyeOnClickedAction(MouseEvent event) {
+        txtShowPassWord.setVisible(true);
+        openEye.setVisible(true);
+        hideEye.setVisible(false);
+        txtHidePassWord.setVisible(false);
+        txtShowPassWord.setText(txtHidePassWord.getText()); // Set the visible password field
+    }
+    @FXML
+    void openEyeOnClickedAction(MouseEvent event) {
+        txtShowPassWord.setVisible(false);
+        openEye.setVisible(false);
+        hideEye.setVisible(true);
+        txtHidePassWord.setVisible(true);
+        txtHidePassWord.setText(txtShowPassWord.getText());
+    }
+    public void sound(String fileName, double speed) {
+        try {
+            Media sound = new Media(getClass().getResource("/sound/" + fileName).toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setRate(speed);
+            mediaPlayer.play();
+        } catch (NullPointerException e) {
+            System.out.println("Sound file not found: " + fileName);
+        }
+    }
+    public void alert(String setTitle, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(setTitle);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        alert.showAndWait();
+    }
+    @FXML
+    public void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (txtHidePassWord.isVisible()) {
+                txtHidePassWord.requestFocus();
+            }else {
+                txtShowPassWord.requestFocus();
+            }
+        }
+    }
+    public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
+        try {
+            contentPane.getChildren().clear();
+            Pane load = FXMLLoader.load(getClass().getResource("/view/forgotPasswordForm.fxml"));
+            contentPane.getChildren().add(load);
+            Stage stage = (Stage) contentPane.getScene().getWindow();
+            stage.setTitle("Forgot Password");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to load ForgotPasswordForm!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+            alert.showAndWait();
+        }
+    }
+
+    public void passwordFieldOnKeyPressed(KeyEvent keyEvent) {
+        if (txtHidePassWord.getText().isEmpty()) {
+            if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+                txtUserName.requestFocus();
+            }
+        }
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        txtShowPassWord.setVisible(false);
+        openEye.setVisible(false);
+    }
+
+
+    public void passwordVisibleFieldOnAction(KeyEvent keyEvent) {
+        if(txtHidePassWord.getText().isEmpty()){
+            if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+                txtUserName.requestFocus();
+            }
+        }
+    }
+
+    public void btbnLoginClicked(ActionEvent actionEvent) {
         String uName = txtUserName.getText();
-        String pWord = txtShowPassWord.getText();
+        String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
@@ -66,24 +148,23 @@ public class LoginFormController implements Initializable {
             }else {
                 alert("Logging Error!","Please fill the password field.");
             }
-        }else{
-            boolean logging =loginFormModel.verifyUser(uName, pWord);
+        } else {
+            boolean logging = loginFormModel.verifyUser(uName, pWord);
             if (!logging) {
-                alert("logging Error!","Your username and password doesn't match.");
-            }else{
-                alert("logging Success!","Welcome back.");
+                alert("Logging Error!", "Your username and password don't match.");
+            } else {
+                alert("Logging Success!", "Welcome back.");
                 try {
                     contentPane.getChildren().clear();
                     Pane load = FXMLLoader.load(getClass().getResource("/view/dashBoardForm.fxml"));
                     contentPane.getChildren().add(load);
                     Stage stage = (Stage) contentPane.getScene().getWindow();
                     stage.setTitle("Dashboard");
-                }catch (IOException e){
+                } catch (IOException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Fail to load DashBoard!");
-
+                    alert.setContentText("Failed to load DashBoard!");
                     DialogPane dialogPane = alert.getDialogPane();
                     dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
                     alert.showAndWait();
@@ -91,74 +172,4 @@ public class LoginFormController implements Initializable {
             }
         }
     }
-
-    @FXML
-    void closeEyeOnClickedAction(MouseEvent event) {
-        txtShowPassWord.setVisible(true);
-        openEye.setVisible(true);
-        hideEye.setVisible(false);
-        txtHidePassWord.setVisible(false);
-    }
-
-    @FXML
-    void hidePassWordOnAction(KeyEvent event) {
-        passWord = txtHidePassWord.getText();
-        txtShowPassWord.setText(passWord);
-
-    }
-
-    @FXML
-    void openEyeOnClickedAction(MouseEvent event) {
-        txtShowPassWord.setVisible(false);
-        openEye.setVisible(false);
-        hideEye.setVisible(true);
-        txtHidePassWord.setVisible(true);
-    }
-
-    @FXML
-    void showPassWordOnAction(KeyEvent event) {
-        passWord = txtShowPassWord.getText();
-        txtHidePassWord.setText(passWord);
-
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        txtShowPassWord.setVisible(false);
-        openEye.setVisible(false);
-    }
-
-    public void setButtonClickedSound(String fileName, double speed) {
-        try {
-            // Load the sound file
-            Media sound = new Media(getClass().getResource("/sound/" + fileName).toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setRate(speed); // Set the playback speed
-            mediaPlayer.play(); // Play the sound
-        } catch (NullPointerException e) {
-            System.out.println("Sound file not found: " + fileName);
-        }
-    }
-
-    public void alert(String setTitle , String content ){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(setTitle);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        alert.showAndWait();
-
-
-    }
-
-    @FXML
-    public void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            txtHidePassWord.requestFocus();
-        }
-    }
-
-
 }

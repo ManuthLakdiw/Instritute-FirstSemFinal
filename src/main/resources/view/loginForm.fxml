@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -14,108 +14,126 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="loginPane" prefHeight="790.0" prefWidth="1428.0" styleClass="loginPane" stylesheets="@../style/Style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.LoginFormController">
+<AnchorPane fx:id="loginPane" prefHeight="790.0" prefWidth="1428.0" style="-fx-background-color: D7EDF9;" stylesheets="@../style/Style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.LoginFormController">
    <children>
-      <Pane id="loginPageBackgroundPane" fx:id="loginPageBackgroundPane" layoutX="83.0" layoutY="74.0" prefHeight="650.0" prefWidth="1253.0" style="-fx-background-radius: 20;" styleClass="loginPageBackgroundPane" stylesheets="@../style/Style.css" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="33.0">
+      <Pane id="loginPageBackgroundPane" fx:id="loginPageBackgroundPane" layoutX="83.0" layoutY="74.0" prefHeight="650.0" prefWidth="1253.0" style="-fx-background-radius: 20; -fx-background-color: FFFFFF;" styleClass="loginPageBackgroundPane" stylesheets="@../style/Style.css" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="33.0">
          <children>
-            <Pane fx:id="contentPane" layoutX="31.0" layoutY="45.0" prefHeight="631.0" prefWidth="1306.0">
+            <Pane fx:id="contentPane" layoutX="19.0" layoutY="20.0" prefHeight="685.0" prefWidth="1331.0">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <ImageView fx:id="loginImage" fitHeight="591.0" fitWidth="788.0" layoutX="461.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" styleClass="loginImage">
+                  <ImageView fx:id="loginImage" fitHeight="553.0" fitWidth="712.0" layoutX="567.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" styleClass="loginImage">
                      <image>
-                        <Image url="@../image/logImage.png" />
+                        <Image url="@../image/login%20page%20photo.png" />
                      </image>
                   </ImageView>
-                  <VBox layoutX="70.0" layoutY="113.0" prefHeight="439.0" prefWidth="353.0">
+                  <VBox layoutX="70.0" layoutY="68.0" prefHeight="559.0" prefWidth="430.0">
                      <children>
-                        <Label id="lblDigitalEducation" fx:id="lblDigitalEducation" maxWidth="475.0" prefHeight="43.0" prefWidth="475.0" styleClass="lblDigitalEducation" stylesheets="@../style/Style.css" text="Digitalization education ">
+                        <Label fx:id="lblDigitalEducation" graphicTextGap="0.0" maxWidth="475.0" prefHeight="59.0" prefWidth="396.0" stylesheets="@../style/Style.css" text="Digitalization education " textFill="#03045e">
                            <font>
-                              <Font size="35.2" />
+                              <Font name="Lahore Gurmukhi Bold" size="35.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="17.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lblBetterFuture" graphicTextGap="0.0" prefHeight="29.0" prefWidth="431.0" stylesheets="@../style/Style.css" text="for a better future">
+                           <VBox.margin>
+                              <Insets left="1.0" top="-15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Lahore Gurmukhi Bold" size="27.0" />
                            </font>
                         </Label>
-                        <Label id="lblBetterFuture" fx:id="lblBetterFuture" prefHeight="27.0" prefWidth="435.0" styleClass="lblBetterFuture" stylesheets="@../style/Style.css" text="for a better future">
+                        <Label id="lblWelcomeBack" fx:id="lblWelcomeBack" prefHeight="45.0" prefWidth="443.0" stylesheets="@../style/Style.css" text="Welcome Back . Please login your account" textFill="#0077b6">
                            <VBox.margin>
-                              <Insets />
+                              <Insets bottom="-30.0" left="1.0" top="60.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="Lahore Gurmukhi Medium" size="16.0" />
+                           </font>
                         </Label>
-                        <Label id="lblWelcomeBack" fx:id="lblWelcomeBack" prefHeight="45.0" prefWidth="422.0" styleClass="lblWelcomeBack" stylesheets="@../style/Style.css" text="Welcome Back . Please login your account">
-                           <VBox.margin>
-                              <Insets top="12.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label prefHeight="23.0" prefWidth="295.0" styleClass="lblUserName" stylesheets="@../style/Style.css" text="User name">
+                        <Pane prefHeight="370.0" prefWidth="430.0">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Label>
-                        <TextField fx:id="txtUserName" onKeyPressed="#txtUserNameOnKeyPressed" prefHeight="43.0" prefWidth="353.0" promptText="Enter User Name" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="5.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </TextField>
-                        <Label prefHeight="23.0" prefWidth="295.0" styleClass="lblUserName" stylesheets="@../style/Style.css" text="Password">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <PasswordField fx:id="txtHidePassWord" onKeyReleased="#hidePassWordOnAction" prefHeight="43.0" prefWidth="353.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </PasswordField>
-                        <Label fx:id="lblForgotPassword" alignment="TOP_RIGHT" prefHeight="17.0" prefWidth="355.0" styleClass="lblForgotPassword" stylesheets="@../style/Style.css" text="Forgot Password?">
-                           <VBox.margin>
-                              <Insets top="1.0" />
-                           </VBox.margin>
-                        </Label>
-                        <JFXButton fx:id="loginButton" buttonType="RAISED" onAction="#btnLoginClicked" prefHeight="45.0" prefWidth="353.0" styleClass="loginButton" stylesheets="@../style/Style.css" text="LOGIN">
-                           <VBox.margin>
-                              <Insets top="40.0" />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </JFXButton>
+                           <children>
+                              <Label layoutY="11.0" prefHeight="23.0" prefWidth="418.0" text="User name">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Mishafi Gold Regular" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtUserName" layoutY="35.0" onKeyPressed="#txtUserNameOnKeyPressed" prefHeight="43.0" prefWidth="396.0" promptText="Enter User Name" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                              </TextField>
+                              <Label layoutY="112.0" prefHeight="23.0" prefWidth="413.0" styleClass="lblUserName" stylesheets="@../style/Style.css" text="Password">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Mishafi Gold Regular" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtShowPassWord" layoutY="136.0" onKeyPressed="#passwordVisibleFieldOnAction" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                              </TextField>
+                              <FontIcon fx:id="openEye" iconLiteral="bi-eye-fill" iconSize="15" layoutX="369.0" layoutY="165.0" onMouseClicked="#openEyeOnClickedAction">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </FontIcon>
+                              <PasswordField fx:id="txtHidePassWord" layoutY="136.0" onKeyPressed="#passwordFieldOnKeyPressed" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                              </PasswordField>
+                              <FontIcon fx:id="hideEye" iconLiteral="bi-eye-slash-fill" iconSize="15" layoutX="369.0" layoutY="165.0" onMouseClicked="#closeEyeOnClickedAction">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </FontIcon>
+                              <Label fx:id="lblForgotPassword" alignment="TOP_RIGHT" layoutY="183.0" onMouseClicked="#forgotPassWordOnClicked" prefHeight="17.0" prefWidth="395.0" styleClass="lblForgotPassword" stylesheets="@../style/Style.css" text="Forgot Password?" />
+                              <Button fx:id="btnLogin" layoutY="246.0" mnemonicParsing="false" onAction="#btbnLoginClicked" prefHeight="43.0" prefWidth="396.0" stylesheets="@../style/Style.css" text="LOGIN">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="1.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </Pane>
                      </children>
                   </VBox>
-                  <FontIcon fx:id="hideEye" iconLiteral="bi-eye-slash-fill" iconSize="15" layoutX="396.0" layoutY="414.0" onMouseClicked="#closeEyeOnClickedAction">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </FontIcon>
-                  <TextField fx:id="txtShowPassWord" layoutX="70.0" layoutY="385.0" onKeyReleased="#showPassWordOnAction" prefHeight="43.0" prefWidth="353.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font size="12.0" />
-                     </font>
-                  </TextField>
-                  <FontIcon fx:id="openEye" iconLiteral="bi-eye-fill" iconSize="15" layoutX="396.0" layoutY="414.0" onMouseClicked="#openEyeOnClickedAction">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </FontIcon>
                </children>
             </Pane>
          </children>

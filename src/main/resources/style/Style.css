@@ -1,25 +1,3 @@
-.lblDigitalEducation {
-    -fx-font-family: 'Poppins';         /* Uses Poppins font */
-    -fx-font-weight: bold;               /* Makes the font bold */
-    -fx-text-fill: #03045E;
-    /* Sets the text color */
-/*               !* No effect by default *!     !* Adds padding around the text *!*/
-}
-
- .lblBetterFuture{
-     -fx-font-size: 27px;                /* Sets the font size to 32px */
-     -fx-font-family: 'Poppins';         /* Uses Poppins font */
-     -fx-font-weight: bold;               /* Makes the font bold */
-     -fx-text-fill: #03045E;              /* Sets the text color */
- }
-
-.lblWelcomeBack{
-    -fx-font-size: 19.5px;                /* Font size 16px */
-    -fx-font-family: 'Poppins';         /* Font Poppins medium */
-    -fx-font-weight: 500;               /* Medium weight */
-    -fx-text-fill: #0077B6;             /* Text color #0077B6 */
-}
-
 .loginPane {
     -fx-background-color: radial-gradient(
             center 50% 50%,
@@ -29,16 +7,14 @@
     );
 
 }
-
-
-
 .loginPageBackgroundPane {
-    -fx-background-color: rgba(255, 255, 255, 0.8);  /* 80% transparent white background */
-    -fx-border-color: transparent;                   /* Invisible border */
+            /*-fx-background-color: rgba(255, 255, 255, 0.5);  !* 80% transparent white background *!*/
+    /*-fx-background-color: rgba(255, 255, 255, 0.8);*/
+    -fx-border-color: #E7E6DD;               /* Invisible border */
     -fx-border-width: 1px;                           /* Adjust border width */
-    -fx-effect: dropshadow(gaussian, #0D78AA, 15, 0.1, 0, 0);  /* Reduced blur to 20, decreased spread to 12% */
+    -fx-effect: dropshadow(gaussian, #ffffff, 15, 0.1, 0, 0);  /* Reduced blur to 20, decreased spread to 12% */
     -fx-background-radius: 10;                       /* Optional: rounded corners */
-    -fx-border-radius: 5;                           /* Matching border radius */
+    -fx-border-radius: 20;                           /* Matching border radius */
 }
 
 
@@ -118,29 +94,41 @@
 }
 
 .button {
-    -fx-background-color: #0077B6;
+    -fx-background-color: linear-gradient(to right, #0077B6, #263238); /* Gradient from left to right */
+    /*-fx-background-color: #263238;*/
+
     -fx-text-fill: white; /* Button text color */
     -fx-padding: 10 20; /* Button padding */
     -fx-border-radius: 5; /* Button border radius */
-    -fx-border-width: 0.5px; /* Border width */
-    -fx-border-color: #0077B6; /* Border color */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.4, 0, 0); /* Border shadow */
-
+    -fx-border-width: 0.2px; /* Border width */
+    -fx-border-color: black; /* Border color */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 1.9); /* Shadow towards bottom */
+    -fx-background-insets: 0;
+    /*-fx-transition: all 1s ease-in-out;*/
 }
 
-
+/* Hover effect */
 .button:hover {
-    -fx-background-color:#00B4D8 ; /* Button hover background color */
-    -fx-text-fill: black;
+    /*-fx-background-color: linear-gradient(to right, #ffffff, #0077B6, #ffffff);*/
+    /*-fx-background-color: #00B4D8 ;*/
+    /*-fx-background-color: #263238;*/
+    -fx-background-color: linear-gradient(to right, #00B4D8, #0077B6); /* Gradient from left to right */
+
+    -fx-text-fill: #263238;
+    /*-fx-transition: all 1s ease-in-out;*/
 }
 
+/* Pressed effect */
 .button:pressed {
-    -fx-background-color: #006494; /* Darker background when pressed */
-    -fx-padding: 12 20 8 20; /* Adjust padding to simulate depth */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0.1, 0, 2); /* Softer shadow when pressed */
-    -fx-translate-y: 6px; /* Moves the button down to create a "dig" effect */
+    -fx-background-color: linear-gradient(to right, #263238, #0077B6); /* Same gradient as unpressed state */
+    -fx-text-fill: white; /* Keep button text color consistent */
+    -fx-padding: 10 20; /* Keep padding consistent to avoid uneven shrinking */
+    -fx-effect: none;    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0.1, 0, 2); !* Softer shadow when pressed *!*/
+    -fx-translate-y: 4px; /* Reduced movement for a subtle "pressed" effect */
     -fx-border-color: #004f80; /* Darker border when pressed */
 }
+
+
 
 
 

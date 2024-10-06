@@ -18,7 +18,7 @@ public class LoginFormModel {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                while(rs.getString("user_name").equals(username) && rs.getString("pass_word").equals(password)) {
+                if (rs.getString("user_name").equals(username) && rs.getString("pass_word").equals(password)) {
                     return true;
                 }
             }
