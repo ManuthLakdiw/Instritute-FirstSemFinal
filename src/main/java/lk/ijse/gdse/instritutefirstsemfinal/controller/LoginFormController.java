@@ -1,6 +1,7 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.model.LoginFormModel;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -58,6 +60,9 @@ public class LoginFormController implements Initializable {
         txtHidePassWord.setVisible(false);
         txtShowPassWord.setText(txtHidePassWord.getText()); // Set the visible password field
     }
+
+
+
     @FXML
     void openEyeOnClickedAction(MouseEvent event) {
         txtShowPassWord.setVisible(false);
@@ -66,16 +71,8 @@ public class LoginFormController implements Initializable {
         txtHidePassWord.setVisible(true);
         txtHidePassWord.setText(txtShowPassWord.getText());
     }
-    public void sound(String fileName, double speed) {
-        try {
-            Media sound = new Media(getClass().getResource("/sound/" + fileName).toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setRate(speed);
-            mediaPlayer.play();
-        } catch (NullPointerException e) {
-            System.out.println("Sound file not found: " + fileName);
-        }
-    }
+
+
     public void alert(String setTitle, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(setTitle);
@@ -83,8 +80,15 @@ public class LoginFormController implements Initializable {
         alert.setContentText(content);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        alert.showAndWait();
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
+        delay.setOnFinished(event -> alert.close());
+        delay.play();
+        alert.show();
+
     }
+
+
+
     @FXML
     public void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -95,6 +99,9 @@ public class LoginFormController implements Initializable {
             }
         }
     }
+
+
+
     public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
         try {
             contentPane.getChildren().clear();
@@ -111,8 +118,11 @@ public class LoginFormController implements Initializable {
             DialogPane dialogPane = alert.getDialogPane();
             dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
             alert.showAndWait();
+
         }
     }
+
+
 
     public void passwordFieldOnKeyPressed(KeyEvent keyEvent) {
         if (txtHidePassWord.getText().isEmpty()) {
@@ -121,6 +131,8 @@ public class LoginFormController implements Initializable {
             }
         }
     }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtShowPassWord.setVisible(false);
@@ -135,6 +147,8 @@ public class LoginFormController implements Initializable {
             }
         }
     }
+
+
 
     public void btbnLoginClicked(ActionEvent actionEvent) {
         String uName = txtUserName.getText();
@@ -153,7 +167,6 @@ public class LoginFormController implements Initializable {
             if (!logging) {
                 alert("Logging Error!", "Your username and password don't match.");
             } else {
-                alert("Logging Success!", "Welcome back.");
                 try {
                     contentPane.getChildren().clear();
                     Pane load = FXMLLoader.load(getClass().getResource("/view/dashBoardForm.fxml"));

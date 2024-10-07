@@ -25,7 +25,7 @@
                <children>
                   <ImageView fx:id="loginImage" fitHeight="553.0" fitWidth="712.0" layoutX="567.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" styleClass="loginImage">
                      <image>
-                        <Image url="@../image/login%20page%20photo.png" />
+                        <Image url="@../image/login page photo.png" />
                      </image>
                   </ImageView>
                   <VBox layoutX="70.0" layoutY="68.0" prefHeight="559.0" prefWidth="430.0">
@@ -121,7 +121,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </FontIcon>
-                              <Label fx:id="lblForgotPassword" alignment="TOP_RIGHT" layoutY="183.0" onMouseClicked="#forgotPassWordOnClicked" prefHeight="17.0" prefWidth="395.0" styleClass="lblForgotPassword" stylesheets="@../style/Style.css" text="Forgot Password?" />
+                              <Label fx:id="lblForgotPassword" alignment="TOP_RIGHT" layoutX="296.0" layoutY="183.0" onMouseClicked="#forgotPassWordOnClicked" prefHeight="17.0" prefWidth="99.0" styleClass="lblForgotPassword" stylesheets="@../style/Style.css" text="Forgot Password?" />
                               <Button fx:id="btnLogin" layoutY="246.0" mnemonicParsing="false" onAction="#btbnLoginClicked" prefHeight="43.0" prefWidth="396.0" stylesheets="@../style/Style.css" text="LOGIN">
                                  <font>
                                     <Font name="System Bold" size="17.0" />
