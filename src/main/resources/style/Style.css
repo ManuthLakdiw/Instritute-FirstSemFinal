@@ -130,5 +130,22 @@
 
 
 
+.txtDigitCode {
+    -fx-border-color: black;     /* Default border color */
+    -fx-border-width: 2px;       /* Default border width */
+    -fx-border-radius: 5px;      /* Rounded corners for a clean look */
+    -fx-background-radius: 5px;  /* Consistent background radius */
+    -fx-alignment: center;       /* Center text alignment */
+    -fx-font-size: 24px;         /* Larger font for digit input */
+    -fx-pref-width: 50px;        /* Set preferred width */
+    -fx-pref-height: 50px;       /* Set preferred height */
+}
+
+.txtDigitCode:focused {
+    -fx-border-width: 5px;       /* Larger border when focused */
+    -fx-border-color: black;     /* Keep the same border color */
+}
+
+
 
 

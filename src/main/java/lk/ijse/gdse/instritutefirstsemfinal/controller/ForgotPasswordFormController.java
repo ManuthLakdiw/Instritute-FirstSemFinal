@@ -59,13 +59,13 @@ public class ForgotPasswordFormController {
                     Pane pane = FXMLLoader.load(getClass().getResource("/view/resetPasswordConfirmForm.fxml"));
                     forgotPasswordFormPane.getChildren().add(pane);
                     Stage stage = (Stage) forgotPasswordFormPane.getScene().getWindow();
-                    stage.setTitle("Reset Password");
+                    stage.setTitle("Confirm Email");
                 }catch (IOException e){
                     e.printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Failed to load ResetPasswordForm!");
+                    alert.setContentText("Failed to load Confirm Email!");
                     DialogPane dialogPane = alert.getDialogPane();
                     dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
                     alert.showAndWait();
@@ -79,10 +79,11 @@ public class ForgotPasswordFormController {
                 alert.setContentText(email+" is not in the dataBase. Try again!");
                 DialogPane dialogPane = alert.getDialogPane();
                 dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-                PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
+                PauseTransition delay = new PauseTransition(Duration.seconds(1.9));
                 delay.setOnFinished(event -> alert.close());
                 delay.play();
                 alert.show();
+                txtEmail.clear();
             }
         }
     }

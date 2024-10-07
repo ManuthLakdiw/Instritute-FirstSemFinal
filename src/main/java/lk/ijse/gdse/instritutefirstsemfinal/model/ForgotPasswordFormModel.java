@@ -17,7 +17,7 @@ public class ForgotPasswordFormModel {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,email);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()){
                 String result = resultSet.getString("email");
                 return new Pair<>(true,result);
             }
