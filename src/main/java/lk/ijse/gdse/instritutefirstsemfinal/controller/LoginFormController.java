@@ -11,19 +11,18 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.gdse.instritutefirstsemfinal.model.LoginFormModel;
+import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoginFormController implements Initializable {
-    LoginFormModel loginFormModel = new LoginFormModel();
+    UserModel userModel = new UserModel();
 
     @FXML
     private FontIcon hideEye;
@@ -103,23 +102,29 @@ public class LoginFormController implements Initializable {
 
 
     public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
-        try {
-            contentPane.getChildren().clear();
-            Pane load = FXMLLoader.load(getClass().getResource("/view/forgotPasswordForm.fxml"));
-            contentPane.getChildren().add(load);
-            Stage stage = (Stage) contentPane.getScene().getWindow();
-            stage.setTitle("Forgot Password");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to load ForgotPasswordForm!");
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-            alert.showAndWait();
-
+        Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure forgot your password?", ButtonType.YES, ButtonType.NO);
+        DialogPane dPane = al.getDialogPane();
+        dPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        Optional<ButtonType> buttonType = al.showAndWait();
+        if (buttonType.get() == ButtonType.YES) {
+            try {
+                contentPane.getChildren().clear();
+                Pane load = FXMLLoader.load(getClass().getResource("/view/forgotPasswordForm.fxml"));
+                contentPane.getChildren().add(load);
+                Stage stage = (Stage) contentPane.getScene().getWindow();
+                stage.setTitle("Forgot Password");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to load ForgotPasswordForm!");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+                alert.showAndWait();
+            }
         }
+
     }
 
 
@@ -163,7 +168,7 @@ public class LoginFormController implements Initializable {
                 alert("Logging Error!","Please fill the password field.");
             }
         } else {
-            boolean logging = loginFormModel.verifyUser(uName, pWord);
+            boolean logging = userModel.verifyUser(uName, pWord);
             if (!logging) {
                 alert("Logging Error!", "Your username and password don't match.");
             } else {

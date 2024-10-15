@@ -4,21 +4,20 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import lk.ijse.gdse.instritutefirstsemfinal.model.ForgotPasswordFormModel;
+import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
 
 import java.io.IOException;
 
 public class ForgotPasswordFormController {
     static String gmail;
 
-    ForgotPasswordFormModel model = new ForgotPasswordFormModel();
+    UserModel model = new UserModel();
 
     @FXML
     private Button btnGetdigit;
@@ -35,9 +34,9 @@ public class ForgotPasswordFormController {
 
     @FXML
     void btnGetDigitOnAction(ActionEvent eve) {
-        String email = txtEmail.getText();
+        String email = txtEmail.getText().trim();
 
-        Pair <Boolean,String> check = model.checkGmail(email);
+        Pair <Boolean,String> check = model.checkGmailDB(email);
         gmail = check.getValue();
 
 
