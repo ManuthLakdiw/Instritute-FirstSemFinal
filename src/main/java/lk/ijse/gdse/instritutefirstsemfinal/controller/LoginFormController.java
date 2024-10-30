@@ -102,11 +102,7 @@ public class LoginFormController implements Initializable {
 
 
     public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
-        Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure forgot your password?", ButtonType.YES, ButtonType.NO);
-        DialogPane dPane = al.getDialogPane();
-        dPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        Optional<ButtonType> buttonType = al.showAndWait();
-        if (buttonType.get() == ButtonType.YES) {
+
             try {
                 contentPane.getChildren().clear();
                 Pane load = FXMLLoader.load(getClass().getResource("/view/forgotPasswordForm.fxml"));
@@ -123,7 +119,6 @@ public class LoginFormController implements Initializable {
                 dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
                 alert.showAndWait();
             }
-        }
 
     }
 
@@ -179,6 +174,7 @@ public class LoginFormController implements Initializable {
                     Stage stage = (Stage) contentPane.getScene().getWindow();
                     stage.setTitle("Dashboard");
                 } catch (IOException e) {
+                    e.printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);

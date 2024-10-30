@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AppInitializer extends Application {
@@ -17,6 +18,7 @@ public class AppInitializer extends Application {
         Scene scene = new Scene(load);
         stage.setScene(scene);
         stage.setTitle("Login");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/appLogo.jpg")));
         stage.show();
         stage.setResizable(false);
     }

@@ -8,6 +8,7 @@ module lk.ijse.gdse.instritutefirstsemfinal {
     requires org.kordamp.ikonli.javafx;
     requires java.desktop;
     requires javafx.media;
+    requires java.mail;
 
 
     opens lk.ijse.gdse.instritutefirstsemfinal.controller to javafx.fxml;
