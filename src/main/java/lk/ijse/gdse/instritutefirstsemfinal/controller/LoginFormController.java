@@ -60,7 +60,7 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    void closeEyeOnClickedAction(MouseEvent event) {
+    private void closeEyeOnClickedAction(MouseEvent event) {
         txtShowPassWord.setVisible(true);
         openEye.setVisible(true);
         hideEye.setVisible(false);
@@ -70,14 +70,22 @@ public class LoginFormController implements Initializable {
 
 
 
+
     @FXML
-    void openEyeOnClickedAction(MouseEvent event) {
+    private void openEyeOnClickedAction(MouseEvent event) {
         txtShowPassWord.setVisible(false);
         openEye.setVisible(false);
         hideEye.setVisible(true);
         txtHidePassWord.setVisible(true);
         txtHidePassWord.setText(txtShowPassWord.getText());
+
+//        if (txtHidePassWord.getText().isEmpty()) {
+//            errorStyle(txtHidePassWord);
+//        } else {
+//            resetStyle();
+//        }
     }
+
 
 
 
@@ -192,8 +200,11 @@ public class LoginFormController implements Initializable {
     @FXML
     public void txtUserNameOnkeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
-        if(!checkisEmpty.isEmpty()){
+        if (!checkisEmpty.isEmpty()) {
             txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        } else {
+            txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
         }
     }
 
@@ -204,6 +215,9 @@ public class LoginFormController implements Initializable {
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
             txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }else {
+            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
         }
     }
 
@@ -214,6 +228,9 @@ public class LoginFormController implements Initializable {
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
             txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }else {
+            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
         }
     }
 
@@ -226,7 +243,7 @@ public class LoginFormController implements Initializable {
         txtHidePassWord.setStyle(defaultStyle);
         txtShowPassWord.setStyle(defaultStyle);
     }
-    
+
 
 
     public void errorStyle(TextField... fields){

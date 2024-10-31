@@ -124,7 +124,7 @@
     -fx-text-fill: white; /* Keep button text color consistent */
     -fx-padding: 10 20; /* Keep padding consistent to avoid uneven shrinking */
     -fx-effect: none;    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0.1, 0, 2); !* Softer shadow when pressed *!*/
-    -fx-translate-y: 4px; /* Reduced movement for a subtle "pressed" effect */
+    -fx-translate-y: 2.8px; /* Reduced movement for a subtle "pressed" effect */
     -fx-border-color: #004f80; /* Darker border when pressed */
 }
 

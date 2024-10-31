@@ -1,6 +1,7 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,19 +90,22 @@ public class ForgotPasswordFormController {
                     String password = "aefq cods wrot ktgp";
 
 
+
                     Properties properties = new Properties();
                     properties.put("mail.smtp.auth", "true");
                     properties.put("mail.smtp.starttls.enable", "true");
                     properties.put("mail.smtp.host", host);
                     properties.put("mail.smtp.port", "587");
 
-                    // Session creation
+
                     Session session = Session.getInstance(properties, new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
                             return new PasswordAuthentication(username, password);
                         }
                     });
+
+
 
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(from));
@@ -110,6 +114,7 @@ public class ForgotPasswordFormController {
                     message.setText(body);
                     Transport.send(message);
 
+                    btnGetdigit.setText("Done ✔");
 
                     Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "OTP code sent successfully!", ButtonType.CLOSE, ButtonType.OK);
                     successAlert.setTitle("Forgot Password");
@@ -123,6 +128,8 @@ public class ForgotPasswordFormController {
                         forgotPasswordFormPane.getChildren().add(pane);
                         Stage stage = (Stage) forgotPasswordFormPane.getScene().getWindow();
                         stage.setTitle("Confirm Email");
+                    }else if (buttonType.isPresent() && buttonType.get() == ButtonType.CLOSE) {
+                        btnGetdigit.setText("Get 4-digit code");
                     }
 
                 } catch (MessagingException e) {
@@ -131,8 +138,12 @@ public class ForgotPasswordFormController {
                     showAlert("Error", "Failed to load Confirm Email!", Alert.AlertType.ERROR);
                 }
             } else {
+                txtEmail.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
                 showAlert("Forgot Password", email + " is not in the database. Try again!", Alert.AlertType.INFORMATION);
                 txtEmail.clear();
+                txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
+
             }
         }
     }
@@ -159,6 +170,7 @@ public class ForgotPasswordFormController {
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
         alert.showAndWait();
     }
+
 }
 
 

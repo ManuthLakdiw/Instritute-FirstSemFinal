@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -115,28 +116,70 @@ public class ResetPasswordConfirmFormController implements Initializable {
     }
 
 
-
     @FXML
-    private void handleTextFieldInput(KeyEvent keyEvent, TextField currentField, TextField nextField) {
-        String input = keyEvent.getCharacter();
+    public void txtCode1OnkeyPressed(KeyEvent keyEvent) {
 
-        if (input.matches("^\\d+$")) {
-
-            currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 2px; -fx-border-radius: 5; -fx-background-color: transparent;");
-            if (nextField != null) {
-                nextField.requestFocus();
-            }
-
-            if (currentField.getText().isEmpty()) {
-                currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
-            }
-        } else {
-            setTextFieldError(currentField);
-            currentField.clear();
+        if (keyEvent.getCode() == KeyCode.RIGHT){
+            txtCode2.requestFocus();
         }
     }
 
+
+
+    @FXML
+    public void txtCode2OnkeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.RIGHT){
+            txtCode3.requestFocus();
+        }
+        if (keyEvent.getCode() == KeyCode.LEFT){
+            txtCode1.requestFocus();
+        }
+    }
+
+
+
+    @FXML
+    public void txtCode3OnkeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.RIGHT){
+            txtCode4.requestFocus();
+        }
+        if (keyEvent.getCode() == KeyCode.LEFT){
+            txtCode2.requestFocus();
+        }
+    }
+
+
+
+    @FXML
+    public void txtCode4OnkeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.LEFT){
+            txtCode3.requestFocus();
+        }
+    }
+
+
+
+
+    private void handleTextFieldInput(KeyEvent keyEvent, TextField currentField, TextField nextField) {
+        String input = keyEvent.getCharacter();
+
+        if (input.matches("\\d")) {
+            currentField.setText(input);
+            currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 2px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
+            if (nextField != null) {
+                nextField.requestFocus();
+            }
+        } else {
+            currentField.clear();
+            setTextFieldError(currentField);
+        }
+
+
+        if (currentField.getText().isEmpty()) {
+            currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }
+    }
 
 
     private void clearTextFields() {
@@ -188,4 +231,6 @@ public class ResetPasswordConfirmFormController implements Initializable {
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
     }
+
+
 }
