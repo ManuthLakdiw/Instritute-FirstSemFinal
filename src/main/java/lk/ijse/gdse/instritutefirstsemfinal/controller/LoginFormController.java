@@ -18,7 +18,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoginFormController implements Initializable {
@@ -51,6 +50,15 @@ public class LoginFormController implements Initializable {
     @FXML
     private TextField txtUserName;
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        txtShowPassWord.setVisible(false);
+        openEye.setVisible(false);
+    }
+
+
+
     @FXML
     void closeEyeOnClickedAction(MouseEvent event) {
         txtShowPassWord.setVisible(true);
@@ -72,21 +80,6 @@ public class LoginFormController implements Initializable {
     }
 
 
-    public void alert(String setTitle, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(setTitle);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
-        delay.setOnFinished(event -> alert.close());
-        delay.play();
-        alert.show();
-
-    }
-
-
 
     @FXML
     public void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
@@ -101,6 +94,7 @@ public class LoginFormController implements Initializable {
 
 
 
+    @FXML
     public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
 
             try {
@@ -124,6 +118,7 @@ public class LoginFormController implements Initializable {
 
 
 
+    @FXML
     public void passwordFieldOnKeyPressed(KeyEvent keyEvent) {
         if (txtHidePassWord.getText().isEmpty()) {
             if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
@@ -133,15 +128,10 @@ public class LoginFormController implements Initializable {
     }
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        txtShowPassWord.setVisible(false);
-        openEye.setVisible(false);
-    }
 
-
+    @FXML
     public void passwordVisibleFieldOnAction(KeyEvent keyEvent) {
-        if(txtHidePassWord.getText().isEmpty()){
+        if(txtShowPassWord.getText().isEmpty()){
             if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
                 txtUserName.requestFocus();
             }
@@ -150,34 +140,31 @@ public class LoginFormController implements Initializable {
 
 
 
+    @FXML
     public void btbnLoginClicked(ActionEvent actionEvent) {
         String uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
-        txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-        txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-        txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        resetStyle();
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
                 alert("Logging Error!","Please fill all the fields");
                 txtUserName.requestFocus();
-                txtUserName.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
-                txtHidePassWord.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+                errorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
             }else if (uName.isEmpty()) {
                 alert("Logging Error!","Please fill the username field.");
                 txtUserName.requestFocus();
-                txtUserName.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+                errorStyle(txtUserName);
             }else {
                 alert("Logging Error!","Please fill the password field.");
                 txtHidePassWord.requestFocus();
-                if (txtHidePassWord.isVisible()) {
-                    txtHidePassWord.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
-                }
+                errorStyle(txtHidePassWord,txtShowPassWord);
             }
         } else {
             boolean logging = userModel.verifyUser(uName, pWord);
             if (!logging) {
+                errorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
                 alert("Logging Error!", "Your username and password don't match.");
             } else {
                 try {
@@ -200,6 +187,9 @@ public class LoginFormController implements Initializable {
         }
     }
 
+
+
+    @FXML
     public void txtUserNameOnkeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
@@ -207,6 +197,9 @@ public class LoginFormController implements Initializable {
         }
     }
 
+
+
+    @FXML
     public void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
@@ -215,10 +208,51 @@ public class LoginFormController implements Initializable {
     }
 
 
+
+    @FXML
     public void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
             txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
         }
     }
+
+
+
+
+    public void resetStyle(){
+        String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
+        txtUserName.setStyle(defaultStyle);
+        txtHidePassWord.setStyle(defaultStyle);
+        txtShowPassWord.setStyle(defaultStyle);
+    }
+    
+
+
+    public void errorStyle(TextField... fields){
+        String errorStyle = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
+        for (TextField field : fields) {
+            field.setStyle(errorStyle);
+        }
+
+    }
+
+
+
+    public void alert(String setTitle, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(setTitle);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
+        delay.setOnFinished(event -> alert.close());
+        delay.play();
+        alert.show();
+
+    }
+
+
+
 }

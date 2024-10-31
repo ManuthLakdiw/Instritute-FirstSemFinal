@@ -1,6 +1,5 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
-// Import necessary libraries
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +37,9 @@ public class ResetPasswordConfirmFormController implements Initializable {
         lblsendEmail.setText("We sent a code to " + ForgotPasswordFormController.gmail);
     }
 
+
+
+    @FXML
     public void btnContinueOnAction(ActionEvent event) {
         String code1 = txtCode1.getText().trim();
         String code2 = txtCode2.getText().trim();
@@ -65,6 +67,7 @@ public class ResetPasswordConfirmFormController implements Initializable {
                 showInfoMessage("OTP code doesn't match!");
                 clearTextFields();
                 resetStyles();
+                txtCode1.requestFocus();
             }
         } else {
             showInfoMessage("Please enter a valid code!");
@@ -83,6 +86,59 @@ public class ResetPasswordConfirmFormController implements Initializable {
         }
     }
 
+
+
+    @FXML
+    public void txtCode1OnKeyType(KeyEvent keyEvent) {
+        handleTextFieldInput(keyEvent, txtCode1, txtCode2);
+    }
+
+
+
+    @FXML
+    public void txtCode2OnKeyType(KeyEvent keyEvent) {
+        handleTextFieldInput(keyEvent, txtCode2, txtCode3);
+    }
+
+
+
+    @FXML
+    public void txtCode3OnKeyType(KeyEvent keyEvent) {
+        handleTextFieldInput(keyEvent, txtCode3, txtCode4);
+    }
+
+
+
+    @FXML
+    public void txtCode4OnKeyType(KeyEvent keyEvent) {
+        handleTextFieldInput(keyEvent, txtCode4, null);
+    }
+
+
+
+    @FXML
+    private void handleTextFieldInput(KeyEvent keyEvent, TextField currentField, TextField nextField) {
+        String input = keyEvent.getCharacter();
+
+        if (input.matches("^\\d+$")) {
+
+            currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 2px; -fx-border-radius: 5; -fx-background-color: transparent;");
+            if (nextField != null) {
+                nextField.requestFocus();
+            }
+
+            if (currentField.getText().isEmpty()) {
+                currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
+            }
+        } else {
+            setTextFieldError(currentField);
+            currentField.clear();
+        }
+    }
+
+
+
     private void clearTextFields() {
         txtCode1.clear();
         txtCode2.clear();
@@ -90,17 +146,20 @@ public class ResetPasswordConfirmFormController implements Initializable {
         txtCode4.clear();
     }
 
+
     private void resetStyles() {
-        String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 0.8px; -fx-border-radius: 5; -fx-background-color: transparent;";
+        String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
         txtCode1.setStyle(defaultStyle);
         txtCode2.setStyle(defaultStyle);
         txtCode3.setStyle(defaultStyle);
         txtCode4.setStyle(defaultStyle);
     }
 
+
     private void setTextFieldError(TextField field) {
-        field.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        field.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
     }
+
 
     private void showInfoMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -114,6 +173,7 @@ public class ResetPasswordConfirmFormController implements Initializable {
         alert.show();
     }
 
+
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -123,44 +183,9 @@ public class ResetPasswordConfirmFormController implements Initializable {
         alert.showAndWait();
     }
 
+
     private void styleAlert(Alert alert) {
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-    }
-
-    public void txtCode1OnKeyType(KeyEvent keyEvent) {
-        handleTextFieldInput(keyEvent, txtCode1, txtCode2);
-    }
-
-    public void txtCode2OnKeyType(KeyEvent keyEvent) {
-        handleTextFieldInput(keyEvent, txtCode2, txtCode3);
-    }
-
-    public void txtCode3OnKeyType(KeyEvent keyEvent) {
-        handleTextFieldInput(keyEvent, txtCode3, txtCode4);
-    }
-
-    public void txtCode4OnKeyType(KeyEvent keyEvent) {
-        handleTextFieldInput(keyEvent, txtCode4, null);
-    }
-
-    private void handleTextFieldInput(KeyEvent keyEvent, TextField currentField, TextField nextField) {
-        String input = keyEvent.getCharacter();
-
-        if (input.matches("^\\d+$")) {
-
-            currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 2px; -fx-border-radius: 5; -fx-background-color: transparent;");
-            if (nextField != null) {
-                nextField.requestFocus();
-            }
-
-            if (currentField.getText().isEmpty()) {
-                currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 0.8px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
-            }
-        } else {
-            setTextFieldError(currentField);
-            currentField.clear();
-        }
     }
 }

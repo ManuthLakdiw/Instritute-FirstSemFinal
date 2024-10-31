@@ -10,16 +10,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.Pair;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
-
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -30,7 +25,7 @@ public class ForgotPasswordFormController {
     static String gmail;
     static String otp;
 
-    UserModel model = new UserModel();
+    private final UserModel model = new UserModel();
 
     @FXML
     private Button btnGetdigit;
@@ -59,7 +54,7 @@ public class ForgotPasswordFormController {
         txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
         if (!isValidEmail) {
-            txtEmail.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+            txtEmail.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Password Reset Error!");
             alert.setHeaderText(null);
@@ -73,13 +68,12 @@ public class ForgotPasswordFormController {
         } else {
             if (isEmailExists) {
                 try {
-                    // Generate OTP
                     Random rand = new Random();
                     int min = 1234;
                     int max = 9999;
                     otp = String.valueOf(rand.nextInt(max - min + 1) + min);
 
-                    // Email content
+
                     String subject = "Password Reset OTP Code!";
                     String body = "Hello, "+userName+"\n\n"
                             + "Please use the following OTP to reset your password:\n\n"
@@ -94,7 +88,7 @@ public class ForgotPasswordFormController {
                     String username = "manuthlakdiv2006@gmail.com";
                     String password = "aefq cods wrot ktgp";
 
-                    // SMTP properties
+
                     Properties properties = new Properties();
                     properties.put("mail.smtp.auth", "true");
                     properties.put("mail.smtp.starttls.enable", "true");
@@ -109,7 +103,6 @@ public class ForgotPasswordFormController {
                         }
                     });
 
-                    // Create and send email
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(from));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(gmail));
@@ -117,7 +110,7 @@ public class ForgotPasswordFormController {
                     message.setText(body);
                     Transport.send(message);
 
-                    // Success alert
+
                     Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "OTP code sent successfully!", ButtonType.CLOSE, ButtonType.OK);
                     successAlert.setTitle("Forgot Password");
                     successAlert.setHeaderText(null);
@@ -144,6 +137,20 @@ public class ForgotPasswordFormController {
         }
     }
 
+
+
+    @FXML
+    public void txtEmailOnkeyType(KeyEvent keyEvent) {
+        String isEmptycheckTxtEmail = keyEvent.getText();
+
+        if (isEmptycheckTxtEmail.isEmpty()) {
+            txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }
+    }
+
+
+
+
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -152,8 +159,6 @@ public class ForgotPasswordFormController {
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
         alert.showAndWait();
     }
-
-
 }
 
 
