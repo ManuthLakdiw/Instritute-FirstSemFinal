@@ -70,7 +70,7 @@
                                     <Font name="Mishafi Gold Regular" size="13.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtUserName" layoutY="35.0" onKeyPressed="#txtUserNameOnKeyPressed" prefHeight="43.0" prefWidth="396.0" promptText="Enter User Name" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                              <TextField fx:id="txtUserName" layoutY="35.0" onKeyPressed="#txtUserNameOnKeyPressed" onKeyTyped="#txtUserNameOnkeyType" prefHeight="43.0" prefWidth="396.0" promptText="Enter User Name" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -89,7 +89,7 @@
                                     <Font name="Mishafi Gold Regular" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtShowPassWord" layoutY="136.0" onKeyPressed="#passwordVisibleFieldOnAction" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                              <TextField fx:id="txtShowPassWord" layoutY="136.0" onKeyPressed="#passwordVisibleFieldOnAction" onKeyTyped="#txtShowPassWordOnKeyType" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -102,7 +102,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </FontIcon>
-                              <PasswordField fx:id="txtHidePassWord" layoutY="136.0" onKeyPressed="#passwordFieldOnKeyPressed" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+                              <PasswordField fx:id="txtHidePassWord" layoutY="136.0" onKeyPressed="#passwordFieldOnKeyPressed" onKeyTyped="#txtHidePassWordOnKeyType" prefHeight="43.0" prefWidth="396.0" promptText="Enter Password" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                                  <padding>
                                     <Insets left="1.0" />
                                  </padding>

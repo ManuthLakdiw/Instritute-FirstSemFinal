@@ -5,6 +5,8 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class UserModel {
 
@@ -43,58 +45,32 @@ public class UserModel {
 //        return false;
 //    }
 
-    public Pair<Boolean,String> checkGmailDB(String email){
+    public List<Object> checkGmailDB(String email) {
         try {
-            ResultSet resultSet = CrudUtil.execute("SELECT * FROM user WHERE email=?",email);
-            if (resultSet.next()){
-                String result = resultSet.getString("email");
-                return new Pair<>(true,result);
+            ResultSet resultSet = CrudUtil.execute("SELECT * FROM user WHERE email=?", email);
+            if (resultSet.next()) {
+                String resultEmail = resultSet.getString("email");
+                String adminName = resultSet.getString("user_name");
+                return Arrays.asList(true, resultEmail, adminName);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new Pair<>(false,null);
+        return Arrays.asList(false, null, null);
     }
 
     public boolean updatePasswordUser(String newPassword, String gmail) {
         System.out.println("Attempting to update password for email: " + gmail);
         try {
-            // Execute the update query, which will return a Boolean value.
+
             Boolean isUpdated = CrudUtil.execute("UPDATE user SET pass_word = ? WHERE email = ?", newPassword, gmail);
 
-            // Check if the update was successful
             return isUpdated != null && isUpdated;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-
-//    public boolean updatePasswordUser(String newPassword) {
-//        try {
-//            ResultSet rs = CrudUtil.execute("Update user set pass_word=? where user_name=?");
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//        }
-//    }
-
-
-//    public Pair<Boolean,String> checkGmailDB(String email){
-//        try {
-//            Connection connection = DBConnection.getInstance().getConnection();
-//            String sql = "select * from user where email=?";
-//            PreparedStatement statement = connection.prepareStatement(sql);
-//            statement.setString(1,email);
-//            ResultSet resultSet = statement.executeQuery();
-//            if (resultSet.next()){
-//                String result = resultSet.getString("email");
-//                return new Pair<>(true,result);
-//            }
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//        }
-//        return new Pair<>(false,null);
-//    }
 
 
 }

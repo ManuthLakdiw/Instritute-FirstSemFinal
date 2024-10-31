@@ -153,6 +153,11 @@ public class ResetPasswordConfirmFormController implements Initializable {
             if (nextField != null) {
                 nextField.requestFocus();
             }
+
+            if (currentField.getText().isEmpty()) {
+                currentField.setStyle("-fx-border-color: #03045E; -fx-border-width: 0.8px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
+            }
         } else {
             setTextFieldError(currentField);
             currentField.clear();

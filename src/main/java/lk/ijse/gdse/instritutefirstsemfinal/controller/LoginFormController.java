@@ -154,13 +154,26 @@ public class LoginFormController implements Initializable {
         String uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
+        txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
                 alert("Logging Error!","Please fill all the fields");
+                txtUserName.requestFocus();
+                txtUserName.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+                txtHidePassWord.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
             }else if (uName.isEmpty()) {
                 alert("Logging Error!","Please fill the username field.");
+                txtUserName.requestFocus();
+                txtUserName.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
             }else {
                 alert("Logging Error!","Please fill the password field.");
+                txtHidePassWord.requestFocus();
+                if (txtHidePassWord.isVisible()) {
+                    txtHidePassWord.setStyle("-fx-border-color: red; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;");
+                }
             }
         } else {
             boolean logging = userModel.verifyUser(uName, pWord);
@@ -184,6 +197,28 @@ public class LoginFormController implements Initializable {
                     alert.showAndWait();
                 }
             }
+        }
+    }
+
+    public void txtUserNameOnkeyType(KeyEvent keyEvent) {
+        String checkisEmpty = keyEvent.getCharacter();
+        if(!checkisEmpty.isEmpty()){
+            txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }
+    }
+
+    public void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
+        String checkisEmpty = keyEvent.getCharacter();
+        if(!checkisEmpty.isEmpty()){
+            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        }
+    }
+
+
+    public void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
+        String checkisEmpty = keyEvent.getCharacter();
+        if(!checkisEmpty.isEmpty()){
+            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
         }
     }
 }
