@@ -77,15 +77,18 @@ public class CreateNewPasswordController implements Initializable {
         if (newPasswordEmpty && confirmPasswordEmpty) {
             alert("Reset Password", "Please fill in both New Password and Confirm Password fields!");
             errorStyle(txtNewShowPassWord, txtNewHidePassWord, txtConfirmShowPassWord, txtConfirmHidePassWord);
+            return;
         }
-        else if (newPasswordEmpty) {
+        if (newPasswordEmpty) {
             alert("Reset Password", "Please fill in the New Password field!");
             errorStyle(txtNewShowPassWord, txtNewHidePassWord);
+            return;
         }
 
-        else if (confirmPasswordEmpty) {
+        if (confirmPasswordEmpty) {
             alert("Reset Password", "Please fill in the Confirm Password field!");
             errorStyle(txtConfirmShowPassWord, txtConfirmHidePassWord);
+            return;
         }
 
         else {
@@ -127,7 +130,7 @@ public class CreateNewPasswordController implements Initializable {
         hideEye1.setVisible(false);
         openEye1.setVisible(true);
         txtConfirmShowPassWord.setVisible(true);
-        txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
+//        txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
 
 
     }
@@ -139,7 +142,7 @@ public class CreateNewPasswordController implements Initializable {
         hideEye.setVisible(false);
         openEye.setVisible(true);
         txtNewShowPassWord.setVisible(true);
-        txtNewShowPassWord.setText(txtNewHidePassWord.getText());
+//        txtNewShowPassWord.setText(txtNewHidePassWord.getText());
 
     }
 
@@ -149,7 +152,7 @@ public class CreateNewPasswordController implements Initializable {
         hideEye.setVisible(true);
         txtNewShowPassWord.setVisible(false);
         openEye.setVisible(false);
-        txtNewHidePassWord.setText(txtNewShowPassWord.getText());
+//        txtNewHidePassWord.setText(txtNewShowPassWord.getText());
     }
 
     @Override
@@ -166,7 +169,7 @@ public class CreateNewPasswordController implements Initializable {
         hideEye1.setVisible(true);
         openEye1.setVisible(false);
         txtConfirmShowPassWord.setVisible(false);
-        txtConfirmHidePassWord.setText(txtConfirmShowPassWord.getText());
+//        txtConfirmHidePassWord.setText(txtConfirmShowPassWord.getText());
     }
 
     public void errorStyle(TextField... fields){
@@ -212,20 +215,26 @@ public class CreateNewPasswordController implements Initializable {
 
     @FXML
     public void txtNewHidePassWordOnKeyType(KeyEvent keyEvent) {
+        txtNewShowPassWord.setText(txtNewHidePassWord.getText());
+
+
     }
 
 
     @FXML
     public void txtConfirmShowPassWordOnKeyType(KeyEvent keyEvent) {
+        txtConfirmHidePassWord.setText(txtConfirmShowPassWord.getText());
     }
 
 
     @FXML
     public void txtConfirmHidePassWordOnKeyType(KeyEvent keyEvent) {
+        txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
     }
 
     @FXML
     public void txtNewShowPassWordOnKeyType(KeyEvent keyEvent) {
+        txtNewHidePassWord.setText(txtNewShowPassWord.getText());
     }
 }
 

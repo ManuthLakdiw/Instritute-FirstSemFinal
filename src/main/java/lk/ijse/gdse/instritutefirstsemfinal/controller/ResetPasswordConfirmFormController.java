@@ -66,8 +66,8 @@ public class ResetPasswordConfirmFormController implements Initializable {
                 }
             } else {
                 showInfoMessage("OTP code doesn't match!");
+                setTextFieldError(txtCode1,txtCode2,txtCode3,txtCode4);
                 clearTextFields();
-                resetStyles();
                 txtCode1.requestFocus();
             }
         } else {
@@ -160,6 +160,8 @@ public class ResetPasswordConfirmFormController implements Initializable {
 
 
 
+
+
     private void handleTextFieldInput(KeyEvent keyEvent, TextField currentField, TextField nextField) {
         String input = keyEvent.getCharacter();
 
@@ -199,8 +201,12 @@ public class ResetPasswordConfirmFormController implements Initializable {
     }
 
 
-    private void setTextFieldError(TextField field) {
-        field.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+    private void setTextFieldError(TextField... fields) {
+        String errorStyle  = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
+        for (TextField field : fields) {
+            field.setStyle(errorStyle);
+        }
+
     }
 
 

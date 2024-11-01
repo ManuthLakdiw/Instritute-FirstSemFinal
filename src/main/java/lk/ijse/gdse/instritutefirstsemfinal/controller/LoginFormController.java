@@ -65,7 +65,13 @@ public class LoginFormController implements Initializable {
         openEye.setVisible(true);
         hideEye.setVisible(false);
         txtHidePassWord.setVisible(false);
-        txtShowPassWord.setText(txtHidePassWord.getText()); // Set the visible password field
+        txtShowPassWord.requestFocus();
+        if (!txtShowPassWord.getText().isEmpty()) {
+            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+
+        }
+//        txtShowPassWord.setText(txtHidePassWord.getText());
+
     }
 
 
@@ -77,13 +83,15 @@ public class LoginFormController implements Initializable {
         openEye.setVisible(false);
         hideEye.setVisible(true);
         txtHidePassWord.setVisible(true);
-        txtHidePassWord.setText(txtShowPassWord.getText());
+        txtShowPassWord.requestFocus();
+        if (!txtHidePassWord.getText().isEmpty()) {
+            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
-//        if (txtHidePassWord.getText().isEmpty()) {
-//            errorStyle(txtHidePassWord);
-//        } else {
-//            resetStyle();
-//        }
+        }
+
+//        txtHidePassWord.setText(txtShowPassWord.getText());
+
+
     }
 
 
@@ -153,7 +161,7 @@ public class LoginFormController implements Initializable {
         String uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
-        resetStyle();
+        resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
@@ -173,7 +181,7 @@ public class LoginFormController implements Initializable {
             boolean logging = userModel.verifyUser(uName, pWord);
             if (!logging) {
                 errorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
-                alert("Logging Error!", "Your username and password don't match.");
+                alert("Logging Error!", "Your username and password doesn't match.");
             } else {
                 try {
                     contentPane.getChildren().clear();
@@ -201,10 +209,7 @@ public class LoginFormController implements Initializable {
     public void txtUserNameOnkeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
         if (!checkisEmpty.isEmpty()) {
-            txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-        } else {
-            txtUserName.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
+            resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
         }
     }
 
@@ -212,12 +217,10 @@ public class LoginFormController implements Initializable {
 
     @FXML
     public void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
+        txtHidePassWord.setText(txtShowPassWord.getText());
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
-            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-        }else {
-            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
+            resetStyle(txtShowPassWord,txtUserName);
         }
     }
 
@@ -225,23 +228,21 @@ public class LoginFormController implements Initializable {
 
     @FXML
     public void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
+        txtShowPassWord.setText(txtHidePassWord.getText());
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
-            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-        }else {
-            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
+            resetStyle(txtHidePassWord,txtUserName);
         }
     }
 
 
 
 
-    public void resetStyle(){
+    public void resetStyle(TextField... fields){
         String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
-        txtUserName.setStyle(defaultStyle);
-        txtHidePassWord.setStyle(defaultStyle);
-        txtShowPassWord.setStyle(defaultStyle);
+        for (TextField field : fields) {
+            field.setStyle(defaultStyle);
+        }
     }
 
 
