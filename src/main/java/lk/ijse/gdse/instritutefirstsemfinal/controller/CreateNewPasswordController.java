@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
@@ -65,30 +66,39 @@ public class CreateNewPasswordController implements Initializable {
     private TextField txtNewShowPassWord;
 
 
+    private String passwordWeakRegex = "^(?=.{1,})([a-zA-Z]+|[0-9]+|[^a-zA-Z0-9]+)$";
+
+    private String passwordMediumRegex = "^(?=.*[a-zA-Z])(?=.*[0-9]).{4,}$";
+
+    private String passwordStrongRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{6,}$";
+
+
+
+
 
     @FXML
     void btnResetPasswordOnClicked(ActionEvent event) {
         boolean newPasswordEmpty = txtNewShowPassWord.getText().isEmpty() && txtNewHidePassWord.getText().isEmpty();
         boolean confirmPasswordEmpty = txtConfirmShowPassWord.getText().isEmpty() && txtConfirmHidePassWord.getText().isEmpty();
 
-        resetStyle();
+        resetStyle(txtNewHidePassWord,txtConfirmHidePassWord,txtConfirmShowPassWord,txtNewShowPassWord);
 
 
         if (newPasswordEmpty && confirmPasswordEmpty) {
             alert("Reset Password", "Please fill in both New Password and Confirm Password fields!");
             errorStyle(txtNewShowPassWord, txtNewHidePassWord, txtConfirmShowPassWord, txtConfirmHidePassWord);
-            return;
+
         }
-        if (newPasswordEmpty) {
+        else if (newPasswordEmpty) {
             alert("Reset Password", "Please fill in the New Password field!");
             errorStyle(txtNewShowPassWord, txtNewHidePassWord);
-            return;
+
         }
 
-        if (confirmPasswordEmpty) {
+        else if (confirmPasswordEmpty) {
             alert("Reset Password", "Please fill in the Confirm Password field!");
             errorStyle(txtConfirmShowPassWord, txtConfirmHidePassWord);
-            return;
+
         }
 
         else {
@@ -130,6 +140,9 @@ public class CreateNewPasswordController implements Initializable {
         hideEye1.setVisible(false);
         openEye1.setVisible(true);
         txtConfirmShowPassWord.setVisible(true);
+        txtConfirmShowPassWord.requestFocus();
+        txtConfirmShowPassWord.positionCaret(txtConfirmShowPassWord.getText().length());
+
 //        txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
 
 
@@ -142,6 +155,9 @@ public class CreateNewPasswordController implements Initializable {
         hideEye.setVisible(false);
         openEye.setVisible(true);
         txtNewShowPassWord.setVisible(true);
+        txtNewShowPassWord.requestFocus();
+        txtNewShowPassWord.positionCaret(txtNewShowPassWord.getText().length());
+
 //        txtNewShowPassWord.setText(txtNewHidePassWord.getText());
 
     }
@@ -152,7 +168,13 @@ public class CreateNewPasswordController implements Initializable {
         hideEye.setVisible(true);
         txtNewShowPassWord.setVisible(false);
         openEye.setVisible(false);
-//        txtNewHidePassWord.setText(txtNewShowPassWord.getText());
+        txtNewHidePassWord.requestFocus();
+        // Move the cursor to the end of the text
+        txtNewHidePassWord.positionCaret(txtNewHidePassWord.getText().length());
+
+//        Move the cursor to the second position (index 1)
+//        txtNewHidePassWord.positionCaret(1);
+
     }
 
     @Override
@@ -169,6 +191,9 @@ public class CreateNewPasswordController implements Initializable {
         hideEye1.setVisible(true);
         openEye1.setVisible(false);
         txtConfirmShowPassWord.setVisible(false);
+        txtConfirmHidePassWord.requestFocus();
+        txtConfirmHidePassWord.positionCaret(txtConfirmHidePassWord.getText().length());
+
 //        txtConfirmHidePassWord.setText(txtConfirmShowPassWord.getText());
     }
 
@@ -203,23 +228,40 @@ public class CreateNewPasswordController implements Initializable {
     }
 
 
-    private void resetStyle(){
+    private void resetStyle(TextField... fields) {
         String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
-        txtConfirmHidePassWord.setStyle(defaultStyle);
-        txtNewHidePassWord.setStyle(defaultStyle);
-        txtNewShowPassWord.setStyle(defaultStyle);
-        txtConfirmShowPassWord.setStyle(defaultStyle);
+        for (TextField field : fields) {
+            field.setStyle(defaultStyle);
+        }
     }
 
+
+    @FXML
+    public void txtNewShowPassWordOnKeyType(KeyEvent keyEvent) {
+        String password = txtNewShowPassWord.getText();
+        txtNewHidePassWord.setText(password);
+
+
+        if (password.matches(passwordStrongRegex)) {
+            lblPasswordStatus.setText("Strong ✔︎");
+            lblPasswordStatus.setTextFill(Color.GREEN);
+        } else if (password.matches(passwordMediumRegex)) {
+            lblPasswordStatus.setText("Medium ⚠︎");
+            lblPasswordStatus.setTextFill(Color.BROWN);
+        } else if (password.matches(passwordWeakRegex)) {
+            lblPasswordStatus.setText("Weak ⛔︎");
+            lblPasswordStatus.setTextFill(Color.RED);
+        } else if (txtNewShowPassWord.getText().isEmpty()) {
+            lblPasswordStatus.setText("");
+
+        }
+    }
 
 
     @FXML
     public void txtNewHidePassWordOnKeyType(KeyEvent keyEvent) {
         txtNewShowPassWord.setText(txtNewHidePassWord.getText());
-
-
     }
-
 
     @FXML
     public void txtConfirmShowPassWordOnKeyType(KeyEvent keyEvent) {
@@ -232,9 +274,6 @@ public class CreateNewPasswordController implements Initializable {
         txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
     }
 
-    @FXML
-    public void txtNewShowPassWordOnKeyType(KeyEvent keyEvent) {
-        txtNewHidePassWord.setText(txtNewShowPassWord.getText());
-    }
+
 }
 

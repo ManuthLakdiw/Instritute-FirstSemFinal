@@ -1,7 +1,4 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
-
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,9 +6,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -42,7 +42,7 @@ public class ForgotPasswordFormController {
 
 
     @FXML
-    void btnGetDigitOnAction(ActionEvent eve) {
+    private void btnGetDigitOnAction(ActionEvent eve) {
         String email = txtEmail.getText().trim();
         boolean isValidEmail = email.matches(emailRegex);
 
@@ -55,17 +55,11 @@ public class ForgotPasswordFormController {
         txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
         if (!isValidEmail) {
-            txtEmail.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Password Reset Error!");
-            alert.setHeaderText(null);
-            alert.setContentText("You must enter a valid email");
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-            PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
-            delay.setOnFinished(event -> alert.close());
-            delay.play();
-            alert.show();
+            RegexUtil.setErrorStyle(txtEmail);
+            AlertUtil.informationAlert(ForgotPasswordFormController.class,null,true,"You must enter a valid email.");
+            txtEmail.clear();
+//            RegexUtil.resetStyle(txtEmail);
+            txtEmail.requestFocus();
         } else {
             if (isEmailExists) {
                 try {
@@ -79,7 +73,7 @@ public class ForgotPasswordFormController {
                     String body = "Hello, "+userName+"\n\n"
                             + "Please use the following OTP to reset your password:\n\n"
                             + "╔══════════════════════════════╗\n"
-                            + "║         \"" + otp + "\"          ║\n"
+                            + "║         " + otp + "          ║\n"
                             + "╚══════════════════════════════╝\n\n"
                             + "If you did not request a password reset, please ignore this email.\n\n"
                             + "Thank You!!!";
@@ -116,34 +110,25 @@ public class ForgotPasswordFormController {
 
                     btnGetdigit.setText("Done ✔");
 
+
                     Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "OTP code sent successfully!", ButtonType.CLOSE, ButtonType.OK);
-                    successAlert.setTitle("Forgot Password");
+                    successAlert.setTitle("Confirmation");
                     successAlert.setHeaderText(null);
                     successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
                     Optional<ButtonType> buttonType = successAlert.showAndWait();
 
                     if (buttonType.isPresent() && buttonType.get() == ButtonType.OK) {
-                        forgotPasswordFormPane.getChildren().clear();
-                        Pane pane = FXMLLoader.load(getClass().getResource("/view/resetPasswordConfirmForm.fxml"));
-                        forgotPasswordFormPane.getChildren().add(pane);
-                        Stage stage = (Stage) forgotPasswordFormPane.getScene().getWindow();
-                        stage.setTitle("Confirm Email");
+                        NavigationUtil.loadPane(ForgotPasswordFormController.class,forgotPasswordFormPane,"Forgot Pasword[Email Verification]","/view/resetPasswordConfirmForm.fxml");
                     }else if (buttonType.isPresent() && buttonType.get() == ButtonType.CLOSE) {
                         btnGetdigit.setText("Get 4-digit code");
                     }
 
                 } catch (MessagingException e) {
-                    showAlert("Error", "Failed to send OTP code!\nPlease check your Internet connection.", Alert.AlertType.INFORMATION);
-                } catch (IOException e) {
-                    showAlert("Error", "Failed to load Confirm Email!", Alert.AlertType.ERROR);
+                    AlertUtil.informationAlert(ForgotPasswordFormController.class,null,false,"Failed to send OTP code!\nPlease check your Internet connection.");
                 }
             } else {
-                txtEmail.setStyle("-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-                showAlert("Forgot Password", email + " is not in the database. Try again!", Alert.AlertType.INFORMATION);
-                txtEmail.clear();
-                txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
-
+                RegexUtil.setErrorStyle(txtEmail);
+                AlertUtil.informationAlert(ForgotPasswordFormController.class,null,false,email +  "  is not in the database. Try again!");
             }
         }
     }
@@ -151,25 +136,18 @@ public class ForgotPasswordFormController {
 
 
     @FXML
-    public void txtEmailOnkeyType(KeyEvent keyEvent) {
-        String isEmptycheckTxtEmail = keyEvent.getText();
+    private void txtEmailOnkeyType(KeyEvent keyEvent) {
+        String checkTxtEmail = keyEvent.getText();
 
-        if (isEmptycheckTxtEmail.isEmpty()) {
-            txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        if (checkTxtEmail.isEmpty()) {
+            RegexUtil.resetStyle(txtEmail);
         }
     }
 
 
 
 
-    private void showAlert(String title, String content, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        alert.showAndWait();
-    }
+
 
 }
 

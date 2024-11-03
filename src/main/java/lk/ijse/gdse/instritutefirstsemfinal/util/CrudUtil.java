@@ -18,6 +18,7 @@ public class CrudUtil {
         // The loop starts from 0, but `setObject` expects positions starting from 1, hence (i + 1).
         for (int i=0;i<obj.length;i++){
             pst.setObject((i+1),obj[i]);
+
         }
 
         if (sql.startsWith("select") || sql.startsWith("SELECT")){
@@ -37,5 +38,6 @@ public class CrudUtil {
             return (T) ((Boolean) isSaved);
             // Returns the result of the operation (true if successful, false otherwise), cast to the generic type `T`.
         }
+
     }
 }

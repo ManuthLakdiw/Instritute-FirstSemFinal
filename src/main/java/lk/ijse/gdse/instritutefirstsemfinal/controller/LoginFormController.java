@@ -1,22 +1,22 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -66,8 +66,11 @@ public class LoginFormController implements Initializable {
         hideEye.setVisible(false);
         txtHidePassWord.setVisible(false);
         txtShowPassWord.requestFocus();
-        if (!txtShowPassWord.getText().isEmpty()) {
-            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        txtShowPassWord.positionCaret(txtShowPassWord.getText().length());
+
+        if (txtShowPassWord.getText().isEmpty()) {
+            RegexUtil.resetStyle(txtHidePassWord);
+//            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
         }
 //        txtShowPassWord.setText(txtHidePassWord.getText());
@@ -83,9 +86,12 @@ public class LoginFormController implements Initializable {
         openEye.setVisible(false);
         hideEye.setVisible(true);
         txtHidePassWord.setVisible(true);
-        txtShowPassWord.requestFocus();
-        if (!txtHidePassWord.getText().isEmpty()) {
-            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
+        txtHidePassWord.requestFocus();
+        txtHidePassWord.positionCaret(txtHidePassWord.getText().length());
+
+        if (txtHidePassWord.getText().isEmpty()) {
+            RegexUtil.resetStyle(txtHidePassWord);
+//            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
         }
 
@@ -98,7 +104,7 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    public void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
+    private void txtUserNameOnKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (txtHidePassWord.isVisible()) {
                 txtHidePassWord.requestFocus();
@@ -111,31 +117,14 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    public void forgotPassWordOnClicked(MouseEvent mouseEvent) {
-
-            try {
-                contentPane.getChildren().clear();
-                Pane load = FXMLLoader.load(getClass().getResource("/view/forgotPasswordForm.fxml"));
-                contentPane.getChildren().add(load);
-                Stage stage = (Stage) contentPane.getScene().getWindow();
-                stage.setTitle("Forgot Password");
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed to load ForgotPasswordForm!");
-                DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-                alert.showAndWait();
-            }
-
+    private void forgotPassWordOnClicked(MouseEvent mouseEvent) {
+                NavigationUtil.loadPane(LoginFormController.class,contentPane,"Forgot Password","/view/forgotPasswordForm.fxml");
     }
 
 
 
     @FXML
-    public void passwordFieldOnKeyPressed(KeyEvent keyEvent) {
+    private void passwordFieldOnKeyPressed(KeyEvent keyEvent) {
         if (txtHidePassWord.getText().isEmpty()) {
             if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
                 txtUserName.requestFocus();
@@ -146,7 +135,7 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    public void passwordVisibleFieldOnAction(KeyEvent keyEvent) {
+    private void passwordVisibleFieldOnAction(KeyEvent keyEvent) {
         if(txtShowPassWord.getText().isEmpty()){
             if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
                 txtUserName.requestFocus();
@@ -157,48 +146,35 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    public void btbnLoginClicked(ActionEvent actionEvent) {
+    private void btnLoginClicked(ActionEvent actionEvent) {
         String uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
-        resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
+        RegexUtil.resetStyle(txtHidePassWord, txtShowPassWord,txtHidePassWord);
+//        resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
-                alert("Logging Error!","Please fill all the fields");
                 txtUserName.requestFocus();
-                errorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
+                RegexUtil.setErrorStyle(txtShowPassWord,txtHidePassWord,txtUserName);
+                AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill all the fields");
+
             }else if (uName.isEmpty()) {
-                alert("Logging Error!","Please fill the username field.");
                 txtUserName.requestFocus();
-                errorStyle(txtUserName);
+                RegexUtil.setErrorStyle(txtUserName);
+                AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill the username field.");
             }else {
-                alert("Logging Error!","Please fill the password field.");
                 txtHidePassWord.requestFocus();
-                errorStyle(txtHidePassWord,txtShowPassWord);
+                RegexUtil.setErrorStyle(txtHidePassWord,txtShowPassWord);
+                AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill the password field.");
             }
         } else {
             boolean logging = userModel.verifyUser(uName, pWord);
             if (!logging) {
-                errorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
-                alert("Logging Error!", "Your username and password doesn't match.");
+                RegexUtil.setErrorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
+                AlertUtil.informationAlert(LoginFormController.class,null,true,"username and password doesn't match.");
             } else {
-                try {
-                    contentPane.getChildren().clear();
-                    Pane load = FXMLLoader.load(getClass().getResource("/view/dashBoardForm.fxml"));
-                    contentPane.getChildren().add(load);
-                    Stage stage = (Stage) contentPane.getScene().getWindow();
-                    stage.setTitle("Dashboard");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Failed to load DashBoard!");
-                    DialogPane dialogPane = alert.getDialogPane();
-                    dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-                    alert.showAndWait();
-                }
+                NavigationUtil.loadPane(LoginFormController.class,contentPane,"Dashboard","/view/dashBoardForm.fxml");
             }
         }
     }
@@ -206,71 +182,37 @@ public class LoginFormController implements Initializable {
 
 
     @FXML
-    public void txtUserNameOnkeyType(KeyEvent keyEvent) {
+    private void txtUserNameOnkeyType(KeyEvent keyEvent) {
         String checkisEmpty = keyEvent.getCharacter();
         if (!checkisEmpty.isEmpty()) {
-            resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
+            RegexUtil.resetStyle(txtUserName);
+//            resetStyle(txtUserName);
         }
     }
 
 
 
     @FXML
-    public void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
+    private void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
         txtHidePassWord.setText(txtShowPassWord.getText());
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
-            resetStyle(txtShowPassWord,txtUserName);
+            RegexUtil.resetStyle(txtShowPassWord,txtHidePassWord);
+//            resetStyle(txtShowPassWord,txtHidePassWord);
         }
     }
 
 
 
     @FXML
-    public void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
+    private void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
         txtShowPassWord.setText(txtHidePassWord.getText());
         String checkisEmpty = keyEvent.getCharacter();
         if(!checkisEmpty.isEmpty()){
-            resetStyle(txtHidePassWord,txtUserName);
+            RegexUtil.resetStyle(txtShowPassWord,txtHidePassWord);
+//            resetStyle(txtHidePassWord,txtShowPassWord);
         }
     }
-
-
-
-
-    public void resetStyle(TextField... fields){
-        String defaultStyle = "-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
-        for (TextField field : fields) {
-            field.setStyle(defaultStyle);
-        }
-    }
-
-
-
-    public void errorStyle(TextField... fields){
-        String errorStyle = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
-        for (TextField field : fields) {
-            field.setStyle(errorStyle);
-        }
-
-    }
-
-
-
-    public void alert(String setTitle, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(setTitle);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
-        PauseTransition delay = new PauseTransition(Duration.seconds(1.3));
-        delay.setOnFinished(event -> alert.close());
-        delay.play();
-        alert.show();
-
-    }
-
 
 
 }
