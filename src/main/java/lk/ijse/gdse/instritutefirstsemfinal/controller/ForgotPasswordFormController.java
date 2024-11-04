@@ -116,7 +116,7 @@ public class ForgotPasswordFormController {
                     Optional<ButtonType> buttonType = successAlert.showAndWait();
 
                     if (buttonType.isPresent() && buttonType.get() == ButtonType.OK) {
-                        NavigationUtil.loadPane(ForgotPasswordFormController.class,forgotPasswordFormPane,"Forgot Pasword[Email Verification]","/view/resetPasswordConfirmForm.fxml");
+                        NavigationUtil.loadPane(ForgotPasswordFormController.class,forgotPasswordFormPane,"Forgot Password[Email Verification]","/view/resetPasswordConfirmForm.fxml");
                     }else if (buttonType.isPresent() && buttonType.get() == ButtonType.CLOSE) {
                         btnGetdigit.setText("Get 4-digit code");
                     }

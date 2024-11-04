@@ -17,7 +17,7 @@ public class AppInitializer extends Application {
         Parent load = FXMLLoader.load(getClass().getResource("/view/loginForm.fxml"));
         Scene scene = new Scene(load);
         stage.setScene(scene);
-        stage.setTitle("Login");
+        stage.setTitle("StudyHall - Login");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/appLogo.jpg")));
         stage.show();
         stage.setResizable(false);

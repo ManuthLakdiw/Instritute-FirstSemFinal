@@ -119,7 +119,7 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private void forgotPassWordOnClicked(MouseEvent mouseEvent) {
-                NavigationUtil.loadPane(LoginFormController.class,contentPane,"Forgot Password","/view/forgotPasswordForm.fxml");
+                NavigationUtil.loadPane(LoginFormController.class,contentPane,"Forgot Password[Send Email]","/view/forgotPasswordForm.fxml");
     }
 
 

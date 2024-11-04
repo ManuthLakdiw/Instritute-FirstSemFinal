@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
 
 import java.io.IOException;
 
@@ -26,7 +27,7 @@ public class pwResetSuccessFormController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginForm.fxml"));
             Stage stage = (Stage) btnContinue.getScene().getWindow();
             stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setTitle("Login");
+            stage.setTitle("StudyHall - Login");
         } catch (IOException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);

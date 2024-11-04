@@ -125,3 +125,13 @@
     -fx-border-color: #00b4d8; /* Border color when focused */
     -fx-border-width: 1.5px;
 }
+
+
+/* Embossed and glowing effect for the image */
+.loginImage {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 4);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 5px;
+    -fx-background-color: white;
+}
