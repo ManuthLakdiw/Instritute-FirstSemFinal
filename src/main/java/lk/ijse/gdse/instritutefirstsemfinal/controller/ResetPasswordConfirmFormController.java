@@ -1,24 +1,17 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -61,7 +54,7 @@ public class ResetPasswordConfirmFormController implements Initializable {
                     NavigationUtil.loadPane(ResetPasswordConfirmFormController.class,resetPasswordFormPane,"Create New Password","/view/createNewPasswordForm.fxml");
 
             } else {
-                RegexUtil.setErrorStyle(txtCode1, txtCode2, txtCode3, txtCode4);
+                RegexUtil.setErrorStyle(true,txtCode1, txtCode2, txtCode3, txtCode4);
                 AlertUtil.informationAlert(ResetPasswordConfirmFormController.class,null,false,"OTP code doesn't match!");
                 clearTextFields();
                 txtCode1.requestFocus();
@@ -70,19 +63,19 @@ public class ResetPasswordConfirmFormController implements Initializable {
             AlertUtil.informationAlert(ResetPasswordConfirmFormController.class,null,true,"You should fill all fields!!!");
 //            showInfoMessage("Please enter a valid code!");
             if (!code1.matches("^[0-9]$")) {
-                RegexUtil.setErrorStyle(txtCode1);
+                RegexUtil.setErrorStyle(true,txtCode1);
 //                setTextFieldError(txtCode1);
             }
             if (!code2.matches("^[0-9]$")) {
-                RegexUtil.setErrorStyle(txtCode2);
+                RegexUtil.setErrorStyle(true,txtCode2);
 //                setTextFieldError(txtCode2);
             }
             if (!code3.matches("^[0-9]$")) {
-                RegexUtil.setErrorStyle(txtCode3);
+                RegexUtil.setErrorStyle(true,txtCode3);
 //                setTextFieldError(txtCode3);
             }
             if (!code4.matches("^[0-9]$")) {
-                RegexUtil.setErrorStyle(txtCode4);
+                RegexUtil.setErrorStyle(true,txtCode4);
 //                setTextFieldError(txtCode4);
             }
             txtCode1.requestFocus();
@@ -176,7 +169,7 @@ public class ResetPasswordConfirmFormController implements Initializable {
             }
         } else {
             currentField.clear();
-            RegexUtil.setErrorStyle(currentField);
+            RegexUtil.setErrorStyle(true,currentField);
         }
 
 

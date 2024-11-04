@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
@@ -23,8 +24,8 @@ public class CreateNewPasswordController implements Initializable {
 
     private final UserModel user = new UserModel();
 
-    String newPassword;
-    String confirmPassword;
+    private String newPassword;
+    private String confirmPassword;
 
     @FXML
     private Label lblPasswordStatus;
@@ -32,14 +33,16 @@ public class CreateNewPasswordController implements Initializable {
     @FXML
     private Pane createNewPasswordFormPane;
 
+
     @FXML
-    private Button btnLogin;
+    private Button btnResetPassword;
+
 
     @FXML
     private FontIcon hideEye;
 
     @FXML
-    private FontIcon hideEye1;
+    private FontIcon hideEye2;
 
     @FXML
     private Label lblsendEmail;
@@ -51,7 +54,7 @@ public class CreateNewPasswordController implements Initializable {
     private FontIcon openEye;
 
     @FXML
-    private FontIcon openEye1;
+    private FontIcon openEye2;
 
     @FXML
     private PasswordField txtConfirmHidePassWord;
@@ -64,6 +67,12 @@ public class CreateNewPasswordController implements Initializable {
 
     @FXML
     private TextField txtNewShowPassWord;
+
+    @FXML
+    private Label lblpasswordConfirm;
+
+
+
 
 
     private String passwordWeakRegex = "^(?=.{1,})([a-zA-Z]+|[0-9]+|[^a-zA-Z0-9]+)$";
@@ -137,8 +146,8 @@ public class CreateNewPasswordController implements Initializable {
     @FXML
     public void confirmPasswordHideEye1nClicked(MouseEvent mouseEvent) {
         txtConfirmHidePassWord.setVisible(false);
-        hideEye1.setVisible(false);
-        openEye1.setVisible(true);
+        hideEye2.setVisible(false);
+        openEye2.setVisible(true);
         txtConfirmShowPassWord.setVisible(true);
         txtConfirmShowPassWord.requestFocus();
         txtConfirmShowPassWord.positionCaret(txtConfirmShowPassWord.getText().length());
@@ -182,14 +191,14 @@ public class CreateNewPasswordController implements Initializable {
         txtNewShowPassWord.setVisible(false);
         txtConfirmShowPassWord.setVisible(false);
         openEye.setVisible(false);
-        openEye1.setVisible(false);
+        openEye2.setVisible(false);
     }
 
     @FXML
     public void confirmPasswordOpenEye1nClicked(MouseEvent mouseEvent) {
         txtConfirmHidePassWord.setVisible(true);
-        hideEye1.setVisible(true);
-        openEye1.setVisible(false);
+        hideEye2.setVisible(true);
+        openEye2.setVisible(false);
         txtConfirmShowPassWord.setVisible(false);
         txtConfirmHidePassWord.requestFocus();
         txtConfirmHidePassWord.positionCaret(txtConfirmHidePassWord.getText().length());
@@ -238,40 +247,88 @@ public class CreateNewPasswordController implements Initializable {
 
     @FXML
     public void txtNewShowPassWordOnKeyType(KeyEvent keyEvent) {
-        String password = txtNewShowPassWord.getText();
-        txtNewHidePassWord.setText(password);
-
-
-        if (password.matches(passwordStrongRegex)) {
-            lblPasswordStatus.setText("Strong ✔︎");
-            lblPasswordStatus.setTextFill(Color.GREEN);
-        } else if (password.matches(passwordMediumRegex)) {
-            lblPasswordStatus.setText("Medium ⚠︎");
-            lblPasswordStatus.setTextFill(Color.BROWN);
-        } else if (password.matches(passwordWeakRegex)) {
-            lblPasswordStatus.setText("Weak ⛔︎");
-            lblPasswordStatus.setTextFill(Color.RED);
-        } else if (txtNewShowPassWord.getText().isEmpty()) {
-            lblPasswordStatus.setText("");
-
-        }
+        newPassword = txtNewShowPassWord.getText();
+        txtNewHidePassWord.setText(newPassword);
+        updatePasswordStatus(newPassword);
     }
 
 
     @FXML
     public void txtNewHidePassWordOnKeyType(KeyEvent keyEvent) {
-        txtNewShowPassWord.setText(txtNewHidePassWord.getText());
+        newPassword = txtNewHidePassWord.getText();
+        txtNewShowPassWord.setText(newPassword);
+        updatePasswordStatus(newPassword);
+
     }
 
     @FXML
     public void txtConfirmShowPassWordOnKeyType(KeyEvent keyEvent) {
         txtConfirmHidePassWord.setText(txtConfirmShowPassWord.getText());
+        checkPasswordMatch();
+
+
     }
 
 
     @FXML
     public void txtConfirmHidePassWordOnKeyType(KeyEvent keyEvent) {
         txtConfirmShowPassWord.setText(txtConfirmHidePassWord.getText());
+        checkPasswordMatch();
+
+    }
+
+
+    private void updatePasswordStatus(String newPassword) {
+        if (newPassword.isEmpty()) {
+            lblPasswordStatus.setText("");
+            return;
+        }
+
+        if (newPassword.matches(passwordStrongRegex)) {
+            lblPasswordStatus.setText("Strong ✔︎");
+            lblPasswordStatus.setTextFill(Color.GREEN);
+        } else if (newPassword.matches(passwordMediumRegex)) {
+            lblPasswordStatus.setText("Medium ⚠︎");
+            lblPasswordStatus.setTextFill(Color.BROWN);
+        } else if (newPassword.matches(passwordWeakRegex)) {
+            lblPasswordStatus.setText("Weak ⛔︎");
+            lblPasswordStatus.setTextFill(Color.RED);
+        }
+        if (newPassword.matches(passwordWeakRegex)) {
+            txtConfirmHidePassWord.setDisable(true);
+            txtConfirmShowPassWord.setDisable(true);
+            openEye2.setDisable(true);
+            hideEye2.setDisable(true);
+            lblpasswordConfirm.setText("For enable this you should enter Medium or Strong password");
+            lblpasswordConfirm.setTextFill(Color.RED);
+        }else{
+            txtConfirmHidePassWord.setDisable(false);
+            txtConfirmShowPassWord.setDisable(false);
+            openEye2.setDisable(false);
+            hideEye2.setDisable(false);
+            lblpasswordConfirm.setText("");
+        }
+    }
+
+    private void checkPasswordMatch() {
+        confirmPassword = txtConfirmShowPassWord.getText();
+        if (newPassword.isEmpty()){
+            txtConfirmHidePassWord.clear();
+            txtConfirmShowPassWord.clear();
+        }        if (!confirmPassword.equals(newPassword)) {
+            RegexUtil.resetStyle(txtConfirmHidePassWord, txtConfirmShowPassWord);
+            if (!newPassword.isEmpty()) {
+                lblpasswordConfirm.setText("Doesn't match password!");
+                lblpasswordConfirm.setTextFill(Color.RED);
+                btnResetPassword.setDisable(true);
+            } else if (txtConfirmHidePassWord.getText().isEmpty() || txtConfirmShowPassWord.getText().isEmpty()) {
+                lblpasswordConfirm.setText("");  // Clear the error message if they match
+                btnResetPassword.setDisable(false);
+            }
+        } else {
+            lblpasswordConfirm.setText("");  // Clear the error message if they match
+            btnResetPassword.setDisable(false);
+        }
     }
 
 

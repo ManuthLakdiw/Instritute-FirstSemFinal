@@ -1,7 +1,6 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -15,7 +14,6 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -55,7 +53,7 @@ public class ForgotPasswordFormController {
         txtEmail.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
 
         if (!isValidEmail) {
-            RegexUtil.setErrorStyle(txtEmail);
+            RegexUtil.setErrorStyle(true,txtEmail);
             AlertUtil.informationAlert(ForgotPasswordFormController.class,null,true,"You must enter a valid email.");
             txtEmail.clear();
 //            RegexUtil.resetStyle(txtEmail);
@@ -127,7 +125,7 @@ public class ForgotPasswordFormController {
                     AlertUtil.informationAlert(ForgotPasswordFormController.class,null,false,"Failed to send OTP code!\nPlease check your Internet connection.");
                 }
             } else {
-                RegexUtil.setErrorStyle(txtEmail);
+                RegexUtil.setErrorStyle(false,txtEmail);
                 AlertUtil.informationAlert(ForgotPasswordFormController.class,null,false,email +  "  is not in the database. Try again!");
             }
         }

@@ -1,7 +1,6 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,7 +9,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
@@ -61,43 +59,46 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private void closeEyeOnClickedAction(MouseEvent event) {
+        String currentStyle = txtHidePassWord.getStyle();
+
+
         txtShowPassWord.setVisible(true);
         openEye.setVisible(true);
         hideEye.setVisible(false);
         txtHidePassWord.setVisible(false);
+
+
+        txtShowPassWord.setText(txtHidePassWord.getText());
+        txtShowPassWord.setStyle(currentStyle);
         txtShowPassWord.requestFocus();
         txtShowPassWord.positionCaret(txtShowPassWord.getText().length());
 
-        if (txtShowPassWord.getText().isEmpty()) {
-            RegexUtil.resetStyle(txtHidePassWord);
-//            txtShowPassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
-        }
-//        txtShowPassWord.setText(txtHidePassWord.getText());
-
+        txtShowPassWord.setStyle(currentStyle);
     }
+
+
 
 
 
 
     @FXML
     private void openEyeOnClickedAction(MouseEvent event) {
+
+        String currentStyle = txtShowPassWord.getStyle();
+
+
         txtShowPassWord.setVisible(false);
         openEye.setVisible(false);
         hideEye.setVisible(true);
         txtHidePassWord.setVisible(true);
+
+
+        txtHidePassWord.setText(txtShowPassWord.getText());
+        txtHidePassWord.setStyle(currentStyle); // Apply saved style from txtShowPassWord
         txtHidePassWord.requestFocus();
         txtHidePassWord.positionCaret(txtHidePassWord.getText().length());
 
-        if (txtHidePassWord.getText().isEmpty()) {
-            RegexUtil.resetStyle(txtHidePassWord);
-//            txtHidePassWord.setStyle("-fx-border-color: #03045E; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;");
-
-        }
-
-//        txtHidePassWord.setText(txtShowPassWord.getText());
-
-
+        txtHidePassWord.setStyle(currentStyle);
     }
 
 
@@ -150,28 +151,31 @@ public class LoginFormController implements Initializable {
         String uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
+
+
         RegexUtil.resetStyle(txtHidePassWord, txtShowPassWord,txtHidePassWord);
 //        resetStyle(txtShowPassWord,txtHidePassWord,txtUserName);
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
                 txtUserName.requestFocus();
-                RegexUtil.setErrorStyle(txtShowPassWord,txtHidePassWord,txtUserName);
+                RegexUtil.setErrorStyle(true,txtShowPassWord,txtHidePassWord,txtUserName);
+
                 AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill all the fields");
 
             }else if (uName.isEmpty()) {
                 txtUserName.requestFocus();
-                RegexUtil.setErrorStyle(txtUserName);
+                RegexUtil.setErrorStyle(true,txtUserName);
                 AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill the username field.");
             }else {
                 txtHidePassWord.requestFocus();
-                RegexUtil.setErrorStyle(txtHidePassWord,txtShowPassWord);
+                RegexUtil.setErrorStyle(true,txtHidePassWord,txtShowPassWord);
                 AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill the password field.");
             }
         } else {
             boolean logging = userModel.verifyUser(uName, pWord);
             if (!logging) {
-                RegexUtil.setErrorStyle(txtUserName,txtHidePassWord,txtShowPassWord);
+                RegexUtil.setErrorStyle(true,txtUserName,txtHidePassWord,txtShowPassWord);
                 AlertUtil.informationAlert(LoginFormController.class,null,true,"username and password doesn't match.");
             } else {
                 NavigationUtil.loadPane(LoginFormController.class,contentPane,"Dashboard","/view/dashBoardForm.fxml");
@@ -195,7 +199,7 @@ public class LoginFormController implements Initializable {
     @FXML
     private void txtShowPassWordOnKeyType(KeyEvent keyEvent) {
         txtHidePassWord.setText(txtShowPassWord.getText());
-        String checkisEmpty = keyEvent.getCharacter();
+        String checkisEmpty = txtShowPassWord.getText();
         if(!checkisEmpty.isEmpty()){
             RegexUtil.resetStyle(txtShowPassWord,txtHidePassWord);
 //            resetStyle(txtShowPassWord,txtHidePassWord);
@@ -207,12 +211,11 @@ public class LoginFormController implements Initializable {
     @FXML
     private void txtHidePassWordOnKeyType(KeyEvent keyEvent) {
         txtShowPassWord.setText(txtHidePassWord.getText());
-        String checkisEmpty = keyEvent.getCharacter();
+        String checkisEmpty = txtHidePassWord.getText();
         if(!checkisEmpty.isEmpty()){
             RegexUtil.resetStyle(txtShowPassWord,txtHidePassWord);
 //            resetStyle(txtHidePassWord,txtShowPassWord);
         }
     }
-
 
 }

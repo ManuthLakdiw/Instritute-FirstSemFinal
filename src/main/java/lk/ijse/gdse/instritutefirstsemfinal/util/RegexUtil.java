@@ -17,11 +17,13 @@ public class RegexUtil {
         }
     }
 
-    public static void setErrorStyle(TextField... fields) {
+    public static void setErrorStyle(boolean skakeEffect , TextField... fields) {
         String errorStyle = "-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius: 5; -fx-background-color: transparent;";
         for (TextField field : fields) {
             field.setStyle(errorStyle);
-            shake(field);
+            if (skakeEffect) {
+                shake(field);
+            }
 
         }
     }
@@ -33,7 +35,6 @@ public class RegexUtil {
         }
 
     }
-
 
 
 
