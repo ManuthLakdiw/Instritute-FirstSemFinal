@@ -4,15 +4,19 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainLayoutFormController implements Initializable {
@@ -44,6 +48,9 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     private Button btnLogout;
 
+    @FXML
+    private Label lblUser;
+
 
     private String currentLoadedFXML = "";
     private HBox lastClickedHBox = null;
@@ -69,6 +76,7 @@ public class MainLayoutFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblUser .setText("Hi, "+LoginFormController.uName+"❖");
         applyHBoxBackground(hBoxDashBoard);
         navigateTo("/view/dashBoardForm.fxml", "DashBoardForm");
         btnDashBoard.setMouseTransparent(true);
@@ -127,6 +135,29 @@ public class MainLayoutFormController implements Initializable {
     }
 
     public void hBoxLogoutOnClicked(MouseEvent mouseEvent) {
+        Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.NO, ButtonType.YES);
+        successAlert.setTitle("Confirmation");
+        successAlert.setHeaderText(null);
+        successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        Optional<ButtonType> buttonType = successAlert.showAndWait();
 
+        if (buttonType.isPresent() && buttonType.get() == ButtonType.YES) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginForm.fxml"));
+                Stage stage = (Stage) btnLogout.getScene().getWindow();
+                stage.setScene(new Scene(fxmlLoader.load()));
+                stage.setTitle("StudyHall - Login");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to load LoginForm!");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+                alert.showAndWait();
+            }
+
+        }
     }
 }

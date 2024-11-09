@@ -58,18 +58,13 @@
 }
 
 
-/* HBox එකේ default style */
-/*.hbox {*/
-/*    -fx-background-color: white; !* Default background color *!*/
-/*}*/
 
-/* HBox එක hover වෙද්දී ඇති style */
 .hbox:hover {
     -fx-background-color: rgb(233, 233, 233);
 }
 
 .selected {
-    -fx-background-color:rgb(233, 233, 233); /* Example background color */
+    -fx-background-color:rgb(233, 233, 233);
 }
 
 /* Login Page Styling */
@@ -166,11 +161,15 @@
     -fx-padding: 5px 15px;
     -fx-font-weight: bold;
     -fx-border-color: transparent;
+    /*-fx-border-radius: 10px;*/
 }
 
 .dialog-pane .button-bar .button:focused {
     -fx-border-color: #00b4d8;
     -fx-border-width: 1.5px;
+    -fx-border-radius: 5px;
+
+
 }
 
 /* Login Image Styling */
@@ -182,77 +181,121 @@
     -fx-background-color: white;
 }
 
-/*!* Base RadioButton Style *!*/
-/*.custom-radio-button {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-padding: 10px;*/
-/*    -fx-text-fill: #4A4A4A;*/
-/*    -fx-font-size: 14px;*/
-/*    -fx-font-weight: bold;*/
-/*    -fx-background-radius: 25px;*/
-/*    -fx-border-radius: 25px;*/
-/*    -fx-border-color: #0077B6;*/
-/*    -fx-border-width: 2px;*/
-/*    -fx-cursor: hand;*/
-/*    -fx-alignment: center-left;*/
-/*    -fx-spacing: 10px;*/
-/*    -fx-effect: dropshadow(gaussian, #0077B6, 10, 0.3, 0, 0); !* Adding shadow for effect *!*/
-/*}*/
+/* Main DatePicker input box style */
+.date-picker {
+    -fx-background-color: transparent; /* Transparent input box background */
+    -fx-text-fill: #03045E; /* Dark blue text color for selected date */
+    -fx-border-color: #03045E; /* Dark blue border color */
+    -fx-border-width: 1px; /* Border width of input box */
+    -fx-border-radius: 5px; /* Rounded corners for input box */
+}
 
-/*!* Outer Circle - Unselected State *!*/
-/*.custom-radio-button .radio {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-border-color: #0077B6;*/
-/*    -fx-border-width: 2px;*/
-/*    -fx-background-radius: 50%;*/
-/*    -fx-pref-width: 20px;*/
-/*    -fx-pref-height: 20px;*/
-/*    -fx-transition: all 0.3s ease;  !* Smooth transition *!*/
-/*}*/
+/* Style the DatePicker popup to be transparent */
+.date-picker .popup {
+    -fx-background-color: transparent; /* Transparent background for popup */
+    -fx-border-color: #03045E; /* Dark blue border color */
+    -fx-border-width: 1px; /* Border width for popup */
+    -fx-border-radius: 10px; /* Rounded corners for popup */
+}
 
-/*!* Inner Circle - Checked State *!*/
-/*.custom-radio-button .radio .inner {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-background-radius: 50%;*/
-/*    -fx-pref-width: 12px;*/
-/*    -fx-pref-height: 12px;*/
-/*    -fx-border-color: transparent;*/
-/*    -fx-border-width: 3px;*/
-/*    -fx-background-color: #0077B6;*/
-/*}*/
+/* Style for day cells */
+.date-picker .day-cell {
+    -fx-background-color: transparent; /* Transparent background for day cells */
+    -fx-text-fill: black; /* Black text color for day numbers */
+}
 
-/*!* Hover Effect *!*/
-/*.custom-radio-button:hover {*/
-/*    -fx-border-color: #4CAF50;*/
-/*    -fx-text-fill: #4CAF50;*/
-/*}*/
+/* Style for selected day */
+.date-picker .day-cell:selected {
+    -fx-background-color: #03045E; /* Dark blue background for selected day */
+    -fx-text-fill: white; /* White text color on selected day */
+}
 
-/*!* When RadioButton is Selected *!*/
-/*.custom-radio-button:selected {*/
-/*    -fx-border-color: #4CAF50;*/
-/*    -fx-text-fill: #4CAF50;*/
-/*}*/
+/* Style for current day */
+.date-picker .current-day {
+    -fx-background-color: #03045E; /* Dark blue background for today */
+    -fx-text-fill: white; /* White text color for today */
+}
 
-/*!* Disabled State *!*/
-/*.custom-radio-button:disabled {*/
-/*    -fx-opacity: 0.5;*/
-/*    -fx-border-color: #B0BEC5;*/
-/*    -fx-text-fill: #B0BEC5;*/
-/*}*/
+/* Disabled day style */
+.date-picker .day-cell:empty {
+    -fx-background-color: transparent; /* Transparent background for disabled days */
+    -fx-text-fill: rgba(0, 0, 0, 0.5); /* Faded black text for disabled days */
+}
 
-/*!* Adding Focus Effect to Highlight Selected Radio *!*/
-/*.custom-radio-button:focused .radio {*/
-/*    -fx-border-color: #4CAF50;  !* Green border when focused *!*/
-/*}*/
+/* Month and year labels */
+.date-picker .label {
+    -fx-text-fill: #03045E; /* Dark blue text color for month and year */
+    -fx-font-size: 16px; /* Larger font for month/year */
+}
 
-/*!* Adding Smooth transition effect *!*/
-/*.custom-radio-button .radio {*/
-/*    -fx-transition: all 0.3s ease;*/
-/*}*/
+/* Year and month navigation arrow styling */
+.date-picker .date-picker-year-arrow,
+.date-picker .date-picker-month-arrow {
+    -fx-background-color: transparent; /* No background for arrows */
+    -fx-text-fill: #03045E; /* Dark blue arrow color */
+}
 
-/*!* Adding a Shadow when Hovered *!*/
-/*.custom-radio-button:hover .radio {*/
-/*    -fx-effect: dropshadow(gaussian, #4CAF50, 10, 0.3, 0, 0);*/
-/*}*/
+/* No hover effect on arrows */
+.date-picker .date-picker-year-arrow:hover,
+.date-picker .date-picker-month-arrow:hover {
+    -fx-background-color: transparent; /* Ensure no background on hover */
+    -fx-text-fill: #03045E; /* Keep arrow color dark blue on hover */
+}
+
+
+
+
+/* Basic style for the CheckBox */
+.check-box {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-border-color: #03045E; /* Dark blue border color */
+    -fx-border-width: 1px; /* Border width */
+    /*-fx-border-radius: 50%; !* Circle shape for checkbox *!*/
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
+    -fx-min-width: 35px; /* Increase size to accommodate circle */
+    -fx-min-height: 35px; /* Increase size to accommodate circle */
+}
+
+/* Style the CheckBox text */
+.check-box .text {
+    -fx-text-fill: #03045E; /* Dark blue text color */
+    /*-fx-font-size: 14px;*/
+    -fx-padding: 0 10px; /* Space between the checkbox and text */
+    -fx-transition: 0.3s ease-in-out; /* Smooth text move transition */
+}
+
+/* When the checkbox is selected, modify the circle's background */
+.check-box:selected .check-mark {
+    -fx-background-color: #03045E; /* Dark blue checkmark background */
+    -fx-shape: "M 0 4 L 2 6 L 6 0"; /* Custom checkmark shape */
+    -fx-background-radius: 50%; /* Keep the checkmark inside the circle */
+}
+
+/* When the checkbox is checked, move the label text */
+.check-box:selected .text {
+    -fx-translate-x: 15px; /* Move the text to the right when checked */
+    -fx-text-fill: #ffeb3b; /* Yellow text color when selected */
+}
+
+/* Hover effect to highlight the checkbox */
+.check-box:hover {
+    -fx-border-color: #ffeb3b; /* Yellow border color on hover */
+}
+
+/* Style the checkmark when it's not selected */
+.check-box .check-mark {
+    -fx-background-color: transparent; /* No background color */
+    -fx-border-color: #03045E; /* Border color for the circle */
+    -fx-border-radius: 50%; /* Circular border */
+    -fx-width: 20px; /* Width of the circle */
+    -fx-height: 20px; /* Height of the circle */
+}
+
+/* Make sure the CheckBox is not too big */
+.check-box {
+    -fx-min-width: 32px; /* Minimum width of the checkbox */
+    -fx-min-height: 32px; /* Minimum height of the checkbox */
+}
 
 

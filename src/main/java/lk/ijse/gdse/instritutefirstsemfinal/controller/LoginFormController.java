@@ -48,6 +48,8 @@ public class LoginFormController implements Initializable {
     @FXML
     private TextField txtUserName;
 
+    static String uName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -148,7 +150,7 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private void btnLoginClicked(ActionEvent actionEvent) {
-        String uName = txtUserName.getText();
+        uName = txtUserName.getText();
         String pWord = txtHidePassWord.isVisible() ? txtHidePassWord.getText() : txtShowPassWord.getText();
 
 
