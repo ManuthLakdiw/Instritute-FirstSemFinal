@@ -94,7 +94,7 @@ public class LoginFormController implements Initializable {
 
 
         txtHidePassWord.setText(txtShowPassWord.getText());
-        txtHidePassWord.setStyle(currentStyle); // Apply saved style from txtShowPassWord
+        txtHidePassWord.setStyle(currentStyle);
         txtHidePassWord.requestFocus();
         txtHidePassWord.positionCaret(txtHidePassWord.getText().length());
 
@@ -158,10 +158,13 @@ public class LoginFormController implements Initializable {
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
-                txtUserName.requestFocus();
-                RegexUtil.setErrorStyle(true,txtShowPassWord,txtHidePassWord,txtUserName);
+                ///////////////////////////////////////////////////////////
+                NavigationUtil.loadPane(LoginFormController.class,contentPane," ", "/view/mainLayoutForm.fxml");
 
-                AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill all the fields");
+//                txtUserName.requestFocus();
+//                RegexUtil.setErrorStyle(true,txtShowPassWord,txtHidePassWord,txtUserName);
+//
+//                AlertUtil.informationAlert(LoginFormController.class,null,true,"Please fill all the fields");
 
             }else if (uName.isEmpty()) {
                 txtUserName.requestFocus();
@@ -178,7 +181,7 @@ public class LoginFormController implements Initializable {
                 RegexUtil.setErrorStyle(true,txtUserName,txtHidePassWord,txtShowPassWord);
                 AlertUtil.informationAlert(LoginFormController.class,null,true,"username and password doesn't match.");
             } else {
-                NavigationUtil.loadPane(LoginFormController.class,contentPane,"Dashboard","/view/dashBoardForm.fxml");
+                NavigationUtil.loadPane(LoginFormController.class,contentPane," ", "/view/mainLayoutForm.fxml");
             }
         }
     }
@@ -187,7 +190,7 @@ public class LoginFormController implements Initializable {
 
     @FXML
     private void txtUserNameOnkeyType(KeyEvent keyEvent) {
-        String checkisEmpty = keyEvent.getCharacter();
+        String checkisEmpty = txtUserName.getText();
         if (!checkisEmpty.isEmpty()) {
             RegexUtil.resetStyle(txtUserName);
 //            resetStyle(txtUserName);

@@ -317,10 +317,10 @@ public class CreateNewPasswordController implements Initializable {
     @FXML
     void btnResetPasswordOnClicked(ActionEvent event) {
         if (newPassword.isEmpty()){
-            AlertUtil.informationAlert(CreateNewPasswordController.class,null,false,"Please enter your new password.");
+            AlertUtil.informationAlert(CreateNewPasswordController.class,null,true,"Please enter your new password.");
             return;
         }else if (confirmPassword.isEmpty()){
-            AlertUtil.informationAlert(CreateNewPasswordController.class,null,false,"Please confirm your new password.");
+            AlertUtil.informationAlert(CreateNewPasswordController.class,null,true,"Please confirm your new password.");
             return;
         }else if (newPassword.equals(confirmPassword)){
             boolean isUpdate =user.updatePasswordUser(newPassword, ForgotPasswordFormController.gmail);
@@ -328,11 +328,9 @@ public class CreateNewPasswordController implements Initializable {
             if (isUpdate){
                 NavigationUtil.loadPane(CreateNewPasswordController.class,createNewPasswordFormPane,"Forgot Password[Reset Success!!!]","/view/pwResetSuccessForm.fxml");
             }
-
+        }else if (newPassword.length() > 13){
+            AlertUtil.informationAlert(CreateNewPasswordController.class,null,true,"OOPS!\nYour new password is too long!");
         }
-
-
-
     }
 
     @FXML
@@ -352,7 +350,7 @@ public class CreateNewPasswordController implements Initializable {
         } else {
 
             RegexUtil.setErrorStyle(false, txtConfirmHidePassWord);
-            lblpasswordConfirm.setText("Passwords don't match");
+            lblpasswordConfirm.setText("Passwords doesn't match");
             lblpasswordConfirm.setTextFill(Color.RED);
         }
     }
@@ -370,29 +368,41 @@ public class CreateNewPasswordController implements Initializable {
             lblpasswordConfirm.setText(" ");
             txtConfirmHidePassWord.clear();
             txtConfirmHidePassWord.setDisable(true);
+
         } else if (newPassword.length() > 13) {
 
             RegexUtil.setErrorStyle(false, txtNewHidePassWord);
             lblPasswordStatus.setText("Password too long!!!");
             lblPasswordStatus.setTextFill(Color.RED);
             txtConfirmHidePassWord.setDisable(true);
+
         } else if (newPassword.matches(passwordStrongRegex)) {
 
             lblPasswordStatus.setText("Strong ✔︎");
             lblPasswordStatus.setTextFill(Color.GREEN);
             txtConfirmHidePassWord.setDisable(false);
+            lblpasswordConfirm.setText("confirm your password ⇪");
+            lblpasswordConfirm.setStyle("-fx-text-fill: #03045e");
+
+
         } else if (newPassword.matches(passwordMediumRegex)) {
 
             lblPasswordStatus.setText("Medium ⚠︎");
             lblPasswordStatus.setTextFill(Color.BROWN);
             txtConfirmHidePassWord.setDisable(false);
+            lblpasswordConfirm.setText("confirm your password ⇪");
+            lblpasswordConfirm.setStyle("-fx-text-fill: #03045e");
+
         } else if (newPassword.matches(passwordWeakRegex)) {
 
             lblPasswordStatus.setText("Weak ⛔︎");
             lblPasswordStatus.setTextFill(Color.RED);
             txtConfirmHidePassWord.setDisable(true);
-            lblpasswordConfirm.setText("You should enter a medium or strong password ⇪");
-            lblpasswordConfirm.setStyle("-fx-text-fill: #03045e");
+            lblpasswordConfirm.setText("Your new password should be medium or strong password for confirm your password ⇪");
+            lblpasswordConfirm.setStyle("-fx-text-fill: #ff0000");
+
+        } else if (!confirmPassword.isEmpty()) {
+
         }
     }
 

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="StudentPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.StudentFormController">
+   <children>
+      <ImageView fitHeight="671.0" fitWidth="551.0" layoutX="290.0" layoutY="8.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/studentregistration.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="141.0" layoutY="-100.0" prefHeight="72.0" prefWidth="402.0" text="Student Registration Form" textFill="#03045e">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="74.0" layoutY="-11.0" prefHeight="48.0" prefWidth="128.0" text="Full Name">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <HBox layoutX="74.0" layoutY="37.0" prefHeight="47.0" prefWidth="852.0">
+         <children>
+            <TextField fx:id="txtUserName" prefHeight="43.0" prefWidth="266.0" promptText="John" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="txtUserName1" prefHeight="43.0" prefWidth="266.0" promptText="Michael" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="txtUserName2" prefHeight="43.0" prefWidth="266.0" promptText="Smith" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <Line endX="-99.99998474121094" endY="-452.0" layoutX="158.0" layoutY="452.0" startX="-99.99998474121094" startY="233.00006103515625" />
+      <HBox layoutX="74.0" layoutY="81.0" prefHeight="47.0" prefWidth="858.0">
+         <children>
+            <Label alignment="TOP_LEFT" prefHeight="48.0" prefWidth="266.0" text="First Name" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="12.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" prefHeight="48.0" prefWidth="266.0" text="Middle Name" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </Label>
+            <Label alignment="TOP_LEFT" prefHeight="48.0" prefWidth="266.0" text="Last Name" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <Label layoutX="74.0" layoutY="117.0" prefHeight="48.0" prefWidth="128.0" text="Student Number">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <HBox layoutX="74.0" layoutY="165.0" prefHeight="47.0" prefWidth="852.0">
+         <children>
+            <TextField fx:id="txtUserName1" accessibleRole="CHECK_BOX" prefHeight="43.0" prefWidth="266.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="txtUserName21" prefHeight="43.0" prefWidth="578.0" promptText="1010 Example Road, Suite 200, Exampleborough, EX 22222" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <Label layoutX="359.0" layoutY="117.0" prefHeight="48.0" prefWidth="128.0" text="Address">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Line endX="636.875244140625" endY="126.265625" layoutX="137.0" layoutY="264.0" opacity="0.4" startX="-60.610023498535156" startY="126.265625" stroke="#03045e" strokeLineCap="ROUND">
+         <effect>
+            <Bloom />
+         </effect>
+      </Line>
+      <Label layoutX="74.0" layoutY="417.0" prefHeight="48.0" prefWidth="128.0" text="Parent Name">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <HBox layoutX="74.0" layoutY="465.0" prefHeight="47.0" prefWidth="852.0">
+         <children>
+            <TextField fx:id="txtUserName1" prefHeight="43.0" prefWidth="266.0" promptText="David" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="txtUserName11" prefHeight="43.0" prefWidth="581.0" promptText="example123@gmail.com" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <Label layoutX="370.0" layoutY="417.0" prefHeight="48.0" prefWidth="128.0" text="Email">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="74.0" layoutY="535.0" prefHeight="48.0" prefWidth="128.0" text="Phone Number">
+         <font>
+            <Font name="Humnst777 Cn BT Bold" size="15.0" />
+         </font>
+      </Label>
+      <HBox layoutX="74.0" layoutY="583.0" prefHeight="47.0" prefWidth="852.0">
+         <children>
+            <TextField fx:id="txtUserName11" prefHeight="43.0" prefWidth="423.0" promptText="0xxxxxxxx" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="1.0" />
+               </padding>
+            </TextField>
+         </children>
+      </HBox>
+   </children>
+</Pane>

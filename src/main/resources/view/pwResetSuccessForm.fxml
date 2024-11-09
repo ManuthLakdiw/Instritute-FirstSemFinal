@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane fx:id="pwResetSuccessFormPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1331.0" stylesheets="@../style/Style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.pwResetSuccessFormController">
    <children>
       <VBox alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="685.0" prefWidth="1331.0">
@@ -46,7 +45,7 @@
                   <Insets top="-10.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#btnContinueOnAction" prefHeight="42.0" prefWidth="340.0" stylesheets="@../style/Style.css" text="Continue">
+            <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#btnContinueOnAction" prefHeight="42.0" prefWidth="340.0" styleClass="buttonPrimary" stylesheets="@../style/Style.css" text="Continue">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>

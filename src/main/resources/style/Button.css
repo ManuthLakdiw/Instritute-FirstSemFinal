@@ -1,0 +1,26 @@
+.btn {
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 24px;
+    -fx-pref-width: 220px;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-text-transform: uppercase;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.btn2 {
+    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
+}
+
+.btn3 {
+    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
+}
+
+.btn4 {
+    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
+}
+
+.btn:hover {
+    -fx-background-position: right;
+}

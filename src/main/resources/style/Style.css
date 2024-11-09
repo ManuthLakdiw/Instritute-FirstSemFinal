@@ -1,4 +1,80 @@
 
+.buttonPrimary {
+    -fx-background-color: linear-gradient(to right, #0077B6, #263238);
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-border-width: 0.2px;
+    -fx-border-color: black;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 1.9);
+}
+
+.buttonPrimary:hover {
+    -fx-background-color: linear-gradient(to right, #00B4D8, #0077B6);
+    -fx-text-fill: #263238;
+}
+
+.buttonPrimary:pressed {
+    -fx-background-color: linear-gradient(to right, #263238, #0077B6);
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-translate-y: 2.8px;
+    -fx-border-color: #004f80;
+}
+
+/* Dashboard-specific Button Styling */
+.buttonDashboard {
+    -fx-display: flex;
+    -fx-alignment: center   ;
+    -fx-padding: 10px 70px 10px 50px;
+    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%,
+    rgba(0, 119, 182, 0.45),
+    rgba(0, 119, 182, 0.25),
+    rgba(255, 255, 255, 0.9));
+    -fx-text-fill: #0077B6;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-cursor: hand;
+    -fx-text-decoration: none;
+    -fx-background-insets: 0;
+    -fx-transition: -fx-background-color 0.3s, -fx-effect 0.3s;
+    -fx-text-alignment: left; /* Align text to the left */
+}
+
+.buttonDashboard:hover {
+    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)),
+    linear-gradient(from 0% 10% to 100% 0%, #9dE0EF, #CAF0F8);
+    -fx-border-width: 0.2px;
+    /*-fx-border-color: black;*/
+    -fx-background-insets: -1; /* Moves overlay slightly outside button bounds */
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
+.buttonDashboard .icon {
+    -fx-margin-right: 10px;
+    -fx-font-size: 20px;
+}
+
+
+/* HBox එකේ default style */
+/*.hbox {*/
+/*    -fx-background-color: white; !* Default background color *!*/
+/*}*/
+
+/* HBox එක hover වෙද්දී ඇති style */
+.hbox:hover {
+    -fx-background-color: rgb(233, 233, 233);
+}
+
+.selected {
+    -fx-background-color:rgb(233, 233, 233); /* Example background color */
+}
+
+
+
+/* Login Page Styling */
 .loginPane {
     -fx-background-color: radial-gradient(
             center 50% 50%,
@@ -14,6 +90,7 @@
     -fx-effect: dropshadow(gaussian, #ffffff, 15, 0.1, 0, 0);
     -fx-background-radius: 10;
     -fx-border-radius: 20;
+
 }
 
 .lblUserName {
@@ -44,29 +121,7 @@
     -fx-cursor: hand;
 }
 
-.button {
-    -fx-background-color: linear-gradient(to right, #0077B6, #263238);
-    -fx-text-fill: white;
-    -fx-padding: 10 20;
-    -fx-border-radius: 5;
-    -fx-border-width: 0.2px;
-    -fx-border-color: black;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 1.9);
-}
-
-.button:hover {
-    -fx-background-color: linear-gradient(to right, #00B4D8, #0077B6);
-    -fx-text-fill: #263238;
-}
-
-.button:pressed {
-    -fx-background-color: linear-gradient(to right, #263238, #0077B6);
-    -fx-text-fill: white;
-    -fx-padding: 10 20;
-    -fx-translate-y: 2.8px;
-    -fx-border-color: #004f80;
-}
-
+/* OTP Digit Code Styling */
 .txtDigitCode {
     -fx-border-color: black;
     -fx-border-width: 2px;
@@ -83,7 +138,7 @@
     -fx-border-color: black;
 }
 
-
+/* Custom Alert Dialog Styling */
 .dialog-pane .custom-alert {
     -fx-background-color: #0077B6FF;
     -fx-border-color: #c4c4c4;
@@ -93,41 +148,34 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
 }
 
-/* Header text styling */
-
-
-/* Header text styling */
+/* Header Text Styling */
 .dialog-pane .header-panel .label {
     -fx-text-fill: #0077b6;
     -fx-font-size: 15px;
 }
 
-/* Content text styling for error messages */
+/* Content Text Styling for Error Messages */
 .dialog-pane .content.label {
-    -fx-text-fill: #263238FF; /* Sets the error message text color */
+    -fx-text-fill: #263238FF;
     -fx-font-size: 14px;
 }
 
-/* Button default styling */
+/* Dialog Button Styling */
 .dialog-pane .button-bar .button {
-    -fx-background-color: #263238FF; /* Default button background color */
-    -fx-text-fill: white; /* Default button text color */
+    -fx-background-color: #263238FF;
+    -fx-text-fill: white;
     -fx-background-radius: 5px;
     -fx-padding: 5px 15px;
-    -fx-font-weight: bold; /* Makes button text bold */
-    -fx-border-color: transparent; /* Ensures no border by default */
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
 }
 
-/* Button hover effect */
-
-/* Button focused effect */
 .dialog-pane .button-bar .button:focused {
-    -fx-border-color: #00b4d8; /* Border color when focused */
+    -fx-border-color: #00b4d8;
     -fx-border-width: 1.5px;
 }
 
-
-/* Embossed and glowing effect for the image */
+/* Login Image Styling */
 .loginImage {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 4);
     -fx-background-radius: 10;
@@ -135,3 +183,78 @@
     -fx-padding: 5px;
     -fx-background-color: white;
 }
+
+/*!* Base RadioButton Style *!*/
+/*.custom-radio-button {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-padding: 10px;*/
+/*    -fx-text-fill: #4A4A4A;*/
+/*    -fx-font-size: 14px;*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-background-radius: 25px;*/
+/*    -fx-border-radius: 25px;*/
+/*    -fx-border-color: #0077B6;*/
+/*    -fx-border-width: 2px;*/
+/*    -fx-cursor: hand;*/
+/*    -fx-alignment: center-left;*/
+/*    -fx-spacing: 10px;*/
+/*    -fx-effect: dropshadow(gaussian, #0077B6, 10, 0.3, 0, 0); !* Adding shadow for effect *!*/
+/*}*/
+
+/*!* Outer Circle - Unselected State *!*/
+/*.custom-radio-button .radio {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: #0077B6;*/
+/*    -fx-border-width: 2px;*/
+/*    -fx-background-radius: 50%;*/
+/*    -fx-pref-width: 20px;*/
+/*    -fx-pref-height: 20px;*/
+/*    -fx-transition: all 0.3s ease;  !* Smooth transition *!*/
+/*}*/
+
+/*!* Inner Circle - Checked State *!*/
+/*.custom-radio-button .radio .inner {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-background-radius: 50%;*/
+/*    -fx-pref-width: 12px;*/
+/*    -fx-pref-height: 12px;*/
+/*    -fx-border-color: transparent;*/
+/*    -fx-border-width: 3px;*/
+/*    -fx-background-color: #0077B6;*/
+/*}*/
+
+/*!* Hover Effect *!*/
+/*.custom-radio-button:hover {*/
+/*    -fx-border-color: #4CAF50;*/
+/*    -fx-text-fill: #4CAF50;*/
+/*}*/
+
+/*!* When RadioButton is Selected *!*/
+/*.custom-radio-button:selected {*/
+/*    -fx-border-color: #4CAF50;*/
+/*    -fx-text-fill: #4CAF50;*/
+/*}*/
+
+/*!* Disabled State *!*/
+/*.custom-radio-button:disabled {*/
+/*    -fx-opacity: 0.5;*/
+/*    -fx-border-color: #B0BEC5;*/
+/*    -fx-text-fill: #B0BEC5;*/
+/*}*/
+
+/*!* Adding Focus Effect to Highlight Selected Radio *!*/
+/*.custom-radio-button:focused .radio {*/
+/*    -fx-border-color: #4CAF50;  !* Green border when focused *!*/
+/*}*/
+
+/*!* Adding Smooth transition effect *!*/
+/*.custom-radio-button .radio {*/
+/*    -fx-transition: all 0.3s ease;*/
+/*}*/
+
+/*!* Adding a Shadow when Hovered *!*/
+/*.custom-radio-button:hover .radio {*/
+/*    -fx-effect: dropshadow(gaussian, #4CAF50, 10, 0.3, 0, 0);*/
+/*}*/
+
+
