@@ -125,7 +125,7 @@ public class MainLayoutFormController implements Initializable {
             // Create a TranslateTransition to move the pane from left to right
             TranslateTransition transition = new TranslateTransition();
             transition.setNode(newPane);
-            transition.setDuration(Duration.millis(100));  // Set the duration of the transition
+            transition.setDuration(Duration.millis(250));  // Set the duration of the transition
             transition.setToX(0);  // Move to the original position (0)
             transition.play();  // Start the transition
 

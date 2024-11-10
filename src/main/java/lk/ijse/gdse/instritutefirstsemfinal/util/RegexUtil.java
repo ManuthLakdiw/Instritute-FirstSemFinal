@@ -1,6 +1,9 @@
 package lk.ijse.gdse.instritutefirstsemfinal.util;
 
 import javafx.animation.TranslateTransition;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
@@ -36,6 +39,14 @@ public class RegexUtil {
 
     }
 
-
-
+    public static<T>void selectedStyle(T... component) {
+        String selectedStyle = "-fx-border-color: #03045E; -fx-border-width: 1.5px; -fx-border-radius: 5; -fx-background-color: transparent;";
+        for (T t : component) {
+            if (t instanceof TextField) {
+                ((TextField) t).setStyle(selectedStyle);
+            } else if (t instanceof Label) {
+                ((Label) t).setStyle(selectedStyle);
+            }
+        }
+    }
 }

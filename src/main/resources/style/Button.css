@@ -1,26 +1,19 @@
-.btn {
-    -fx-border-width: 0;
-    -fx-border-color: transparent;
-    -fx-padding: 24px;
-    -fx-pref-width: 220px;
-    -fx-font-family: "Montserrat", sans-serif;
-    -fx-text-transform: uppercase;
-    -fx-border-radius: 6px;
-    -fx-cursor: hand;
+/* Admin button style */
+.button-admin {
+    /*-fx-background-color: #4CAF50; !* Background color *!*/
+    /*-fx-text-fill: white; !* Text color *!*/
+    /*-fx-border-radius: 0; !* No border radius *!*/
+    /*-fx-padding: 10 20; !* Padding around text *!*/
+    /*-fx-font-size: 14px; !* Font size *!*/
+    -fx-transition: width 0.3s ease, translateY 0.3s ease; /* Smooth transition for width and Y translation */
 }
 
-.btn2 {
-    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
-}
-
-.btn3 {
-    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
-}
-
-.btn4 {
-    -fx-background-color: linear-gradient(to left, #FFC312, #EE5A24, #FFC312);
-}
-
-.btn:hover {
-    -fx-background-position: right;
+/* Hover effect */
+.button-admin:hover {
+    -fx-width: 120%; /* Widen the button */
+    -fx-translate-y: -1px; /* Lift the button up */
+    /*-fx-border-width: 1; !* No border width change *!*/
+    /*-fx-border-color: #03045E;*/
+    /*-fx-border-radius: 5px;*/
+    -fx-effect: null; /* No shadow effect */
 }

@@ -10,7 +10,7 @@ module lk.ijse.gdse.instritutefirstsemfinal {
     requires javafx.media;
     requires java.mail;
 
-
+    opens lk.ijse.gdse.instritutefirstsemfinal.dto.tm to javafx.base;
     opens lk.ijse.gdse.instritutefirstsemfinal.controller to javafx.fxml;
     exports lk.ijse.gdse.instritutefirstsemfinal;
 }

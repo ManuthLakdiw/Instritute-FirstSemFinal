@@ -233,3 +233,75 @@
     -fx-width: 20px;
     -fx-height: 20px;
 }
+
+
+/* Make the entire TableView background transparent */
+.table-view {
+    -fx-background-color: transparent;
+}
+
+/* Make the column header background transparent */
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+/* Selection row color */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #03045E; /* Solid selected row background color */
+    -fx-opacity: 1; /* Ensure full opacity */
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0px 1px 1px 0px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
+    /*-fx-font-weight: bold; !* Bold text *!*/
+    -fx-opacity: 1; /* Ensure full opacity for text */
+    -fx-alignment: center;
+}
+
+
+
+/* Table Cell alignment */
+.table-view .column-header, .table-view .table-cell {
+    -fx-border-color: #03045E; /* Border color */
+    -fx-border-radius: 5px; /* Rounded borders */
+    -fx-border-width: 0px 1px 1px 0px; /* Border width on each side */
+    -fx-text-fill: #03045E; /* Text color */
+    -fx-background-color: transparent; /* Cell background color */
+    -fx-background-radius: 5px;
+    -fx-alignment: CENTER_LEFT; /* Align text to center-left */
+}
+
+/* Hover effect on rows */
+.table-view .table-row-cell:hover {
+    /*-fx-background-color: transparent; !* Row hover color *!*/
+    -fx-border-color: #03045E;
+}
+
+
+/* Row styling */
+.table-view .table-row-cell {
+    -fx-pref-height: 28px; /* Row height */
+    -fx-pref-width: 28px; /* Row width */
+}
+.table-view .column-header {
+    -fx-pref-height: 32px; /* Increase the column header width */
+}
+
+/* Make the ScrollPane background transparent */
+.table-view .scroll-bar {
+    -fx-background-color: transparent; /* Transparent background for scrollbars */
+}
+
+/* Transparent background for horizontal scrollbar */
+.table-view .horizontal-bar {
+    -fx-background-color: transparent;
+}
+
+/* Transparent background for vertical scrollbar */
+.table-view .vertical-bar {
+    -fx-background-color: transparent;
+}

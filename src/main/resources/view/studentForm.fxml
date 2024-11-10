@@ -19,9 +19,9 @@
 
 <Pane fx:id="StudentPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.StudentFormController">
    <children>
-      <ImageView fitHeight="680.0" fitWidth="906.0" layoutX="93.0" layoutY="2.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="694.0" fitWidth="503.0" layoutX="593.0" layoutY="2.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../image/logImage.png" />
+            <Image url="@../image/studentregistration.png" />
          </image>
       </ImageView>
       <Label layoutX="37.0" layoutY="113.0" prefHeight="48.0" prefWidth="128.0" text="Full Name">

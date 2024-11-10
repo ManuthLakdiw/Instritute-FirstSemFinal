@@ -45,7 +45,7 @@ public class ForgotPasswordFormController {
         boolean isValidEmail = email.matches(emailRegex);
 
 
-        List<Object> result = model.checkGmailDB(email);
+        List<Object> result = model.checkGmailInDB(email);
         boolean isEmailExists = (boolean) result.get(0);
         gmail = (String) result.get(1);
         String userName = (String) result.get(2);
