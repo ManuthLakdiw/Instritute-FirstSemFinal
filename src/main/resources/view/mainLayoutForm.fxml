@@ -15,13 +15,16 @@
    <children>
       <VBox alignment="TOP_CENTER" layoutX="2.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="230.0">
          <children>
-            <Label fx:id="lblUser" alignment="CENTER" prefHeight="55.0" prefWidth="194.0" style="-fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;" text="Admin :" textFill="#03045e">
+            <Label fx:id="lblUser" alignment="TOP_CENTER" prefHeight="12.0" prefWidth="194.0" style="-fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;" text="Admin :" textFill="#03045e">
                <VBox.margin>
                   <Insets right="6.0" />
                </VBox.margin>
                <font>
                   <Font name="Lahore Gurmukhi Bold" size="14.0" />
                </font>
+               <padding>
+                  <Insets bottom="8.0" />
+               </padding>
             </Label>
             <HBox fx:id="hBoxDashBoard" accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#hBoxDashBoardOnClicked" prefHeight="50.0" prefWidth="213.0" styleClass="hbox" stylesheets="@../style/Style.css">
                <children>
@@ -33,7 +36,7 @@
                         <Insets right="18.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnDashBoard" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="118.0" style="-fx-background-color: transparent;" stylesheets="@../style/Style.css" text="DashBoard" textAlignment="RIGHT">
+                  <Button fx:id="btnDashBoard" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" mouseTransparent="true" prefHeight="46.0" prefWidth="118.0" style="-fx-background-color: transparent;" stylesheets="@../style/Style.css" text="DashBoard" textAlignment="RIGHT">
                      <font>
                         <Font name="Geeza Pro Regular" size="15.0" />
                      </font>
@@ -161,7 +164,7 @@
                   <Insets right="6.0" top="5.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="213.0" styleClass="hbox" stylesheets="@../style/Style.css">
+            <HBox fx:id="hBoxUser" alignment="CENTER" onMouseClicked="#hBoxUserOnClicked" prefHeight="50.0" prefWidth="213.0" styleClass="hbox" stylesheets="@../style/Style.css">
                <children>
                   <ImageView fitHeight="18.0" fitWidth="18.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -171,7 +174,7 @@
                         <Insets right="18.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="btnDashBoard16" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#hBoxDashBoardOnClicked" prefHeight="46.0" prefWidth="118.0" style="-fx-background-color: transparent;" stylesheets="@../style/Style.css" text="DashBoard" textAlignment="RIGHT">
+                  <Button fx:id="btnUser" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#hBoxDashBoardOnClicked" prefHeight="46.0" prefWidth="118.0" style="-fx-background-color: transparent;" stylesheets="@../style/Style.css" text="User" textAlignment="RIGHT">
                      <font>
                         <Font name="Geeza Pro Regular" size="15.0" />
                      </font>

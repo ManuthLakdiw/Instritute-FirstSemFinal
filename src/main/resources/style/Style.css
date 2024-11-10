@@ -1,4 +1,3 @@
-
 .buttonPrimary {
     -fx-background-color: linear-gradient(to right, #0077B6, #263238);
     -fx-text-fill: white;
@@ -8,12 +7,10 @@
     -fx-border-color: black;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 1.9);
 }
-
 .buttonPrimary:hover {
     -fx-background-color: linear-gradient(to right, #00B4D8, #0077B6);
     -fx-text-fill: #263238;
 }
-
 .buttonPrimary:pressed {
     -fx-background-color: linear-gradient(to right, #263238, #0077B6);
     -fx-text-fill: white;
@@ -22,34 +19,18 @@
     -fx-border-color: #004f80;
 }
 
-/* Dashboard-specific Button Styling */
 .buttonDashboard {
-    -fx-display: flex;
-    -fx-alignment: center   ;
     -fx-padding: 10px 70px 10px 50px;
-    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%,
-    rgba(0, 119, 182, 0.45),
-    rgba(0, 119, 182, 0.25),
-    rgba(255, 255, 255, 0.9));
+    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(0, 119, 182, 0.45), rgba(0, 119, 182, 0.25), rgba(255, 255, 255, 0.9));
     -fx-text-fill: #0077B6;
-    -fx-border-color: transparent;
-    -fx-border-radius: 0px;
-    -fx-background-radius: 0px;
+    -fx-border-radius: 0;
     -fx-cursor: hand;
-    -fx-text-decoration: none;
-    -fx-background-insets: 0;
+    -fx-text-alignment: left;
     -fx-transition: -fx-background-color 0.3s, -fx-effect 0.3s;
-    -fx-text-alignment: left; /* Align text to the left */
 }
-
 .buttonDashboard:hover {
-    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)),
-    linear-gradient(from 0% 10% to 100% 0%, #9dE0EF, #CAF0F8);
-    -fx-border-width: 0.2px;
-    /*-fx-border-color: black;*/
-    -fx-background-insets: -1; /* Moves overlay slightly outside button bounds */
-    -fx-border-radius: 0px;
-    -fx-background-radius: 0px;
+    -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), linear-gradient(from 0% 10% to 100% 0%, #9dE0EF, #CAF0F8);
+    -fx-background-insets: -1;
 }
 
 .buttonDashboard .icon {
@@ -57,24 +38,16 @@
     -fx-font-size: 20px;
 }
 
-
-
 .hbox:hover {
     -fx-background-color: rgb(233, 233, 233);
 }
 
 .selected {
-    -fx-background-color:rgb(233, 233, 233);
+    -fx-background-color: rgb(233, 233, 233);
 }
 
-/* Login Page Styling */
 .loginPane {
-    -fx-background-color: radial-gradient(
-            center 50% 50%,
-            radius 150%,
-            #00B4D8 0%,
-            #90E0EF 90%
-    );
+    -fx-background-color: radial-gradient(center 50% 50%, radius 150%, #00B4D8 0%, #90E0EF 90%);
 }
 
 .loginPageBackgroundPane {
@@ -83,13 +56,24 @@
     -fx-effect: dropshadow(gaussian, #ffffff, 15, 0.1, 0, 0);
     -fx-background-radius: 10;
     -fx-border-radius: 20;
+}
 
+.lblUserName, .lblForgotPassword {
+    -fx-font-family: 'Inter';
+    -fx-font-size: 13px;
 }
 
 .lblUserName {
-    -fx-font-family: 'Inter';
-    -fx-font-size: 13px;
     -fx-text-fill: #000000;
+}
+
+.lblForgotPassword {
+    -fx-text-fill: #0003FF;
+    -fx-transition: 0.3s ease;
+}
+.lblForgotPassword:hover {
+    -fx-effect: dropshadow(gaussian, #0003FF, 0.9, 0.1, 0, 0);
+    -fx-cursor: hand;
 }
 
 .txtUserName {
@@ -102,19 +86,6 @@
     -fx-border-radius: 10;
 }
 
-.lblForgotPassword {
-    -fx-font-family: 'Inter';
-    -fx-font-size: 13px;
-    -fx-text-fill: #0003FF;
-    -fx-transition: 0.3s ease;
-}
-
-.lblForgotPassword:hover {
-    -fx-effect: dropshadow(gaussian, #0003FF, 0.9, 0.1, 0, 0);
-    -fx-cursor: hand;
-}
-
-/* OTP Digit Code Styling */
 .txtDigitCode {
     -fx-border-color: black;
     -fx-border-width: 2px;
@@ -125,13 +96,10 @@
     -fx-pref-width: 50px;
     -fx-pref-height: 50px;
 }
-
 .txtDigitCode:focused {
     -fx-border-width: 5px;
-    -fx-border-color: black;
 }
 
-/* Custom Alert Dialog Styling */
 .dialog-pane .custom-alert {
     -fx-background-color: #0077B6FF;
     -fx-border-color: #c4c4c4;
@@ -141,19 +109,16 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
 }
 
-/* Header Text Styling */
 .dialog-pane .header-panel .label {
     -fx-text-fill: #0077b6;
     -fx-font-size: 15px;
 }
 
-/* Content Text Styling for Error Messages */
 .dialog-pane .content.label {
     -fx-text-fill: #263238FF;
     -fx-font-size: 14px;
 }
 
-/* Dialog Button Styling */
 .dialog-pane .button-bar .button {
     -fx-background-color: #263238FF;
     -fx-text-fill: white;
@@ -161,18 +126,14 @@
     -fx-padding: 5px 15px;
     -fx-font-weight: bold;
     -fx-border-color: transparent;
-    /*-fx-border-radius: 10px;*/
 }
 
 .dialog-pane .button-bar .button:focused {
     -fx-border-color: #00b4d8;
     -fx-border-width: 1.5px;
     -fx-border-radius: 5px;
-
-
 }
 
-/* Login Image Styling */
 .loginImage {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 4);
     -fx-background-radius: 10;
@@ -181,121 +142,94 @@
     -fx-background-color: white;
 }
 
-/* Main DatePicker input box style */
 .date-picker {
-    -fx-background-color: transparent; /* Transparent input box background */
-    -fx-text-fill: #03045E; /* Dark blue text color for selected date */
-    -fx-border-color: #03045E; /* Dark blue border color */
-    -fx-border-width: 1px; /* Border width of input box */
-    -fx-border-radius: 5px; /* Rounded corners for input box */
+    -fx-background-color: transparent;
+    -fx-text-fill: #03045E;
+    -fx-border-color: #03045E;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
 }
 
-/* Style the DatePicker popup to be transparent */
 .date-picker .popup {
-    -fx-background-color: transparent; /* Transparent background for popup */
-    -fx-border-color: #03045E; /* Dark blue border color */
-    -fx-border-width: 1px; /* Border width for popup */
-    -fx-border-radius: 10px; /* Rounded corners for popup */
+    -fx-background-color: transparent;
+    -fx-border-color: #03045E;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
 }
 
-/* Style for day cells */
 .date-picker .day-cell {
-    -fx-background-color: transparent; /* Transparent background for day cells */
-    -fx-text-fill: black; /* Black text color for day numbers */
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
 }
 
-/* Style for selected day */
 .date-picker .day-cell:selected {
-    -fx-background-color: #03045E; /* Dark blue background for selected day */
-    -fx-text-fill: white; /* White text color on selected day */
+    -fx-background-color: #03045E;
+    -fx-text-fill: white;
 }
 
-/* Style for current day */
 .date-picker .current-day {
-    -fx-background-color: #03045E; /* Dark blue background for today */
-    -fx-text-fill: white; /* White text color for today */
+    -fx-background-color: #03045E;
+    -fx-text-fill: white;
 }
 
-/* Disabled day style */
 .date-picker .day-cell:empty {
-    -fx-background-color: transparent; /* Transparent background for disabled days */
-    -fx-text-fill: rgba(0, 0, 0, 0.5); /* Faded black text for disabled days */
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
 }
 
-/* Month and year labels */
 .date-picker .label {
-    -fx-text-fill: #03045E; /* Dark blue text color for month and year */
-    -fx-font-size: 16px; /* Larger font for month/year */
+    -fx-background-color: transparent;
+    -fx-text-fill: #03045E;
+    -fx-font-size: 16px;
 }
 
-/* Year and month navigation arrow styling */
 .date-picker .date-picker-year-arrow,
 .date-picker .date-picker-month-arrow {
-    -fx-background-color: transparent; /* No background for arrows */
-    -fx-text-fill: #03045E; /* Dark blue arrow color */
+    -fx-background-color: transparent;
+    -fx-text-fill: #03045E;
 }
 
-/* No hover effect on arrows */
 .date-picker .date-picker-year-arrow:hover,
 .date-picker .date-picker-month-arrow:hover {
-    -fx-background-color: transparent; /* Ensure no background on hover */
-    -fx-text-fill: #03045E; /* Keep arrow color dark blue on hover */
+    -fx-background-color: transparent;
+    -fx-text-fill: #03045E;
 }
 
-
-
-
-/* Basic style for the CheckBox */
 .check-box {
-    -fx-background-color: transparent; /* Transparent background */
-    -fx-border-color: #03045E; /* Dark blue border color */
-    -fx-border-width: 1px; /* Border width */
-    /*-fx-border-radius: 50%; !* Circle shape for checkbox *!*/
+    -fx-background-color: transparent;
+    -fx-border-color: #03045E;
+    -fx-border-width: 1px;
     -fx-padding: 10px;
     -fx-alignment: center-left;
-    -fx-min-width: 35px; /* Increase size to accommodate circle */
-    -fx-min-height: 35px; /* Increase size to accommodate circle */
+    -fx-min-width: 35px;
+    -fx-min-height: 35px;
 }
 
-/* Style the CheckBox text */
 .check-box .text {
-    -fx-text-fill: #03045E; /* Dark blue text color */
-    /*-fx-font-size: 14px;*/
-    -fx-padding: 0 10px; /* Space between the checkbox and text */
-    -fx-transition: 0.3s ease-in-out; /* Smooth text move transition */
+    -fx-text-fill: #03045E;
+    -fx-padding: 0 10px;
+    -fx-transition: 0.3s ease-in-out;
 }
 
-/* When the checkbox is selected, modify the circle's background */
 .check-box:selected .check-mark {
-    -fx-background-color: #03045E; /* Dark blue checkmark background */
-    -fx-shape: "M 0 4 L 2 6 L 6 0"; /* Custom checkmark shape */
-    -fx-background-radius: 50%; /* Keep the checkmark inside the circle */
+    -fx-background-color: #03045E;
+    -fx-shape: "M 0 4 L 2 6 L 6 0";
+    -fx-background-radius: 50%;
 }
 
-/* When the checkbox is checked, move the label text */
 .check-box:selected .text {
-    -fx-translate-x: 15px; /* Move the text to the right when checked */
-    -fx-text-fill: #ffeb3b; /* Yellow text color when selected */
+    -fx-translate-x: 15px;
+    -fx-text-fill: #ffeb3b;
 }
 
-/* Hover effect to highlight the checkbox */
 .check-box:hover {
-    -fx-border-color: #ffeb3b; /* Yellow border color on hover */
+    -fx-border-color: #ffeb3b;
 }
 
-/* Style the checkmark when it's not selected */
 .check-box .check-mark {
-    -fx-background-color: transparent; /* No background color */
-    -fx-border-color: #03045E; /* Border color for the circle */
-    -fx-border-radius: 50%; /* Circular border */
-    -fx-width: 20px; /* Width of the circle */
-    -fx-height: 20px; /* Height of the circle */
+    -fx-background-color: transparent;
+    -fx-border-color: #03045E;
+    -fx-border-radius: 50%;
+    -fx-width: 20px;
+    -fx-height: 20px;
 }
-
-/* Make sure the CheckBox is not too big */
-.check-box {
-    -fx-min-width: 32px; /* Minimum width of the checkbox */
-    -fx-min-height: 32px; /* Minimum height of the checkbox */
-}
-
-

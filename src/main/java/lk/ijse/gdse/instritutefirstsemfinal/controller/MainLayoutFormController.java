@@ -51,6 +51,14 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     private Label lblUser;
 
+    @FXML
+    private Button btnUser;
+
+    @FXML
+    private HBox hBoxUser;
+
+
+
 
     private String currentLoadedFXML = "";
     private HBox lastClickedHBox = null;
@@ -74,6 +82,11 @@ public class MainLayoutFormController implements Initializable {
         navigateTo("/view/teacherForm.fxml", "TeacherForm");
     }
 
+    public void hBoxUserOnClicked(MouseEvent mouseEvent) {
+        applyHBoxBackground(hBoxUser);
+        navigateTo("/view/userForm.fxml", "UserForm");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblUser .setText("Hi, "+LoginFormController.uName+"❖");
@@ -83,6 +96,7 @@ public class MainLayoutFormController implements Initializable {
         btnStudent.setMouseTransparent(true);
         btnTeacher.setMouseTransparent(true);
         btnLogout.setMouseTransparent(true);
+        btnUser.setMouseTransparent(true);
 
     }
 
@@ -160,4 +174,6 @@ public class MainLayoutFormController implements Initializable {
 
         }
     }
+
+
 }
