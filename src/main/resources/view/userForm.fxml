@@ -108,7 +108,7 @@
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
-      <HBox layoutX="37.0" layoutY="73.0" prefHeight="47.0" prefWidth="852.0">
+      <HBox layoutX="37.0" layoutY="73.0" prefHeight="47.0" prefWidth="1025.0">
          <children>
             <TextField fx:id="txtUserName" onKeyPressed="#txtUserNameOnKeyPressed" onKeyTyped="#txtUserNameOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="John123" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
@@ -125,7 +125,7 @@
             <Font name="Humnst777 Cn BT" size="10.0" />
          </font>
       </Label>
-      <TableView fx:id="tblUser" editable="true" layoutX="37.0" layoutY="387.0" prefHeight="294.0" prefWidth="1024.0" style="-fx-border-color: #03045E; -fx-border-radius: 5; -fx-background-color: transparent;" stylesheets="@../style/Style.css">
+      <TableView fx:id="tblUser" editable="true" layoutX="37.0" layoutY="387.0" onMouseClicked="#tblUserOnClicked" prefHeight="294.0" prefWidth="1024.0" style="-fx-border-color: #03045E; -fx-border-radius: 5; -fx-background-color: transparent;" stylesheets="@../style/Style.css">
         <columns>
           <TableColumn fx:id="colUserName" prefWidth="210.07430267333984" text="User Name" />
             <TableColumn fx:id="colPassword" minWidth="0.0" prefWidth="207.42572021484375" text="Password" />
@@ -138,7 +138,7 @@
       </TableView>
       <HBox layoutX="37.0" layoutY="325.0" prefHeight="50.0" prefWidth="1024.0">
          <children>
-            <Button fx:id="btnSendMailUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" style="-fx-background-color: #4B4443; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Send Mail to User" textFill="WHITE">
+            <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnResetOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #FF796E; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Reset" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -146,28 +146,20 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnResetOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #FF796E; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Reset" textFill="WHITE">
+            <Button fx:id="btnUpdate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #00B4D8; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Update" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets left="80.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnUpdate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #00B4D8; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Update" textFill="WHITE">
+            <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #EB3223; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Delete" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
                <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="btnDelete" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #EB3223; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Delete" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold" size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets left="80.0" />
                </HBox.margin>
             </Button>
             <Button fx:id="btnSave" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="40.0" prefWidth="145.0" style="-fx-background-color: #03045E; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Save" textFill="WHITE">
@@ -175,7 +167,7 @@
                   <Font name="Arial Bold" size="22.0" />
                </font>
                <HBox.margin>
-                  <Insets left="195.0" />
+                  <Insets left="284.0" />
                </HBox.margin>
             </Button>
          </children>

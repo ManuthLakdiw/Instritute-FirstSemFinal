@@ -10,19 +10,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.UserTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
-import java.security.MessageDigest;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserFormController implements Initializable {
@@ -38,9 +36,6 @@ public class UserFormController implements Initializable {
 
     @FXML
     private Button btnSave;
-
-    @FXML
-    private Button btnSendMailUser;
 
     @FXML
     private Button btnUpdate;
@@ -90,6 +85,8 @@ public class UserFormController implements Initializable {
     @FXML
     private Label llblConfirmPassword;
 
+
+
     String userName;
     String newPassword;
     String confirmPassword;
@@ -112,9 +109,23 @@ public class UserFormController implements Initializable {
 
     @FXML
     private void btnSaveOnAction(ActionEvent event) {
+        if (!btnSave.isDisable()) {
+            UserDto userDto = new UserDto(userName,newPassword,email,phoneNumber);
 
+            boolean isSaved = userModel.saveUser(userDto);
 
+            if (isSaved) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"User Saved Successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"User Saved Failed!");
+            }
+        }else {
+            System.out.println("save button is disabled");
+        }
     }
+
+
 
     @FXML
     void txtConfirmPasswordOnKeyPressed(KeyEvent event) {
@@ -135,6 +146,7 @@ public class UserFormController implements Initializable {
 
     @FXML
     void txtConfirmPasswordOnKeyTyped(KeyEvent event) {
+        llblConfirmPassword.setVisible(true);
         confirmPassword = txtConfirmPassword.getText();
 
 
@@ -180,6 +192,7 @@ public class UserFormController implements Initializable {
 
     @FXML
     void txtContactNumberOnKeyTyped(KeyEvent event) {
+        lblPhoneNumber.setVisible(true);
         phoneNumber = txtContactNumber.getText();
         lblPhoneNumber.setStyle("-fx-text-fill: #4a4848;");
         ArrayList<UserDto> users = userModel.getAllUsers();
@@ -244,6 +257,7 @@ public class UserFormController implements Initializable {
 
     @FXML
     private void txtEmailAddressOnKeyTyped(KeyEvent event) {
+        lblEmail.setVisible(true);
         email = txtEmailAddress.getText();
         ArrayList<UserDto> users = userModel.getAllUsers();
         ArrayList<String> userEmails = new ArrayList<>();
@@ -310,6 +324,8 @@ public class UserFormController implements Initializable {
 
     @FXML
     private void txtNewPasswordOnKeyTyped(KeyEvent event) {
+        lblNewPassword.setVisible(true);
+        llblConfirmPassword.setVisible(true);
         newPassword = txtNewPassword.getText();
 
         RegexUtil.resetStyle(txtNewPassword);
@@ -353,16 +369,14 @@ public class UserFormController implements Initializable {
         }
 
         else if (!txtConfirmPassword.getText().isEmpty() && !txtNewPassword.getText().isEmpty()) {
-            txtConfirmPassword.clear();
+//            txtConfirmPassword.clear();
             llblConfirmPassword.setText("Your new password should be medium or strong for confirmation ⇪");
             llblConfirmPassword.setStyle("-fx-text-fill: #ff0000");
-
 
             if (newPassword.matches(passwordWeakRegex)) {
                 txtConfirmPassword.setDisable(false);
             }
         }
-
         isSaveEnable();
 
     }
@@ -381,6 +395,7 @@ public class UserFormController implements Initializable {
 
     @FXML
     void txtUserNameOnKeyTyped(KeyEvent event) {
+        lblUserNameStatus.setVisible(true);
         lblUserNameStatus.setStyle("-fx-text-fill: #4a4848;");
         btnReset.setDisable(false);
         userName = txtUserName.getText();
@@ -428,6 +443,9 @@ public class UserFormController implements Initializable {
 
     @FXML
     private void btnResetOnAction(ActionEvent actionEvent) {
+        btnSave.setVisible(true);
+        txtUserName.setDisable(false);
+        lblUserNameStatus.setVisible(true);
         lblUserNameStatus.setStyle("-fx-text-fill: #4a4848;");
         lblUserNameStatus.setText("Username should be Unique");
         lblNewPassword.setText("");
@@ -450,11 +468,17 @@ public class UserFormController implements Initializable {
         txtContactNumber.setText("");
         txtEmailAddress.setText("");
 
+        lblUserNameStatus.setStyle("-fx-text-fill: #4a4848;");
+        lblUserNameStatus.setText("Username should be Unique");
+        lblNewPassword.setText("");
+        llblConfirmPassword.setText("");
+        lblPhoneNumber.setText("");
+        lblEmail.setText("");
+
         btnDelete.setDisable(true);
         btnReset.setDisable(true);
         btnSave.setDisable(true);
         btnUpdate.setDisable(true);
-        btnSendMailUser.setDisable(true);
     }
 
 
@@ -490,6 +514,152 @@ public class UserFormController implements Initializable {
     }
 
 
+
+
+    public void tblUserOnClicked(MouseEvent mouseEvent) {
+        UserTm selectedUser = tblUser.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            txtUserName.setText(selectedUser.getUsName());
+            txtNewPassword.setText(selectedUser.getUsPassword());
+            txtConfirmPassword.setText(selectedUser.getUsPassword());
+            txtContactNumber.setText(selectedUser.getUsEmail());
+            txtEmailAddress.setText(selectedUser.getUsPhone());
+             txtUserName.setDisable(true);
+             btnSave.setVisible(false);
+            btnReset.setDisable(false);
+            btnSave.setDisable(true);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+
+
+            llblConfirmPassword.setVisible(false);
+            lblUserNameStatus.setVisible(false);
+            lblNewPassword.setVisible(false);
+            lblPhoneNumber.setVisible(false);
+            lblEmail.setVisible(false);
+            RegexUtil.resetStyle(txtUserName,txtConfirmPassword,txtNewPassword,txtContactNumber,txtEmailAddress);
+        }
+    }
+
+
+
+
+    public void btnDeleteOnAction(ActionEvent actionEvent) {
+        RegexUtil.resetStyle(txtUserName,txtConfirmPassword,txtNewPassword,txtContactNumber,txtEmailAddress);
+        String userName = txtUserName.getText();
+        Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure delete this User?", ButtonType.NO, ButtonType.YES);
+        successAlert.setTitle("Confirmation");
+        successAlert.setHeaderText(null);
+        successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        Optional<ButtonType> buttonType = successAlert.showAndWait();
+
+        if (buttonType.get() == ButtonType.YES) {
+            btnDelete.setDisable(false);
+            btnReset.setDisable(false);
+            btnSave.setVisible(true);
+            txtUserName.setDisable(false);
+            boolean isDeleted = userModel.deleteUser(userName);
+
+            if (isDeleted) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"User deleted successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"User could not be deleted!");
+            }
+        }
+    }
+
+
+
+
+    public void btnUpdateOnAction(ActionEvent actionEvent) {
+
+        RegexUtil.resetStyle(txtUserName,txtConfirmPassword,txtNewPassword,txtContactNumber,txtEmailAddress);
+        btnUpdate.setDisable(false);
+
+        if (!btnUpdate.isDisable()) {
+            userName = txtUserName.getText();
+            newPassword = txtNewPassword.getText();
+            email = txtEmailAddress.getText();
+            phoneNumber = txtContactNumber.getText();
+
+            boolean check = true;
+
+            ArrayList<TextField> fields = new ArrayList<>();
+            fields.add(txtUserName);
+            fields.add(txtNewPassword);
+            fields.add(txtEmailAddress);
+            fields.add(txtContactNumber);
+            fields.add(txtConfirmPassword);
+
+            for (TextField field : fields) {
+                if (field.getText().isEmpty()) {
+                    AlertUtil.informationAlert(UserFormController.class, null, true, "Fields cannot be empty. Please fill in all fields.");
+                    RegexUtil.setErrorStyle(true,field);
+                    return;
+                }
+            }
+
+
+            if (!phoneNumber.matches(phoneNumberRegex)) {
+                RegexUtil.setErrorStyle(true,txtContactNumber);
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Phone number format is incorrect. It must start with '0' and be 10 digits.");
+                return;
+            }
+
+
+            if (!email.matches(emailRegex)) {
+                RegexUtil.setErrorStyle(true,txtEmailAddress);
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Email format is incorrect. Please provide a valid email.");
+                return;
+            }
+
+
+            if (!txtNewPassword.getText().equals(txtConfirmPassword.getText())) {
+                RegexUtil.setErrorStyle(true,txtConfirmPassword);
+                AlertUtil.informationAlert(UserFormController.class, null, true, "Passwords do not match.");
+                return;
+
+
+            } else if (newPassword.matches(passwordWeakRegex)) {
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Password does not meet the required strength. Please enter a valid password.");
+                return;
+            }
+
+
+            UserDto existingUser = userModel.getUserByUserName(userName);
+
+
+            if (existingUser != null) {
+
+                if (newPassword.equals(existingUser.getUsPassword()) &&
+                        email.equals(existingUser.getUsEmail()) &&
+                        phoneNumber.equals(existingUser.getUsPhone())) {
+                    check = false;
+                    AlertUtil.informationAlert(UserFormController.class, null, false, "No changes detected. Update is not necessary.");
+                } else {
+                    UserDto userDto = new UserDto(userName, newPassword, email, phoneNumber);
+                    boolean isUpdate = userModel.updateUser(userDto);
+
+                    if (isUpdate) {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "User : " + userName + " updated successfully");
+                    } else {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "User : " + userName + " update failed!");
+                    }
+                }
+            } else {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "User not found!");
+            }
+
+            if (check) {
+                refreshPage();
+            }
+        }
+    }
+
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtUserName.requestFocus();
@@ -520,9 +690,16 @@ public class UserFormController implements Initializable {
 
 
 
+
         refreshPage();
 
 
     }
+
+
+
+
+
+
 
 }

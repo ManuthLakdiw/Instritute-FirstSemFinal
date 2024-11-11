@@ -82,6 +82,71 @@ public class UserModel {
         return null;
     }
 
+    public boolean saveUser(UserDto userDto) {
+        try {
+            return CrudUtil.execute(
+                    "insert into user values(?,?,?,?)",
+                    userDto.getUsName(),
+                    userDto.getUsPassword(),
+                    userDto.getUsEmail(),
+                    userDto.getUsPhone()
+            );
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateUser(UserDto userDto) {
+        try {
+            return CrudUtil.execute("update user set pass_word=?, email=?, phone_number=? where user_name=?",
+                    userDto.getUsPassword(),
+                    userDto.getUsEmail(),
+                    userDto.getUsPhone(),
+                    userDto.getUsName()
+            );
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+    public UserDto getUserByUserName(String usName) {
+        try {
+            // Execute SQL query to fetch user details based on the user_name
+            ResultSet rst = CrudUtil.execute("SELECT pass_word, email, phone_number FROM user WHERE user_name = ?", usName);
+
+            // Check if the ResultSet contains data
+            if (rst.next()) {
+                // Create and return a UserDto object with the details from the ResultSet
+                return new UserDto(
+                        usName, // You can pass the userName as it's the parameter
+                        rst.getString("pass_word"), // Password from the ResultSet
+                        rst.getString("email"), // Email from the ResultSet
+                        rst.getString("phone_number") // Phone number from the ResultSet
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print stack trace if an exception occurs
+        }
+
+        // If no user is found or an exception occurs, return null
+        return null;
+    }
+
+    public boolean deleteUser(String userName) {
+        try {
+            return CrudUtil.execute("delete from user where user_name = ?", userName);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 //    public ArrayList<CustomerDTO> getAllCustomers() throws SQLException {
 //        ResultSet rst = CrudUtil.execute("select * from customer");
