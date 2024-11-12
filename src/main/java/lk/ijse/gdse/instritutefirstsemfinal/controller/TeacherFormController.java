@@ -5,7 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -19,6 +21,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -129,7 +132,34 @@ public class TeacherFormController implements Initializable {
     }
 
     @FXML
-    void btnSendMailToTeacherOnClicked(ActionEvent event) {
+    void btnSendMailToTeacherOnClicked(ActionEvent event) throws IOException {
+        TeacherTm selectedTeacher = tblTeacher.getSelectionModel().getSelectedItem();
+        if (selectedTeacher == null) {
+            AlertUtil.informationAlert(TeacherFormController.class,null,true,"Please choose a teacher!");
+        }else {
+            String checkEmail = txtEmailAddress.getText();
+            ArrayList<TeacherDto> users = teacherModel.getAllTeachers();
+            ArrayList<String> teacherEmails = new ArrayList<>();
+
+            for (TeacherDto teacherDto : users) {
+                teacherEmails.add(teacherDto.getEmail());
+            }
+
+            for (String existingEmailAddress : teacherEmails) {
+                if (existingEmailAddress.equals(checkEmail)) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sendMailToTeacherForm.fxml"));
+                    Parent load = loader.load();
+
+                    SendMailToTeacherFormController controller = loader.getController();
+                    controller.setTeacherEmail(existingEmailAddress);
+
+                }else {
+                    AlertUtil.informationAlert(TeacherFormController.class,null,false,checkEmail+" isn't in the database! You should update the teacher");
+                }
+            }
+
+
+        }
 
     }
 
