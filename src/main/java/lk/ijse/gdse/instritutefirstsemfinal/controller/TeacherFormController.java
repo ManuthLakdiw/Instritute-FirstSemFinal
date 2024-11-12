@@ -13,8 +13,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.TeacherTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
@@ -24,6 +26,7 @@ import java.util.ResourceBundle;
 public class TeacherFormController implements Initializable {
 
     TeacherModel teacherModel = new TeacherModel();
+
     String id;
     String title;
     String name;
@@ -360,7 +363,7 @@ public class TeacherFormController implements Initializable {
 
         cmbTitle.setOnAction(event -> {
             if (cmbTitle.getValue() != null) {
-                btnReset.setDisable(false); // Enable btnReset immediately upon selecting a value
+                btnReset.setDisable(false);
                 isSaveEnable();
             }else {
                 btnReset.setDisable(true);
@@ -394,6 +397,23 @@ public class TeacherFormController implements Initializable {
     }
 
     public void btnSaveOnClicked(ActionEvent actionEvent) {
+        id = lblTeacherID.getText();
+        title = cmbTitle.getValue();
+
+        if (!btnSave.isDisable()) {
+            TeacherDto teacherDto = new TeacherDto(id,title,name,contactNo,email);
+
+            boolean isSaved = teacherModel.saveTeacher(teacherDto);
+
+            if (isSaved) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Failed!");
+            }
+        }else {
+            System.out.println("save button is disabled");
+        }
 
     }
 

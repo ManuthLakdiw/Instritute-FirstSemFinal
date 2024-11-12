@@ -47,4 +47,21 @@ public class TeacherModel {
         }
         return null;
     }
+
+    public boolean saveTeacher(TeacherDto teacherDto) {
+        try {
+            return CrudUtil.execute("insert into teacher values(?,?,?,?,?)",
+                    teacherDto.getTeacherId(),
+                    teacherDto.getTitle(),
+                    teacherDto.getName(),
+                    teacherDto.getPhoneNumber(),
+                    teacherDto.getEmail()
+            );
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
