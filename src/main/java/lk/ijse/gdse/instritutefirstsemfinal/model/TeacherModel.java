@@ -102,4 +102,14 @@ public class TeacherModel {
         }
         return false;
     }
+
+    public boolean deleteTeacher(String id) {
+        try {
+            return CrudUtil.execute("delete from teacher where t_id = ?",id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

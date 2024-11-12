@@ -21,6 +21,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TeacherFormController implements Initializable {
@@ -104,6 +105,26 @@ public class TeacherFormController implements Initializable {
 
     @FXML
     void btnDeleteOnClicked(ActionEvent event) {
+        RegexUtil.resetStyle(txtName,txtContactNumber,txtEmailAddress);
+        Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure delete this Teacher?", ButtonType.NO, ButtonType.YES);
+        successAlert.setTitle("Confirmation");
+        successAlert.setHeaderText(null);
+        successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        Optional<ButtonType> buttonType = successAlert.showAndWait();
+
+        if (buttonType.get() == ButtonType.YES) {
+//            btnDelete.setDisable(false);
+//            btnReset.setDisable(false);
+//            btnSave.setVisible(true);
+            boolean isDeleted = teacherModel.deleteTeacher(lblTeacherID.getText());
+
+            if (isDeleted) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher deleted successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher could not be deleted!");
+            }
+        }
 
     }
 
