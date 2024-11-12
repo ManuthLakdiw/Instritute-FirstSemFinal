@@ -114,6 +114,84 @@ public class TeacherFormController implements Initializable {
 
     @FXML
     void btnUpdateOnClicked(ActionEvent event) {
+        RegexUtil.resetStyle(txtName,txtContactNumber,txtEmailAddress);
+        btnUpdate.setDisable(false);
+
+        if (!btnUpdate.isDisable()) {
+            id = lblTeacherID.getText();
+            title = cmbTitle.getValue();
+            name = txtName.getText();
+            contactNo = txtContactNumber.getText();
+            email = txtEmailAddress.getText();
+
+            boolean check = true;
+
+            ArrayList<TextField> fields = new ArrayList<>();
+            fields.add(txtContactNumber);
+            fields.add(txtEmailAddress);
+            fields.add(txtName);
+
+            if (cmbTitle.getValue() == null) {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "Please select a title.");
+                cmbTitle.show();
+                return;
+            }
+
+            for (TextField field : fields) {
+                if (field.getText().isEmpty()) {
+                    AlertUtil.informationAlert(UserFormController.class, null, true, "Fields cannot be empty. Please fill in all fields.");
+                    RegexUtil.setErrorStyle(true, field);
+                    return;
+                }
+            }
+
+
+            if (!contactNo.matches(phoneNumberRegex)) {
+                RegexUtil.setErrorStyle(true,txtContactNumber);
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Phone number format is incorrect. It must start with '0' and be 10 digits.");
+                return;
+            }
+
+
+            if (!email.matches(emailRegex)) {
+                RegexUtil.setErrorStyle(true,txtEmailAddress);
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Email format is incorrect. Please provide a valid email.");
+                return;
+            }
+
+
+
+            TeacherDto existingTeacher = teacherModel.getTeacherByID(id);
+
+
+            if (existingTeacher != null) {
+
+                if (id.equals(existingTeacher.getTeacherId()) &&
+                        title.equals(existingTeacher.getTitle()) &&
+                        name.equals(existingTeacher.getName()) &&
+                        contactNo.equals(existingTeacher.getPhoneNumber()) &&
+                        email.equals(existingTeacher.getEmail())) {
+                    check = false;
+                    AlertUtil.informationAlert(UserFormController.class, null, false, "No changes detected. Update is not necessary.");
+                } else {
+                    boolean isUpdate = teacherModel.updateTeacher(new TeacherDto(id,title, name, contactNo, email));
+
+                    if (isUpdate) {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Teacher : " + id + " updated successfully");
+                        btnUpdate.setDisable(false);
+                        btnSave.setVisible(true);
+                    } else {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Teacher : " + id + " update failed!");
+                    }
+                }
+            } else {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "Teacher not found!");
+            }
+
+            if (check) {
+                refreshPage();
+            }
+        }
 
     }
 
@@ -290,6 +368,7 @@ public class TeacherFormController implements Initializable {
         String nextTeacherID = teacherModel.getNextTeacherID();
         lblTeacherID.setText(nextTeacherID);
         cmbTitle.setValue(null);
+        btnSave.setVisible(true);
         btnSave.setDisable(true);
         btnReset.setDisable(true);
         btnDelete.setDisable(true);
@@ -297,9 +376,9 @@ public class TeacherFormController implements Initializable {
         btnUpdate.setDisable(true);
 
 
-        txtName.clear();
-        txtContactNumber.clear();
-        txtEmailAddress.clear();
+        txtName.setText("");
+        txtContactNumber.setText("");
+        txtEmailAddress.setText("");
 
         lblEmail.setText("");
         lblName.setText("");
@@ -332,9 +411,9 @@ public class TeacherFormController implements Initializable {
 
     private void isSaveEnable() {
         boolean isTitleValid = cmbTitle.getValue() != null && !cmbTitle.getValue().isEmpty();
-        boolean isNameValid = name != null && !name.isEmpty() && name.matches(nameRegex);
-        boolean isContactNumberValid = contactNo != null && !contactNo.isEmpty() && contactNo.matches(phoneNumberRegex);
-        boolean isEmailValid = email != null && !email.isEmpty() && email.matches(emailRegex);
+        boolean isNameValid = txtName != null && !txtName.getText().isEmpty() && txtName.getText().matches(nameRegex);
+        boolean isContactNumberValid = txtContactNumber != null && !txtContactNumber.getText().isEmpty() && txtContactNumber.getText().matches(phoneNumberRegex);
+        boolean isEmailValid = txtEmailAddress != null && !txtEmailAddress.getText().isEmpty() && txtEmailAddress.getText().matches(emailRegex);
 
         btnSave.setDisable(!(isTitleValid && isNameValid && isContactNumberValid && isEmailValid));
 
@@ -375,6 +454,7 @@ public class TeacherFormController implements Initializable {
 
     @FXML
     private void tblTeacherOnAction(MouseEvent mouseEvent) {
+        btnSave.setVisible(false);
         TeacherTm isSelected = tblTeacher.getSelectionModel().getSelectedItem();
         if (isSelected != null) {
             lblTeacherID.setText(isSelected.getTeacherId());
@@ -409,7 +489,7 @@ public class TeacherFormController implements Initializable {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Successfully");
                 refreshPage();
             }else {
-                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Failed!");
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher   Saved Failed!");
             }
         }else {
             System.out.println("save button is disabled");
