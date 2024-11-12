@@ -39,10 +39,12 @@
 }
 
 .hbox:hover {
+    -fx-background-radius: 4px;
     -fx-background-color: rgb(233, 233, 233);
 }
 
 .selected {
+    -fx-background-radius: 4px;
     -fx-background-color: rgb(233, 233, 233);
 }
 
@@ -305,3 +307,16 @@
 .table-view .vertical-bar {
     -fx-background-color: transparent;
 }
+
+/* Transparent background for ComboBox items */
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black; /* Default text color */
+}
+
+/* Style for the hovered ComboBox item */
+.combo-box .list-cell:hover {
+    -fx-background-color: #03045E; /* Hover background color */
+    -fx-text-fill: white; /* Hover text color */
+}
+

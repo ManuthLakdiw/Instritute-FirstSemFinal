@@ -29,12 +29,12 @@
       </Label>
       <HBox layoutX="37.0" layoutY="164.0" prefHeight="38.0" prefWidth="852.0">
          <children>
-            <PasswordField fx:id="txtNewPassword" onKeyPressed="#txtNewPasswordOnKeyPressed" onKeyTyped="#txtNewPasswordOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="123" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #03045E;">
+            <PasswordField fx:id="txtNewPassword" onKeyPressed="#txtNewPasswordOnKeyPressed" onKeyTyped="#txtNewPasswordOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="password@123" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #03045E;">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </PasswordField>
-            <PasswordField fx:id="txtConfirmPassword" onKeyPressed="#txtConfirmPasswordOnKeyPressed" onKeyTyped="#txtConfirmPasswordOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="123" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #03045E;">
+            <PasswordField fx:id="txtConfirmPassword" onKeyPressed="#txtConfirmPasswordOnKeyPressed" onKeyTyped="#txtConfirmPasswordOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="password@123" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #03045E;">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
@@ -65,7 +65,7 @@
       </Label>
       <HBox layoutX="37.0" layoutY="257.0" prefHeight="49.0" prefWidth="1024.0">
          <children>
-            <TextField fx:id="txtContactNumber" onKeyPressed="#txtContactNumberOnKeyPressed" onKeyTyped="#txtContactNumberOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="John123" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+            <TextField fx:id="txtContactNumber" onKeyPressed="#txtContactNumberOnKeyPressed" onKeyTyped="#txtContactNumberOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="0xxxxxxxxx" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -110,7 +110,7 @@
       </Label>
       <HBox layoutX="37.0" layoutY="73.0" prefHeight="47.0" prefWidth="1025.0">
          <children>
-            <TextField fx:id="txtUserName" onKeyPressed="#txtUserNameOnKeyPressed" onKeyTyped="#txtUserNameOnKeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="John123" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+            <TextField fx:id="txtUserName" onKeyPressed="#txtUserNameOnKeyPressed" onKeyTyped="#txtUserNameOnKeyTyped" prefHeight="32.0" prefWidth="266.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
