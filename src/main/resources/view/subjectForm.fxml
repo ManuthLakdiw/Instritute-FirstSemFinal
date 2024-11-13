@@ -29,7 +29,7 @@
       </Label>
       <HBox layoutX="37.0" layoutY="157.0" prefHeight="68.0" prefWidth="1024.0">
          <children>
-            <JFXTextArea fx:id="tareaDescription" focusColor="TRANSPARENT" prefHeight="64.0" prefWidth="1024.0" style="-fx-background-color: transparent; -fx-border-radius: 5px; -fx-border-color: #03045E;" unFocusColor="TRANSPARENT" />
+            <JFXTextArea fx:id="tareaDescription" focusColor="TRANSPARENT" onKeyPressed="#tareaDescriptionOnKeyPressed" prefHeight="64.0" prefWidth="1024.0" style="-fx-background-color: transparent; -fx-border-radius: 5px; -fx-border-color: #03045E;" unFocusColor="TRANSPARENT" />
          </children>
       </HBox>
       <Label layoutX="37.0" layoutY="-3.0" prefHeight="32.0" prefWidth="1024.0" text="Subject Information" textFill="#03045e">
@@ -121,7 +121,7 @@
             <Bloom />
          </effect>
       </Line>
-      <Label layoutX="334.0" layoutY="30.0" prefHeight="48.0" prefWidth="128.0" text="name">
+      <Label layoutX="313.0" layoutY="30.0" prefHeight="48.0" prefWidth="128.0" text="Name">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>

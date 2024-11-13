@@ -499,7 +499,6 @@ public class TeacherFormController implements Initializable {
 
         if (name.isEmpty()) {
             btnReset.setDisable(true);
-            btnReset.setDisable(true);
             lblName.setText(" ");
             RegexUtil.resetStyle(txtName);
             checkFieldsEmpty();
