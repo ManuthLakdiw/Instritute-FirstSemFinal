@@ -487,6 +487,10 @@ public class TeacherFormController implements Initializable {
                 txtContactNumber.requestFocus();
                 txtContactNumber.positionCaret(txtContactNumber.getText().length());
             }
+        }else {
+            if (event.getCode() == KeyCode.LEFT) {
+                cmbTitle.show();
+            }
         }
     }
 
