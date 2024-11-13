@@ -45,4 +45,18 @@ public class SubjectModel
         }
         return null;
     }
+
+    public boolean saveSubject(SubjectDto subjectDto) {
+        try {
+            return CrudUtil.execute("insert into subject values(?,?,?)",
+                    subjectDto.getSubjectId(),
+                    subjectDto.getSubjectName(),
+                    subjectDto.getSubjectDescription()
+            );
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

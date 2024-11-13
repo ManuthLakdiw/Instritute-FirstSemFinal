@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
@@ -53,6 +54,8 @@ public class SubjectFormController implements Initializable {
             tareaDescription.setText(isSelected.getSubjectDescription());
 
             btnReset.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
             RegexUtil.resetStyle(txtSubName);
         }
 
@@ -67,6 +70,7 @@ public class SubjectFormController implements Initializable {
         btnDelete.setDisable(true);
         btnReset.setDisable(true);
         btnSave.setDisable(true);
+        btnSave.setVisible(true);
         btnUpdate.setDisable(true);
 
         txtSubName.setText("");
@@ -146,7 +150,26 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     void btnSaveOnClicked(ActionEvent event) {
+        subjectId = lblSubID.getText();
+        subjectName = txtSubName.getText();
+        subjectDescription = tareaDescription.getText();
 
+        if (subjectDescription == null || subjectDescription.isEmpty()) {
+            subjectDescription = "Not specified Description";
+        }
+
+        if (!btnSave.isDisable()){
+            SubjectDto subjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
+
+            boolean isSave = model.saveSubject(subjectDto);
+
+            if (isSave){
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Subject Saved Successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Subject Saved Failed");
+            }
+        }
     }
 
     @FXML
@@ -167,6 +190,13 @@ public class SubjectFormController implements Initializable {
 
     public void tareaDescriptionOnKeyTyped(KeyEvent keyEvent) {
         subjectDescription = tareaDescription.getText();
+
+        if (subjectDescription.isEmpty()) {
+            btnReset.setDisable(true);
+        }else {
+            btnReset.setDisable(false);
+
+        }
     }
 
 
@@ -207,9 +237,8 @@ public class SubjectFormController implements Initializable {
 
     public void isSaveEnable(){
         boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty() && txtSubName.getText().matches(subjectRegex);
-        boolean isCheckDescription = tareaDescription != null && !tareaDescription.getText().isEmpty();
 
-        btnSave.setDisable(!(isCheckName || isCheckDescription));
+        btnSave.setDisable(!isCheckName);
     }
 
 
