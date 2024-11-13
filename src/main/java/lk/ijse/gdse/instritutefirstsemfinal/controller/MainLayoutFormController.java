@@ -31,6 +31,9 @@ public class MainLayoutFormController implements Initializable {
     private HBox hBoxTeacher;
 
     @FXML
+    private HBox hBoxSubject;
+
+    @FXML
     private HBox hBoxLogout;
 
     @FXML
@@ -41,6 +44,9 @@ public class MainLayoutFormController implements Initializable {
 
     @FXML
     private Button btnStudent;
+
+    @FXML
+    private Button btnSubject;
 
     @FXML
     private Button btnTeacher;
@@ -97,6 +103,8 @@ public class MainLayoutFormController implements Initializable {
         btnTeacher.setMouseTransparent(true);
         btnLogout.setMouseTransparent(true);
         btnUser.setMouseTransparent(true);
+        btnSubject.setMouseTransparent(true);
+
 
     }
 
@@ -176,4 +184,9 @@ public class MainLayoutFormController implements Initializable {
     }
 
 
+    public void hBoxSubjectOnClicked(MouseEvent mouseEvent) {
+        applyHBoxBackground(hBoxSubject);
+        navigateTo("/view/subjectForm.fxml", "SubjectForm");
+
+    }
 }
