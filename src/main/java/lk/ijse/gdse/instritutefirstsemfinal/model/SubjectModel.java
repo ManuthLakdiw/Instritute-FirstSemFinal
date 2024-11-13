@@ -14,7 +14,7 @@ public class SubjectModel
             ResultSet resultSet = CrudUtil.execute("select sub_id from subject order by sub_id desc limit 1");
             if (resultSet.next()) {
                 String lastID = resultSet.getString(1);
-                String substring = lastID.substring(1);
+                String substring = lastID.substring(3);
                 int number = Integer.parseInt(substring);
                 int newId = ++number;
                 return String.format("SUB%03d", newId);
