@@ -160,7 +160,7 @@ public class LoginFormController implements Initializable {
 
         if(uName.isEmpty() || pWord.isEmpty()){
             if(uName.isEmpty() && pWord.isEmpty()){
-                ///////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////// meka ain karanna nacigate wena eka
                 NavigationUtil.loadPane(LoginFormController.class,contentPane," ", "/view/mainLayoutForm.fxml");
 
 //                txtUserName.requestFocus();
