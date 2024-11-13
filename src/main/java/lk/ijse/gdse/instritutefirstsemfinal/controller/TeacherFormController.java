@@ -8,12 +8,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.TeacherTm;
@@ -106,6 +109,8 @@ public class TeacherFormController implements Initializable {
     @FXML
     private TextField txtName;
 
+    TeacherTm isSelected;
+
     @FXML
     void btnDeleteOnClicked(ActionEvent event) {
         RegexUtil.resetStyle(txtName,txtContactNumber,txtEmailAddress);
@@ -133,35 +138,40 @@ public class TeacherFormController implements Initializable {
 
     @FXML
     void btnSendMailToTeacherOnClicked(ActionEvent event) throws IOException {
-        TeacherTm selectedTeacher = tblTeacher.getSelectionModel().getSelectedItem();
-        if (selectedTeacher == null) {
-            AlertUtil.informationAlert(TeacherFormController.class,null,true,"Please choose a teacher!");
-        }else {
+        if (isSelected == null) {
+            AlertUtil.informationAlert(TeacherFormController.class, null, true, "Please choose a teacher!");
+        } else {
             String checkEmail = txtEmailAddress.getText();
-            ArrayList<TeacherDto> users = teacherModel.getAllTeachers();
-            ArrayList<String> teacherEmails = new ArrayList<>();
+            ArrayList<TeacherDto> teachers = teacherModel.getAllTeachers();
+            boolean emailFound = false;
 
-            for (TeacherDto teacherDto : users) {
-                teacherEmails.add(teacherDto.getEmail());
-            }
 
-            for (String existingEmailAddress : teacherEmails) {
-                if (existingEmailAddress.equals(checkEmail)) {
+            for (TeacherDto teacherDto : teachers) {
+                if (teacherDto.getEmail().equals(checkEmail)) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sendMailToTeacherForm.fxml"));
                     Parent load = loader.load();
 
                     SendMailToTeacherFormController controller = loader.getController();
-                    controller.setTeacherEmail(existingEmailAddress);
+                    controller.setTeacherEmail(checkEmail);
 
-                }else {
-                    AlertUtil.informationAlert(TeacherFormController.class,null,false,checkEmail+" isn't in the database! You should update the teacher");
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Send email");
+                    stage.setScene(new Scene(load));
+
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(btnSendMailToTeacher.getScene().getWindow());
+                    stage.showAndWait();
+
+                    emailFound = true;
                 }
             }
-
-
+            if (!emailFound) {
+                AlertUtil.informationAlert(TeacherFormController.class, null, false, checkEmail + " isn't in the database!\nFirst You should update the teacher ["+lblTeacherID.getText()+"]");
+            }
         }
-
     }
+
 
     @FXML
     void btnUpdateOnClicked(ActionEvent event) {
@@ -506,7 +516,7 @@ public class TeacherFormController implements Initializable {
     @FXML
     private void tblTeacherOnAction(MouseEvent mouseEvent) {
         btnSave.setVisible(false);
-        TeacherTm isSelected = tblTeacher.getSelectionModel().getSelectedItem();
+        isSelected = tblTeacher.getSelectionModel().getSelectedItem();
         if (isSelected != null) {
             lblTeacherID.setText(isSelected.getTeacherId());
             cmbTitle.setValue(isSelected.getTitle());

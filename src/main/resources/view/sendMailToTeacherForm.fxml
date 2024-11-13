@@ -53,7 +53,7 @@
                   <Insets top="3.0" />
                </VBox.margin>
             </JFXTextArea>
-            <Label fx:id="lblClear" alignment="TOP_RIGHT" onMouseClicked="#lblClearOnClicked" prefHeight="17.0" prefWidth="27.0" text="clear">
+            <Label fx:id="lblClear" alignment="TOP_RIGHT" onMouseClicked="#lblClearOnClicked" prefHeight="17.0" prefWidth="27.0" styleClass="lblClear" stylesheets="@../style/Style.css" text="clear">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
