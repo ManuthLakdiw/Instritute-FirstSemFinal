@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
@@ -20,6 +21,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SubjectFormController implements Initializable {
@@ -174,7 +176,62 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     void btnUpdateOnClicked(ActionEvent event) {
+        RegexUtil.resetStyle(txtSubName);
+        btnUpdate.setDisable(false);
 
+        if (!btnUpdate.isDisable()) {
+            subjectId = lblSubID.getText();
+            subjectName = txtSubName.getText();
+            subjectDescription = tareaDescription.getText();
+
+            boolean check = true;
+
+            if (txtSubName.getText().isEmpty()) {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "Subject Name cannot be empty");
+                RegexUtil.setErrorStyle(true, txtSubName);
+                return;
+            }
+
+            if (!subjectName.matches(subjectRegex)) {
+                RegexUtil.setErrorStyle(true, txtSubName);
+                AlertUtil.informationAlert(UserFormController.class, null, false, "Invalid Subject Name");
+                return;
+            }
+
+            SubjectDto existingSubject = model.getSubjectByID(subjectId);
+
+            if (existingSubject != null) {
+
+                if (subjectDescription != null && subjectDescription.equals(existingSubject.getSubjectDescription()) &&
+                        subjectName != null && subjectName.equals(existingSubject.getSubjectName())) {
+                    check = false;
+                    AlertUtil.informationAlert(UserFormController.class, null, false, "No changes detected. Update is not necessary.");
+                } else {
+                    if (subjectDescription == null || subjectDescription.isEmpty()) {
+                        subjectDescription = "Not specified Description";
+                    }
+
+
+                    boolean isUpdate = model.updateSubject(new SubjectDto(subjectId, subjectName, subjectDescription));
+
+                    if (isUpdate) {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Subject : " + subjectId + " updated successfully");
+                        btnUpdate.setDisable(false);
+                        btnSave.setVisible(true);
+                    } else {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Subject : " + subjectId + " update failed!");
+                    }
+                }
+
+
+            } else {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "Subject not found!");
+            }
+
+            if (check) {
+                refreshPage();
+            }
+        }
     }
 
 

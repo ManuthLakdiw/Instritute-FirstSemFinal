@@ -59,4 +59,38 @@ public class SubjectModel
         }
         return false;
     }
+
+    public SubjectDto getSubjectByID(String subjectId) {
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("select * from subject where sub_id=?", subjectId);
+            if (resultSet.next()) {
+                SubjectDto subjectDto = new SubjectDto(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3)
+                );
+                return subjectDto;
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateSubject(SubjectDto subjectDto) {
+        try {
+            return CrudUtil.execute("update subject set sub_name=?, description=? where sub_id=?",
+                        subjectDto.getSubjectName(),
+                        subjectDto.getSubjectDescription(),
+                        subjectDto.getSubjectId()
+                    );
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
