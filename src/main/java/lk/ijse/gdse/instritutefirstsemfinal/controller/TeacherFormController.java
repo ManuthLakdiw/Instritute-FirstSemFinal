@@ -109,7 +109,36 @@ public class TeacherFormController implements Initializable {
     @FXML
     private TextField txtName;
 
+
     TeacherTm isSelected;
+
+
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbTitle.requestFocus();
+        cmbTitle.setItems(FXCollections.observableArrayList("Mr","Miss","Mrs"));
+
+        colID.setCellValueFactory(new PropertyValueFactory<>("teacherId")); // මෙහි වෙන්නෙ TeacherTm එකෙන් teacherId අදාල value එක column එකට පාස් කිරීමක්.
+        colTItle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colContactNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        colEmailAddrees.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        cmbTitle.setOnAction(event -> {
+            if (cmbTitle.getValue() != null) {
+                btnReset.setDisable(false);
+                isSaveEnable();
+            }else {
+                btnReset.setDisable(true);
+            }
+        });
+
+        refreshPage();
+    }
+
+
 
     @FXML
     void btnDeleteOnClicked(ActionEvent event) {
@@ -135,43 +164,6 @@ public class TeacherFormController implements Initializable {
         }
 
     }
-
-    @FXML
-    void btnSendMailToTeacherOnClicked(ActionEvent event) throws IOException {
-        if (isSelected == null) {
-            AlertUtil.informationAlert(TeacherFormController.class, null, true, "Please choose a teacher!");
-        } else {
-            String checkEmail = txtEmailAddress.getText();
-            ArrayList<TeacherDto> teachers = teacherModel.getAllTeachers();
-            boolean emailFound = false;
-
-
-            for (TeacherDto teacherDto : teachers) {
-                if (teacherDto.getEmail().equals(checkEmail)) {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sendMailToTeacherForm.fxml"));
-                    Parent load = loader.load();
-
-                    SendMailToTeacherFormController controller = loader.getController();
-                    controller.setTeacherEmail(checkEmail);
-
-
-                    Stage stage = new Stage();
-                    stage.setTitle("Send email");
-                    stage.setScene(new Scene(load));
-
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initOwner(btnSendMailToTeacher.getScene().getWindow());
-                    stage.showAndWait();
-
-                    emailFound = true;
-                }
-            }
-            if (!emailFound) {
-                AlertUtil.informationAlert(TeacherFormController.class, null, false, checkEmail + " isn't in the database!\nFirst You should update the teacher ["+lblTeacherID.getText()+"]");
-            }
-        }
-    }
-
 
     @FXML
     void btnUpdateOnClicked(ActionEvent event) {
@@ -257,6 +249,96 @@ public class TeacherFormController implements Initializable {
     }
 
     @FXML
+    void btnSendMailToTeacherOnClicked(ActionEvent event) throws IOException {
+        if (isSelected == null) {
+            AlertUtil.informationAlert(TeacherFormController.class, null, true, "Please choose a teacher!");
+        } else {
+            String checkEmail = txtEmailAddress.getText();
+            ArrayList<TeacherDto> teachers = teacherModel.getAllTeachers();
+            boolean emailFound = false;
+
+
+            for (TeacherDto teacherDto : teachers) {
+                if (teacherDto.getEmail().equals(checkEmail)) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sendMailToTeacherForm.fxml"));
+                    Parent load = loader.load();
+
+                    SendMailToTeacherFormController controller = loader.getController();
+                    controller.setTeacherEmail(checkEmail);
+
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Send email");
+                    stage.setScene(new Scene(load));
+
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(btnSendMailToTeacher.getScene().getWindow());
+                    stage.showAndWait();
+
+                    emailFound = true;
+                }
+            }
+            if (!emailFound) {
+                AlertUtil.informationAlert(TeacherFormController.class, null, false, checkEmail + " isn't in the database!\nFirst You should update the teacher ["+lblTeacherID.getText()+"]");
+            }
+        }
+    }
+
+    @FXML
+    private void tblTeacherOnAction(MouseEvent mouseEvent) {
+        btnSave.setVisible(false);
+        isSelected = tblTeacher.getSelectionModel().getSelectedItem();
+        if (isSelected != null) {
+            lblTeacherID.setText(isSelected.getTeacherId());
+            cmbTitle.setValue(isSelected.getTitle());
+            txtName.setText(isSelected.getName());
+            txtContactNumber.setText(isSelected.getPhoneNumber());
+            txtEmailAddress.setText(isSelected.getEmail());
+
+            btnSave.setDisable(false);
+            btnReset.setDisable(false);
+            btnDelete.setDisable(false);
+            btnSendMailToTeacher.setDisable(false);
+            btnUpdate.setDisable(false);
+
+            RegexUtil.resetStyle(txtName,txtContactNumber,txtEmailAddress);
+
+
+        }
+
+    }
+
+    @FXML
+    private void btnSaveOnClicked(ActionEvent actionEvent) {
+        id = lblTeacherID.getText();
+        title = cmbTitle.getValue();
+
+        if (!btnSave.isDisable()) {
+            TeacherDto teacherDto = new TeacherDto(id,title,name,contactNo,email);
+
+            boolean isSaved = teacherModel.saveTeacher(teacherDto);
+
+            if (isSaved) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher   Saved Failed!");
+            }
+        }else {
+            System.out.println("save button is disabled");
+        }
+
+    }
+
+    @FXML
+    private void btnResetOnClicked(ActionEvent actionEvent) {
+        refreshPage();
+    }
+
+
+
+
+    @FXML
     void cmbTitleOnMouseEntered(MouseEvent event) {
         if (cmbTitle.getValue() == null) {
             lblTitle.setText("Choose a title");
@@ -268,7 +350,6 @@ public class TeacherFormController implements Initializable {
         lblTitle.setText(" ");
     }
 
-
     public void cmbTitleOnKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             txtName.requestFocus();
@@ -276,6 +357,9 @@ public class TeacherFormController implements Initializable {
 
         }
     }
+
+
+
 
     @FXML
     void txtContactNumberOnKeyPressed(KeyEvent event) {
@@ -336,6 +420,8 @@ public class TeacherFormController implements Initializable {
 
     }
 
+
+
     @FXML
     void txtEmailAddressOnKeyPressed(KeyEvent event) {
         if (txtEmailAddress.getText().isEmpty()) {
@@ -392,6 +478,8 @@ public class TeacherFormController implements Initializable {
 
     }
 
+
+
     @FXML
     void txtNameOnKeyPressed(KeyEvent event) {
         if (!txtName.getText().isEmpty()) {
@@ -428,6 +516,9 @@ public class TeacherFormController implements Initializable {
         }
         isSaveEnable();
     }
+
+
+
 
     private void refreshPage(){
         RegexUtil.resetStyle(txtContactNumber,txtEmailAddress,txtName);
@@ -494,81 +585,6 @@ public class TeacherFormController implements Initializable {
 
         btnReset.setDisable(!isFilled);
     }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        cmbTitle.requestFocus();
-        cmbTitle.setItems(FXCollections.observableArrayList("Mr","Miss","Mrs"));
-
-        colID.setCellValueFactory(new PropertyValueFactory<>("teacherId")); // මෙහි වෙන්නෙ TeacherTm එකෙන් teacherId අදාල value එක column එකට පාස් කිරීමක්.
-        colTItle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colContactNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        colEmailAddrees.setCellValueFactory(new PropertyValueFactory<>("email"));
-
-        cmbTitle.setOnAction(event -> {
-            if (cmbTitle.getValue() != null) {
-                btnReset.setDisable(false);
-                isSaveEnable();
-            }else {
-                btnReset.setDisable(true);
-            }
-        });
-
-        refreshPage();
-    }
-
-    @FXML
-    private void tblTeacherOnAction(MouseEvent mouseEvent) {
-        btnSave.setVisible(false);
-        isSelected = tblTeacher.getSelectionModel().getSelectedItem();
-        if (isSelected != null) {
-            lblTeacherID.setText(isSelected.getTeacherId());
-            cmbTitle.setValue(isSelected.getTitle());
-            txtName.setText(isSelected.getName());
-            txtContactNumber.setText(isSelected.getPhoneNumber());
-            txtEmailAddress.setText(isSelected.getEmail());
-
-            btnSave.setDisable(false);
-            btnReset.setDisable(false);
-            btnDelete.setDisable(false);
-            btnSendMailToTeacher.setDisable(false);
-            btnUpdate.setDisable(false);
-
-            RegexUtil.resetStyle(txtName,txtContactNumber,txtEmailAddress);
-
-
-        }
-
-    }
-
-    public void btnSaveOnClicked(ActionEvent actionEvent) {
-        id = lblTeacherID.getText();
-        title = cmbTitle.getValue();
-
-        if (!btnSave.isDisable()) {
-            TeacherDto teacherDto = new TeacherDto(id,title,name,contactNo,email);
-
-            boolean isSaved = teacherModel.saveTeacher(teacherDto);
-
-            if (isSaved) {
-                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher Saved Successfully");
-                refreshPage();
-            }else {
-                AlertUtil.informationAlert(UserFormController.class,null,true,"Teacher   Saved Failed!");
-            }
-        }else {
-            System.out.println("save button is disabled");
-        }
-
-    }
-
-    public void btnResetOnClicked(ActionEvent actionEvent) {
-        refreshPage();
-    }
-
-
 
 
 }
