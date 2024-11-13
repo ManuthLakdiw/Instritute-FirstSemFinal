@@ -93,4 +93,12 @@ public class SubjectModel
         return false;
     }
 
+    public boolean deleteSubject(String id)   {
+        try {
+            return CrudUtil.execute("delete from subject where sub_id=?", id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

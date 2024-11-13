@@ -22,6 +22,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SubjectFormController implements Initializable {
@@ -141,6 +142,23 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     void btnDeleteOnClicked(ActionEvent event) {
+        RegexUtil.resetStyle(txtSubName);
+        Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure delete this Subject?", ButtonType.NO, ButtonType.YES);
+        successAlert.setTitle("Confirmation");
+        successAlert.setHeaderText(null);
+        successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/style/Style.css").toExternalForm());
+        Optional<ButtonType> buttonType = successAlert.showAndWait();
+
+        if (buttonType.get() == ButtonType.YES) {
+            boolean isDeleted = model.deleteSubject(lblSubID.getText());
+
+            if (isDeleted) {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Subject deleted successfully");
+                refreshPage();
+            }else {
+                AlertUtil.informationAlert(UserFormController.class,null,true,"Subject could not be deleted!");
+            }
+        }
 
     }
 
