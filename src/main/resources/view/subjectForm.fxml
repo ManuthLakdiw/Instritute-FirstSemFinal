@@ -126,5 +126,22 @@
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
+      <HBox layoutX="37.0" layoutY="111.0" prefHeight="21.0" prefWidth="1024.0">
+         <children>
+            <Label fx:id="lblTitle" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="246.0" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblSubName" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="743.0" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
    </children>
 </Pane>
