@@ -193,6 +193,7 @@ public class SubjectFormController implements Initializable {
 
         if (subjectDescription.isEmpty()) {
             btnReset.setDisable(true);
+            isResetEnable();
         }else {
             btnReset.setDisable(false);
 
@@ -220,7 +221,7 @@ public class SubjectFormController implements Initializable {
             btnReset.setDisable(true);
             RegexUtil.resetStyle(txtSubName);
             lblSubName.setText("");
-//            checkFieldsEmpty();
+            isResetEnable();
         }else {
             btnReset.setDisable(false);
             if (!subjectName.matches(subjectRegex)) {
@@ -240,6 +241,14 @@ public class SubjectFormController implements Initializable {
 
         btnSave.setDisable(!isCheckName);
     }
+
+    public void isResetEnable() {
+        boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty();
+        boolean isCheckDescription = tareaDescription != null && !tareaDescription.getText().isEmpty();
+
+        btnReset.setDisable(!(isCheckName || isCheckDescription));
+    }
+
 
 
 }
