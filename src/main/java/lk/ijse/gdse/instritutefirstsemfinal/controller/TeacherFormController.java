@@ -489,7 +489,9 @@ public class TeacherFormController implements Initializable {
             }
         }else {
             if (event.getCode() == KeyCode.LEFT) {
-                cmbTitle.show();
+                if (cmbTitle.getSelectionModel().getSelectedItem() == null) {
+                    cmbTitle.show();
+                }
             }
         }
     }
