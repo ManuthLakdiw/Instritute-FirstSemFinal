@@ -338,6 +338,12 @@ public class TeacherFormController implements Initializable {
 
     @FXML
     void txtEmailAddressOnKeyPressed(KeyEvent event) {
+        if (txtEmailAddress.getText().isEmpty()) {
+            if (event.getCode() == KeyCode.LEFT) {
+                txtContactNumber.requestFocus();
+                txtEmailAddress.positionCaret(txtEmailAddress.getText().length());
+            }
+        }
 
     }
 
@@ -561,6 +567,10 @@ public class TeacherFormController implements Initializable {
     public void btnResetOnClicked(ActionEvent actionEvent) {
         refreshPage();
     }
+
+
+
+
 }
 
 
