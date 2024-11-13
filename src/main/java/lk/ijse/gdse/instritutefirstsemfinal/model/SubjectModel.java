@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class SubjectModel
 {
-    public String getNextTeacherID() {
+    public String getNextSubjectID() {
         try {
             ResultSet resultSet = CrudUtil.execute("select sub_id from subject order by sub_id desc limit 1");
             if (resultSet.next()) {

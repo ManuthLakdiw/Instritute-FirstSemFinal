@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
@@ -21,85 +20,10 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SubjectFormController implements Initializable {
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        colID.setCellValueFactory(new PropertyValueFactory<>("subjectId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("subjectDescription"));
-
-        refreshPage();
-
-    }
-
-    SubjectModel model = new SubjectModel();
-
-    String subjectId;
-    String subjectName;
-    String subjectDescription;
-
-
-    String subjectRegex = "^[A-Za-z][A-Za-z0-9 .,_]*$";
-
-    @FXML
-    void tblSubjectOnClicked(MouseEvent event) {
-        btnSave.setVisible(false);
-        SubjectTm isSelected = tblSubject.getSelectionModel().getSelectedItem();
-
-        if (isSelected != null) {
-            lblSubID.setText(isSelected.getSubjectId());
-            txtSubName.setText(isSelected.getSubjectName());
-            tareaDescription.setText(isSelected.getSubjectDescription());
-
-            btnReset.setDisable(false);
-            btnUpdate.setDisable(false);
-            btnDelete.setDisable(false);
-            RegexUtil.resetStyle(txtSubName);
-        }
-
-
-    }
-
-    private void refreshPage(){
-        String nextSubjectID = model.getNextTeacherID();
-        lblSubID.setText(nextSubjectID);
-        txtSubName.requestFocus();
-        RegexUtil.resetStyle(txtSubName);
-        btnDelete.setDisable(true);
-        btnReset.setDisable(true);
-        btnSave.setDisable(true);
-        btnSave.setVisible(true);
-        btnUpdate.setDisable(true);
-
-        txtSubName.setText("");
-        tareaDescription.setText("");
-
-        loadSubjectTable();
-
-    }
-
-    private void loadSubjectTable(){
-        ArrayList<SubjectDto> subjectDtos = model.getAllSubjects();
-        ObservableList<SubjectTm> subjectTms = FXCollections.observableArrayList();
-
-        for (SubjectDto subjectDto : subjectDtos) {
-            SubjectTm subjectTm = new SubjectTm(
-                    subjectDto.getSubjectId(),
-                    subjectDto.getSubjectName(),
-                    subjectDto.getSubjectDescription()
-            );
-            subjectTms.add(subjectTm);
-        }
-        tblSubject.setItems(subjectTms);
-
-
-
-    }
 
     @FXML
     private Button btnDelete;
@@ -139,6 +63,83 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     private TextField txtSubName;
+
+
+    SubjectModel model = new SubjectModel();
+
+    String subjectId;
+    String subjectName;
+    String subjectDescription;
+
+    String subjectRegex = "^[A-Za-z][A-Za-z0-9 .,_]*$";
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colID.setCellValueFactory(new PropertyValueFactory<>("subjectId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("subjectDescription"));
+
+        refreshPage();
+
+    }
+
+    private void refreshPage(){
+        String nextSubjectID = model.getNextSubjectID();
+        lblSubID.setText(nextSubjectID);
+        txtSubName.requestFocus();
+        RegexUtil.resetStyle(txtSubName);
+        btnDelete.setDisable(true);
+        btnReset.setDisable(true);
+        btnSave.setDisable(true);
+        btnSave.setVisible(true);
+        btnUpdate.setDisable(true);
+
+        txtSubName.setText("");
+        tareaDescription.setText("");
+
+        loadSubjectTable();
+
+    }
+
+    private void loadSubjectTable(){
+        ArrayList<SubjectDto> subjectDtos = model.getAllSubjects();
+        ObservableList<SubjectTm> subjectTms = FXCollections.observableArrayList();
+
+        for (SubjectDto subjectDto : subjectDtos) {
+            SubjectTm subjectTm = new SubjectTm(
+                    subjectDto.getSubjectId(),
+                    subjectDto.getSubjectName(),
+                    subjectDto.getSubjectDescription()
+            );
+            subjectTms.add(subjectTm);
+        }
+        tblSubject.setItems(subjectTms);
+
+
+
+    }
+
+
+
+    @FXML
+    void tblSubjectOnClicked(MouseEvent event) {
+        btnSave.setVisible(false);
+        SubjectTm isSelected = tblSubject.getSelectionModel().getSelectedItem();
+
+        if (isSelected != null) {
+            lblSubID.setText(isSelected.getSubjectId());
+            txtSubName.setText(isSelected.getSubjectName());
+            tareaDescription.setText(isSelected.getSubjectDescription());
+
+            btnReset.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+            RegexUtil.resetStyle(txtSubName);
+        }
+
+
+    }
 
     @FXML
     void btnDeleteOnClicked(ActionEvent event) {
@@ -285,7 +286,6 @@ public class SubjectFormController implements Initializable {
         }
 
     }
-
     @FXML
     void txtSubNameOnKeyTyped(KeyEvent event) {
         subjectName = txtSubName.getText();
@@ -310,6 +310,7 @@ public class SubjectFormController implements Initializable {
         }
         isSaveEnable();
     }
+
 
     public void isSaveEnable(){
         boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty() && txtSubName.getText().matches(subjectRegex);
