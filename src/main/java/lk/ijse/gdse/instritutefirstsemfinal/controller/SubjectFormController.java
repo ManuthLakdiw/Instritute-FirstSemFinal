@@ -165,6 +165,10 @@ public class SubjectFormController implements Initializable {
         }
     }
 
+    public void tareaDescriptionOnKeyTyped(KeyEvent keyEvent) {
+        subjectDescription = tareaDescription.getText();
+    }
+
 
 
     @FXML
@@ -198,7 +202,16 @@ public class SubjectFormController implements Initializable {
                 RegexUtil.resetStyle(txtSubName);
             }
         }
+        isSaveEnable();
     }
+
+    public void isSaveEnable(){
+        boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty() && txtSubName.getText().matches(subjectRegex);
+        boolean isCheckDescription = tareaDescription != null && !tareaDescription.getText().isEmpty();
+
+        btnSave.setDisable(!(isCheckName || isCheckDescription));
+    }
+
 
 }
 
