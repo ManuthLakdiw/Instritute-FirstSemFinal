@@ -68,7 +68,7 @@ public class SubjectFormController implements Initializable {
     private void refreshPage(){
         String nextSubjectID = model.getNextTeacherID();
         lblSubID.setText(nextSubjectID);
-
+        txtSubName.requestFocus();
         RegexUtil.resetStyle(txtSubName);
         btnDelete.setDisable(true);
         btnReset.setDisable(true);
