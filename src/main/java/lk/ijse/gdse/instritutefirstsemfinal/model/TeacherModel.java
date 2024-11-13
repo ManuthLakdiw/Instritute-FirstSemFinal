@@ -66,7 +66,6 @@ public class TeacherModel {
     }
 
     public TeacherDto getTeacherByID(String id) {
-        ArrayList<TeacherDto> teachers = getAllTeachers();
         try {
             ResultSet resultSet = CrudUtil.execute("select * from teacher where t_id=?", id);
             if (resultSet.next()) {
