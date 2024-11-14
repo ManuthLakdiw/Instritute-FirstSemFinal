@@ -273,7 +273,16 @@ public class TeacherFormController implements Initializable {
 
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.initOwner(btnSendMailToTeacher.getScene().getWindow());
+
+                    stage.setMaxWidth(600);  // Set the minimum width
+                    stage.setMaxHeight(450);
+                    stage.setMinWidth(600);
+                    stage.setMinHeight(450);
                     stage.showAndWait();
+
+                    stage.setResizable(false);
+
+
 
                     emailFound = true;
                 }
@@ -327,7 +336,6 @@ public class TeacherFormController implements Initializable {
         }else {
             System.out.println("save button is disabled");
         }
-
     }
 
     @FXML

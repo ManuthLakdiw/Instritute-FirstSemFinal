@@ -92,7 +92,7 @@
       </Label>
       <HBox layoutX="37.0" layoutY="257.0" prefHeight="38.0" prefWidth="852.0">
          <children>
-            <DatePicker prefHeight="32.0" prefWidth="282.0" promptText="MM/DD/YYYY" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;">
+            <DatePicker fx:id="dpDOB" prefHeight="32.0" prefWidth="282.0" promptText="MM/DD/YYYY" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;" stylesheets="@../style/DatePicker.css">
                <padding>
                   <Insets left="5.0" />
                </padding>
