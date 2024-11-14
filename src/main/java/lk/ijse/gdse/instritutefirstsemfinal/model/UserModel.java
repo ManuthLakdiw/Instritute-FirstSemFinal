@@ -28,7 +28,6 @@ public class UserModel {
     }
 
 
-
     public List<Object> checkGmailInDB(String email) {
         try {
             ResultSet resultSet = CrudUtil.execute("SELECT * FROM user WHERE email=?", email);
@@ -42,7 +41,6 @@ public class UserModel {
         }
         return Arrays.asList(false, null, null);
     }
-
 
 
     public boolean updateUserPassword(String newPassword, String gmail) {
@@ -82,6 +80,7 @@ public class UserModel {
         return null;
     }
 
+
     public boolean saveUser(UserDto userDto) {
         try {
             return CrudUtil.execute(
@@ -98,6 +97,7 @@ public class UserModel {
         return false;
     }
 
+
     public boolean updateUser(UserDto userDto) {
         try {
             return CrudUtil.execute("update user set pass_word=?, email=?, phone_number=? where user_name=?",
@@ -111,7 +111,6 @@ public class UserModel {
         }
         return false;
     }
-
 
 
     public UserDto getUserByUserName(String usName) {
@@ -136,6 +135,7 @@ public class UserModel {
         // If no user is found or an exception occurs, return null
         return null;
     }
+
 
     public boolean deleteUser(String userName) {
         try {

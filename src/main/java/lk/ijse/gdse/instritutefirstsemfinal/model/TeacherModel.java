@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TeacherModel {
+
+
     public String getNextTeacherID() {
         try {
             ResultSet resultSet = CrudUtil.execute("select t_id from teacher order by t_id desc limit 1");
@@ -48,6 +50,7 @@ public class TeacherModel {
         return null;
     }
 
+
     public boolean saveTeacher(TeacherDto teacherDto) {
         try {
             return CrudUtil.execute("insert into teacher values(?,?,?,?,?)",
@@ -64,6 +67,7 @@ public class TeacherModel {
         }
         return false;
     }
+
 
     public TeacherDto getTeacherByID(String id) {
         try {
@@ -85,6 +89,7 @@ public class TeacherModel {
         return null;
     }
 
+
     public boolean updateTeacher(TeacherDto teacherDto) {
         try {
             return CrudUtil.execute("update teacher set title=?, name=?, phone_number=?, email=? where t_id=?",
@@ -101,6 +106,7 @@ public class TeacherModel {
         }
         return false;
     }
+
 
     public boolean deleteTeacher(String id) {
         try {

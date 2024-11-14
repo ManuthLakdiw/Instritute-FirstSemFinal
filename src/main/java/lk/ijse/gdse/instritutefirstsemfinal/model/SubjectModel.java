@@ -1,5 +1,6 @@
 package lk.ijse.gdse.instritutefirstsemfinal.model;
 
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 
@@ -7,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SubjectModel
-{
+public class SubjectModel {
+
     public String getNextSubjectID() {
         try {
             ResultSet resultSet = CrudUtil.execute("select sub_id from subject order by sub_id desc limit 1");
@@ -25,6 +26,7 @@ public class SubjectModel
         }
         return "SUB001";
     }
+
 
     public ArrayList<SubjectDto> getAllSubjects() {
         ArrayList<SubjectDto> subjects = new ArrayList<>();
@@ -46,6 +48,7 @@ public class SubjectModel
         return null;
     }
 
+
     public boolean saveSubject(SubjectDto subjectDto) {
         try {
             return CrudUtil.execute("insert into subject values(?,?,?)",
@@ -59,6 +62,7 @@ public class SubjectModel
         }
         return false;
     }
+
 
     public SubjectDto getSubjectByID(String subjectId) {
 
@@ -80,6 +84,7 @@ public class SubjectModel
         return null;
     }
 
+
     public boolean updateSubject(SubjectDto subjectDto) {
         try {
             return CrudUtil.execute("update subject set sub_name=?, description=? where sub_id=?",
@@ -93,6 +98,7 @@ public class SubjectModel
         return false;
     }
 
+
     public boolean deleteSubject(String id)   {
         try {
             return CrudUtil.execute("delete from subject where sub_id=?", id);
@@ -101,4 +107,5 @@ public class SubjectModel
         }
         return false;
     }
+
 }

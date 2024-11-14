@@ -288,6 +288,7 @@
 .table-view .table-row-cell {
     -fx-pref-height: 28px; /* Row height */
     -fx-pref-width: 28px; /* Row width */
+
 }
 .table-view .column-header {
     -fx-pref-height: 32px; /* Increase the column header width */
