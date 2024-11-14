@@ -19,6 +19,8 @@
     -fx-border-color: #004f80;
 }
 
+
+
 .buttonDashboard {
     -fx-padding: 10px 70px 10px 50px;
     -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(0, 119, 182, 0.45), rgba(0, 119, 182, 0.25), rgba(255, 255, 255, 0.9));
@@ -32,7 +34,6 @@
     -fx-background-color: linear-gradient(from 30% 0% to 100% 0%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), linear-gradient(from 0% 10% to 100% 0%, #9dE0EF, #CAF0F8);
     -fx-background-insets: -1;
 }
-
 .buttonDashboard .icon {
     -fx-margin-right: 10px;
     -fx-font-size: 20px;
@@ -144,115 +145,20 @@
     -fx-background-color: white;
 }
 
-.date-picker {
-    -fx-background-color: transparent;
-    -fx-text-fill: #03045E;
-    -fx-border-color: #03045E;
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-}
-
-.date-picker .popup {
-    -fx-background-color: transparent;
-    -fx-border-color: #03045E;
-    -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-}
-
-.date-picker .day-cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-}
-
-.date-picker .day-cell:selected {
-    -fx-background-color: #03045E;
-    -fx-text-fill: white;
-}
-
-.date-picker .current-day {
-    -fx-background-color: #03045E;
-    -fx-text-fill: white;
-}
-
-.date-picker .day-cell:empty {
-    -fx-background-color: transparent;
-    -fx-text-fill: rgba(0, 0, 0, 0.5);
-}
-
-.date-picker .label {
-    -fx-background-color: transparent;
-    -fx-text-fill: #03045E;
-    -fx-font-size: 16px;
-}
-
-.date-picker .date-picker-year-arrow,
-.date-picker .date-picker-month-arrow {
-    -fx-background-color: transparent;
-    -fx-text-fill: #03045E;
-}
-
-.date-picker .date-picker-year-arrow:hover,
-.date-picker .date-picker-month-arrow:hover {
-    -fx-background-color: transparent;
-    -fx-text-fill: #03045E;
-}
-
-.check-box {
-    -fx-background-color: transparent;
-    -fx-border-color: #03045E;
-    -fx-border-width: 1px;
-    -fx-padding: 10px;
-    -fx-alignment: center-left;
-    -fx-min-width: 35px;
-    -fx-min-height: 35px;
-}
-
-.check-box .text {
-    -fx-text-fill: #03045E;
-    -fx-padding: 0 10px;
-    -fx-transition: 0.3s ease-in-out;
-}
-
-.check-box:selected .check-mark {
-    -fx-background-color: #03045E;
-    -fx-shape: "M 0 4 L 2 6 L 6 0";
-    -fx-background-radius: 50%;
-}
-
-.check-box:selected .text {
-    -fx-translate-x: 15px;
-    -fx-text-fill: #ffeb3b;
-}
-
-.check-box:hover {
-    -fx-border-color: #ffeb3b;
-}
-
-.check-box .check-mark {
-    -fx-background-color: transparent;
-    -fx-border-color: #03045E;
-    -fx-border-radius: 50%;
-    -fx-width: 20px;
-    -fx-height: 20px;
-}
-
 
 /* Make the entire TableView background transparent */
 .table-view {
     -fx-background-color: transparent;
 }
-
 /* Make the column header background transparent */
 .table-view .column-header-background {
     -fx-background-color: transparent;
 }
-
 /* Selection row color */
 .table-view .table-row-cell:selected {
     -fx-background-color: #03045E; /* Solid selected row background color */
     -fx-opacity: 1; /* Ensure full opacity */
 }
-
 .table-view .table-row-cell:selected .table-cell {
     -fx-text-fill: #ffffff;
     -fx-border-color: #ffffff;
@@ -263,9 +169,6 @@
     -fx-opacity: 1; /* Ensure full opacity for text */
     -fx-alignment: center;
 }
-
-
-
 /* Table Cell alignment */
 .table-view .column-header, .table-view .table-cell {
     -fx-border-color: #03045E; /* Border color */
@@ -276,14 +179,11 @@
     -fx-background-radius: 5px;
     -fx-alignment: CENTER_LEFT; /* Align text to center-left */
 }
-
 /* Hover effect on rows */
 .table-view .table-row-cell:hover {
     /*-fx-background-color: transparent; !* Row hover color *!*/
     -fx-border-color: #03045E;
 }
-
-
 /* Row styling */
 .table-view .table-row-cell {
     -fx-pref-height: 28px; /* Row height */
@@ -293,33 +193,30 @@
 .table-view .column-header {
     -fx-pref-height: 32px; /* Increase the column header width */
 }
-
 /* Make the ScrollPane background transparent */
 .table-view .scroll-bar {
     -fx-background-color: transparent; /* Transparent background for scrollbars */
 }
-
 /* Transparent background for horizontal scrollbar */
 .table-view .horizontal-bar {
     -fx-background-color: transparent;
 }
-
 /* Transparent background for vertical scrollbar */
 .table-view .vertical-bar {
     -fx-background-color: transparent;
 }
 
-/* Transparent background for ComboBox items */
+
 .combo-box .list-cell {
     -fx-background-color: transparent;
     -fx-text-fill: black; /* Default text color */
 }
-
-/* Style for the hovered ComboBox item */
 .combo-box .list-cell:hover {
     -fx-background-color: #03045E; /* Hover background color */
     -fx-text-fill: white; /* Hover text color */
 }
+
+
 
 .lblClear {
     -fx-text-fill: black;
