@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.SubjectTableFormController">
+   <children>
+      <TableView fx:id="tblSubject" editable="true" layoutX="2.0" layoutY="22.0" onMouseClicked="#tblUserOnClicked" prefHeight="347.0" prefWidth="1191.0" style="-fx-border-color: #03045E; -fx-border-radius: 5; -fx-background-color: transparent;" stylesheets="@../style/Style.css">
+         <columns>
+            <TableColumn fx:id="colSUbID" prefWidth="94.14210748672485" text="Subject_ID" />
+            <TableColumn fx:id="colSUbName" minWidth="0.0" prefWidth="214.39801788330078" text="Subject_Name" />
+            <TableColumn fx:id="colGrade" minWidth="0.16748046875" prefWidth="680.6019592285156" text="Applicable_Grades" />
+            <TableColumn fx:id="colDesc" editable="false" minWidth="-Infinity" prefWidth="192.948486328125" text="Description" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</Pane>

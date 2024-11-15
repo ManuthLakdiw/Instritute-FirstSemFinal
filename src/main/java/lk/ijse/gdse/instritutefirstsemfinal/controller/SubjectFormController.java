@@ -6,14 +6,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
@@ -22,14 +29,15 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.controlsfx.control.CheckComboBox;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SubjectFormController implements Initializable {
 
     GradeModel gradeModel = new GradeModel();
+
+    SubjectTableFormController subjectTableFormController = new SubjectTableFormController();
 
     @FXML
     private Button btnDelete;
@@ -76,6 +84,24 @@ public class SubjectFormController implements Initializable {
     @FXML
     private TextField txtSubName;
 
+    public void enableSaveButton(boolean enable) {
+        btnSave.setDisable(!enable);
+    }
+
+    // Method to enable or disable Update Button
+    public void enableUpdateButton(boolean enable) {
+        btnUpdate.setDisable(!enable);
+    }
+
+    // Method to enable or disable Reset Button
+    public void enableResetButton(boolean enable) {
+        btnReset.setDisable(!enable);
+    }
+
+    // Method to enable or disable Delete Button
+    public void enableDeleteButton(boolean enable) {
+        btnDelete.setDisable(!enable);
+    }
 
     SubjectModel model = new SubjectModel();
 
@@ -85,6 +111,17 @@ public class SubjectFormController implements Initializable {
 
     String subjectRegex = "^[A-Za-z][A-Za-z0-9 .,_]*$";
 
+    public void setSubjectDto(SubjectDto subjectDto) {
+        if (subjectDto != null) {
+            lblSubID.setText(subjectDto.getSubjectId());
+            txtSubName.setText(subjectDto.getSubjectName());
+            cComboBoxGrade.getItems().clear();
+            cComboBoxGrade.getItems().addAll(subjectDto.getSubjectGrades());
+            tareaDescription.setText(subjectDto.getSubjectDescription());
+
+
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,6 +136,11 @@ public class SubjectFormController implements Initializable {
             items.add(grade.getGradeName());
         }
         cComboBoxGrade.getItems().addAll(items);
+
+        enableSaveButton(true);  // Enable Save by default
+        enableUpdateButton(false);
+        enableDeleteButton(false);
+        enableResetButton(true);
 
        refreshPage();
 
@@ -129,8 +171,10 @@ public class SubjectFormController implements Initializable {
             SubjectTm subjectTm = new SubjectTm(
                     subjectDto.getSubjectId(),
                     subjectDto.getSubjectName(),
+                    subjectDto.getSubjectGrades(),
                     subjectDto.getSubjectDescription()
-            );
+
+                    );
             subjectTms.add(subjectTm);
         }
         tblSubject.setItems(subjectTms);
@@ -175,6 +219,8 @@ public class SubjectFormController implements Initializable {
             if (isDeleted) {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"Subject deleted successfully");
                 refreshPage();
+                subjectTableFormController.loadSubjectTable();
+
             }else {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"Subject could not be deleted!");
             }
@@ -190,6 +236,8 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     void btnSaveOnClicked(ActionEvent event) {
+        ObservableList<String> selectedItems = cComboBoxGrade.getCheckModel().getCheckedItems();
+
         subjectId = lblSubID.getText();
         subjectName = txtSubName.getText();
         subjectDescription = tareaDescription.getText();
@@ -199,13 +247,14 @@ public class SubjectFormController implements Initializable {
         }
 
         if (!btnSave.isDisable()){
-            SubjectDto subjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
+            SubjectDto subjectDto = new SubjectDto(subjectId, subjectName , subjectDescription);
 
             boolean isSave = model.saveSubject(subjectDto);
 
             if (isSave){
                 AlertUtil.informationAlert(UserFormController.class,null,true,"Subject Saved Successfully");
                 refreshPage();
+                subjectTableFormController.loadSubjectTable();
             }else {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"Subject Saved Failed");
             }
@@ -256,6 +305,7 @@ public class SubjectFormController implements Initializable {
                         AlertUtil.informationAlert(UserFormController.class, null, true, "Subject : " + subjectId + " updated successfully");
                         btnUpdate.setDisable(false);
                         btnSave.setVisible(true);
+                        subjectTableFormController.loadSubjectTable();
                     } else {
                         AlertUtil.informationAlert(UserFormController.class, null, true, "Subject : " + subjectId + " update failed!");
                     }
@@ -354,6 +404,33 @@ public class SubjectFormController implements Initializable {
     @FXML
     private void cComboBoxGradeMouseExited(MouseEvent event) {
         lblGrade.setText("");
+    }
+
+    public void btnLoadTableOnCLicked(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/subjectTableForm.fxml"));
+            Parent load = loader.load();
+
+            SubjectTableFormController controller = loader.getController();
+            controller.setSubjectFormController(this);
+
+            this.subjectTableFormController = controller;
+
+
+
+            Stage stage = new Stage();
+//            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setTitle("subject Table");
+            stage.setScene(new Scene(load));
+
+            stage.initModality(null);
+            stage.initOwner(btnSave.getScene().getWindow());
+            stage.setResizable(false);
+            stage.show();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
 

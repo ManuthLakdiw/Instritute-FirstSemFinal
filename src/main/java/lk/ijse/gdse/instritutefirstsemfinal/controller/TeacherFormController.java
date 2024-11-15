@@ -43,7 +43,7 @@ public class TeacherFormController implements Initializable {
     private String phoneNumberRegex = "^0\\d{9}$";
     private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" ;;
 
-
+    SubjectTableFormController subjectTableFormController = new SubjectTableFormController();
 
     @FXML
     private TableColumn<TeacherTm, String> colEmailAddrees;
@@ -110,7 +110,6 @@ public class TeacherFormController implements Initializable {
 
 
     TeacherTm isSelected;
-
 
 
 

@@ -50,7 +50,7 @@
       </Label>
       <HBox layoutX="37.0" layoutY="73.0" prefHeight="47.0" prefWidth="1024.0">
          <children>
-            <Label fx:id="lblSubID" prefHeight="32.0" prefWidth="266.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;" text="SUB001">
+            <Label fx:id="lblSubID" prefHeight="32.0" prefWidth="266.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;">
                <font>
                   <Font name="Microsoft Sans Serif" size="16.0" />
                </font>
@@ -96,12 +96,17 @@
                   <Insets left="80.0" />
                </HBox.margin>
             </Button>
+            <Button fx:id="btnLoadTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#btnLoadTableOnCLicked" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: green; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Load Table" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="19.0" />
+               </font>
+            </Button>
             <Button fx:id="btnSave" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnSaveOnClicked" prefHeight="40.0" prefWidth="145.0" style="-fx-background-color: #03045E; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Save" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="22.0" />
                </font>
                <HBox.margin>
-                  <Insets left="284.0" />
+                  <Insets left="120.0" />
                </HBox.margin>
             </Button>
          </children>
