@@ -18,7 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.TeacherTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
@@ -601,7 +600,6 @@ public class TeacherFormController implements Initializable {
 
 
 }
-
 
 
 

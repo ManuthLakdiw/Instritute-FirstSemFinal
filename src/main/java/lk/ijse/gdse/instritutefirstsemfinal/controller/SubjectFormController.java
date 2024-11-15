@@ -1,6 +1,7 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import com.jfoenix.controls.JFXTextArea;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +14,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
+import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
+import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +28,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SubjectFormController implements Initializable {
+
+    GradeModel gradeModel = new GradeModel();
 
     @FXML
     private Button btnDelete;
@@ -62,6 +68,12 @@ public class SubjectFormController implements Initializable {
     private TableView<SubjectTm> tblSubject;
 
     @FXML
+    private CheckComboBox<String> cComboBoxGrade;
+
+    @FXML
+    private Label lblGrade;
+
+    @FXML
     private TextField txtSubName;
 
 
@@ -80,7 +92,15 @@ public class SubjectFormController implements Initializable {
         colName.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("subjectDescription"));
 
-        refreshPage();
+        ArrayList<GradeDto> grades = gradeModel.getGrades();
+        ArrayList<String>  items = new ArrayList<>();
+
+        for (GradeDto grade : grades) {
+            items.add(grade.getGradeName());
+        }
+        cComboBoxGrade.getItems().addAll(items);
+
+       refreshPage();
 
     }
 
@@ -94,7 +114,6 @@ public class SubjectFormController implements Initializable {
         btnSave.setDisable(true);
         btnSave.setVisible(true);
         btnUpdate.setDisable(true);
-
         txtSubName.setText("");
         tareaDescription.setText("");
 
@@ -325,8 +344,17 @@ public class SubjectFormController implements Initializable {
         btnReset.setDisable(!(isCheckName || isCheckDescription));
     }
 
+    @FXML
+    private void cComboBoxGradeMouseEntered(MouseEvent mouseEvent) {
+        if (cComboBoxGrade.getCheckModel().getCheckedItems().isEmpty()) {
+            lblGrade.setText("Choose a Grade");}
 
+    }
 
+    @FXML
+    private void cComboBoxGradeMouseExited(MouseEvent event) {
+        lblGrade.setText("");
+    }
 }
 
 

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <Pane fx:id="subjectPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.SubjectFormController">
    <children>
@@ -22,14 +23,14 @@
             <Image url="@../image/studentregistration.png" />
          </image>
       </ImageView>
-      <Label layoutX="37.0" layoutY="114.0" prefHeight="48.0" prefWidth="128.0" text="Description (Optional)">
+      <Label layoutX="37.0" layoutY="191.0" prefHeight="48.0" prefWidth="128.0" text="Description (Optional)">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
-      <HBox layoutX="37.0" layoutY="157.0" prefHeight="68.0" prefWidth="1024.0">
+      <HBox layoutX="37.0" layoutY="234.0" prefHeight="64.0" prefWidth="1024.0">
          <children>
-            <JFXTextArea fx:id="tareaDescription" focusColor="TRANSPARENT" onKeyPressed="#tareaDescriptionOnKeyPressed" onKeyTyped="#tareaDescriptionOnKeyTyped" prefHeight="64.0" prefWidth="1024.0" style="-fx-background-color: transparent; -fx-border-radius: 5px; -fx-border-color: #03045E;" unFocusColor="TRANSPARENT" />
+            <JFXTextArea fx:id="tareaDescription" focusColor="TRANSPARENT" onKeyPressed="#tareaDescriptionOnKeyPressed" onKeyTyped="#tareaDescriptionOnKeyTyped" prefHeight="64.0" prefWidth="1028.0" style="-fx-background-color: transparent; -fx-border-radius: 5px; -fx-border-color: #03045E;" unFocusColor="TRANSPARENT" />
          </children>
       </HBox>
       <Label layoutX="37.0" layoutY="-3.0" prefHeight="32.0" prefWidth="1024.0" text="Subject Information" textFill="#03045e">
@@ -57,17 +58,6 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="txtSubName" onKeyPressed="#txtSubNameOnKeyPressed" onKeyTyped="#txtSubNameOnKeyTyped" prefHeight="32.0" prefWidth="768.0" promptText="information and communication technology" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="5.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </TextField>
          </children>
       </HBox>
       <TableView fx:id="tblSubject" editable="true" layoutX="37.0" layoutY="387.0" onMouseClicked="#tblSubjectOnClicked" prefHeight="294.0" prefWidth="1024.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;" stylesheets="@../style/Style.css">
@@ -80,7 +70,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox layoutX="37.0" layoutY="285.0" prefHeight="50.0" prefWidth="1024.0">
+      <HBox layoutX="37.0" layoutY="318.0" prefHeight="50.0" prefWidth="1024.0">
          <children>
             <Button fx:id="btnReset" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnResetOnClicked" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #FF796E; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Reset" textFill="WHITE">
                <font>
@@ -116,29 +106,57 @@
             </Button>
          </children>
       </HBox>
-      <Line endX="963.5" endY="126.265625" layoutX="98.0" layoutY="225.0" opacity="0.8" startX="-60.610023498535156" startY="126.265625" stroke="#03045e" strokeLineCap="ROUND">
+      <Line endX="963.5" endY="126.265625" layoutX="98.0" layoutY="246.0" opacity="0.8" startX="-60.610023498535156" startY="126.265625" stroke="#03045e" strokeLineCap="ROUND">
          <effect>
             <Bloom />
          </effect>
       </Line>
-      <Label layoutX="313.0" layoutY="30.0" prefHeight="48.0" prefWidth="128.0" text="Name">
+      <Label layoutX="694.0" layoutY="107.0" prefHeight="48.0" prefWidth="128.0" text="Grade">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
-      <HBox layoutX="37.0" layoutY="111.0" prefHeight="21.0" prefWidth="1024.0">
+      <HBox layoutX="37.0" layoutY="149.0" prefHeight="47.0" prefWidth="1024.0">
          <children>
-            <Label fx:id="lblTitle" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="246.0" textFill="#4a4848">
-               <font>
-                  <Font name="Humnst777 Cn BT" size="10.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblSubName" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="743.0" textFill="#4a4848">
+            <TextField fx:id="txtSubName" onKeyPressed="#txtSubNameOnKeyPressed" onKeyTyped="#txtSubNameOnKeyTyped" prefHeight="32.0" prefWidth="558.0" promptText="information and communication technology" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextField>
+            <CheckComboBox fx:id="cComboBoxGrade" onMouseEntered="#cComboBoxGradeMouseEntered" onMouseExited="#cComboBoxGradeMouseExited" prefHeight="32.0" prefWidth="367.0">
+               <HBox.margin>
+                  <Insets left="100.0" />
+               </HBox.margin>
+            </CheckComboBox>
+         </children>
+      </HBox>
+      <Label layoutX="37.0" layoutY="106.0" prefHeight="48.0" prefWidth="128.0" text="Name">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+      </Label>
+      <HBox layoutX="37.0" layoutY="187.0" prefHeight="21.0" prefWidth="1024.0">
+         <children>
+            <Label fx:id="lblSubName" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="557.0" textFill="#4a4848">
                <font>
                   <Font name="Humnst777 Cn BT" size="10.0" />
                </font>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="lblGrade" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="364.0" textFill="#4a4848">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="102.0" />
                </HBox.margin>
             </Label>
          </children>
