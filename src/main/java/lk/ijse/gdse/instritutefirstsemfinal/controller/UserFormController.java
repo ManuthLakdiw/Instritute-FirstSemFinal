@@ -1,19 +1,14 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.UserTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.UserModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
@@ -24,6 +19,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserFormController implements Initializable {
+
+    UserModel userModel = new UserModel();
+    private UserTableFormController userTableFormController;
+
+    public void setUserTableFormController(UserTableFormController userTableFormController) {
+        this.userTableFormController = userTableFormController;
+    }
+
 
     @FXML
     private Pane AdminPane;
@@ -39,21 +42,6 @@ public class UserFormController implements Initializable {
 
     @FXML
     private Button btnUpdate;
-
-    @FXML
-    private TableColumn<UserTm, String> colContactNumber;
-
-    @FXML
-    private TableColumn<UserTm, String> colEmailAddress;
-
-    @FXML
-    private TableColumn<UserTm, String> colPassword;
-
-    @FXML
-    private TableColumn<UserTm, String> colUserName;
-
-    @FXML
-    private TableView<UserTm> tblUser;
 
     @FXML
     private PasswordField txtConfirmPassword;
@@ -86,13 +74,13 @@ public class UserFormController implements Initializable {
     private Label llblConfirmPassword;
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     String userName;
     String newPassword;
     String confirmPassword;
     String phoneNumber;
     String email;
-
 
     private String usernameRegex = "^[a-zA-Z][a-zA-Z0-9_-]{3,8}[a-zA-Z0-9]$";
     private String passwordWeakRegex = "^(?=.{1,})([a-zA-Z]+|[0-9]+|[^a-zA-Z0-9]+)$";
@@ -102,45 +90,14 @@ public class UserFormController implements Initializable {
     private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
 
-
-    UserModel userModel = new UserModel();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colUserName.setCellValueFactory(new PropertyValueFactory<>("usName"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<>("usPassword"));
-        colContactNumber.setCellValueFactory(new PropertyValueFactory<>("usEmail"));
-        colEmailAddress.setCellValueFactory(new PropertyValueFactory<>("usPhone"));
-
-//        colPassword.setCellFactory(new Callback<TableColumn<UserTm, String>, TableCell<UserTm, String>>() {
-//            @Override
-//            public TableCell<UserTm, String> call(TableColumn<UserTm, String> column) {
-//                return new TableCell<UserTm, String>() {
-//                    @Override
-//                    protected void updateItem(String item, boolean empty) {
-//                        // this method in the Table cell class
-//                        // used for update the cell in the table
-//                        super.updateItem(item, empty);
-//                        if (empty || item == null) {
-//                            setText(null);  // If cell is empty or item is null, clear the text.
-//                        } else {
-//                            setText("*".repeat(item.length()));  // Display '*' for password characters.
-//                        }
-//                    }
-//                };
-//            }
-//        });
-
-
-
-
-
         refreshPage();
-
 
     }
 
 
+    //////////////////////////////////// BUTTONS //////////////////////////////////
 
     @FXML
     private void btnSaveOnAction(ActionEvent event) {
@@ -152,6 +109,9 @@ public class UserFormController implements Initializable {
             if (isSaved) {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"User Saved Successfully");
                 refreshPage();
+                userTableFormController.loadUserTable();
+
+
             }else {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"User Saved Failed!");
             }
@@ -174,6 +134,8 @@ public class UserFormController implements Initializable {
         lblEmail.setText("");
         RegexUtil.resetStyle(txtUserName,txtConfirmPassword,txtNewPassword,txtContactNumber,txtEmailAddress);
         refreshPage();
+        userTableFormController.loadUserTable();
+
     }
 
     @FXML
@@ -264,6 +226,7 @@ public class UserFormController implements Initializable {
 
             if (check) {
                 refreshPage();
+                userTableFormController.loadUserTable();
             }
         }
     }
@@ -288,6 +251,8 @@ public class UserFormController implements Initializable {
             if (isDeleted) {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"User deleted successfully");
                 refreshPage();
+                userTableFormController.loadUserTable();
+
             }else {
                 AlertUtil.informationAlert(UserFormController.class,null,true,"User could not be deleted!");
             }
@@ -295,36 +260,13 @@ public class UserFormController implements Initializable {
     }
 
 
-
-    @FXML
-    private void tblUserOnClicked(MouseEvent mouseEvent) {
-        UserTm selectedUser = tblUser.getSelectionModel().getSelectedItem();
-        if (selectedUser != null) {
-            txtUserName.setText(selectedUser.getUsName());
-            txtNewPassword.setText(selectedUser.getUsPassword());
-            txtConfirmPassword.setText(selectedUser.getUsPassword());
-            txtContactNumber.setText(selectedUser.getUsEmail());
-            txtEmailAddress.setText(selectedUser.getUsPhone());
-            txtUserName.setDisable(true);
-            btnSave.setVisible(false);
-            btnReset.setDisable(false);
-            btnSave.setDisable(true);
-            btnUpdate.setDisable(false);
-            btnDelete.setDisable(false);
-
-
-            llblConfirmPassword.setVisible(false);
-            lblUserNameStatus.setVisible(false);
-            lblNewPassword.setVisible(false);
-            lblPhoneNumber.setVisible(false);
-            lblEmail.setVisible(false);
-            RegexUtil.resetStyle(txtUserName,txtConfirmPassword,txtNewPassword,txtContactNumber,txtEmailAddress);
-        }
-    }
+    ///////////////////////////////////////////////////////////////////////////
 
 
 
 
+
+    ///////////////
 
     @FXML
     void txtConfirmPasswordOnKeyPressed(KeyEvent event) {
@@ -371,6 +313,10 @@ public class UserFormController implements Initializable {
     }
 
 
+
+
+
+    /////////////////
 
     @FXML
     void txtContactNumberOnKeyPressed(KeyEvent event) {
@@ -437,6 +383,9 @@ public class UserFormController implements Initializable {
 
 
 
+
+    ///////////////////
+
     @FXML
     void txtEmailAddressOnKeyPressed(KeyEvent event) {
         if (txtEmailAddress.getText().isEmpty()) {
@@ -501,6 +450,8 @@ public class UserFormController implements Initializable {
 
 
 
+
+    ////////////////
 
     @FXML
     void txtNewPasswordOnKeyPressed(KeyEvent event) {
@@ -585,6 +536,9 @@ public class UserFormController implements Initializable {
 
 
 
+
+    //////////////////
+
     @FXML
     void txtUserNameOnKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER){
@@ -644,10 +598,7 @@ public class UserFormController implements Initializable {
 
 
 
-
-
-
-
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     private void refreshPage()  {
         txtUserName.requestFocus();
@@ -673,24 +624,7 @@ public class UserFormController implements Initializable {
         btnSave.setDisable(true);
         btnUpdate.setDisable(true);
 
-        loadUserTable();
-    }
 
-    private void loadUserTable()  {
-        ArrayList<UserDto> userDtos = userModel.getAllUsers();
-        ObservableList<UserTm> userTms = FXCollections.observableArrayList();
-
-
-        for (UserDto userDto : userDtos) {
-            UserTm userTm = new UserTm(
-                    userDto.getUsName(),
-                    userDto.getUsPassword(),
-                    userDto.getUsPhone(),
-                    userDto.getUsEmail()
-            );
-            userTms.add(userTm);
-        }
-        tblUser.setItems(userTms);
     }
 
     private void isSaveEnable(){
@@ -713,5 +647,33 @@ public class UserFormController implements Initializable {
 
         btnReset.setDisable(!isAnyFieldFilled);
     }
+
+    public void setUserDto(UserDto userDto) {
+        if (userDto != null) {
+            txtUserName.setText(userDto.getUsName());
+            txtNewPassword.setText(userDto.getUsPassword());
+            txtConfirmPassword.setText(userDto.getUsPassword());
+            txtEmailAddress.setText(userDto.getUsEmail());
+            txtContactNumber.setText(userDto.getUsPhone());
+        }
+    }
+
+    public void tableOnClickeButton() {
+        txtUserName.setDisable(true);
+        btnSave.setVisible(false);
+        btnReset.setDisable(false);
+        btnSave.setDisable(true);
+        btnUpdate.setDisable(false);
+        btnDelete.setDisable(false);
+
+        llblConfirmPassword.setVisible(false);
+        lblUserNameStatus.setVisible(false);
+        lblNewPassword.setVisible(false);
+        lblPhoneNumber.setVisible(false);
+        lblEmail.setVisible(false);
+
+        RegexUtil.resetStyle(txtUserName, txtConfirmPassword, txtNewPassword, txtContactNumber, txtEmailAddress);
+    }
+
 
 }

@@ -69,7 +69,6 @@ public class SubjectTableFormController implements Initializable {
                 subjectFormController.enableSaveButton(false);  // Disable Save if updating
             }
         } else {
-            // If no item is selected, disable buttons
             if (subjectFormController != null) {
                 subjectFormController.enableUpdateButton(false);
                 subjectFormController.enableDeleteButton(false);

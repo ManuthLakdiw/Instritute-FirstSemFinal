@@ -90,7 +90,7 @@ public class MainLayoutFormController implements Initializable {
 
     public void hBoxUserOnClicked(MouseEvent mouseEvent) {
         applyHBoxBackground(hBoxUser);
-        navigateTo("/view/userForm.fxml", "UserForm");
+        navigateTo("/view/userTableForm.fxml", "UserForm");
     }
 
     @Override
