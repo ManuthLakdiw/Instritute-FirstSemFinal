@@ -11,7 +11,7 @@ public class SubjectDto {
 
     private String subjectId;
     private String subjectName;
-    private String subjectGrades;
+    private String[] subjectGrades;
     private String subjectDescription;
 
     public SubjectDto(String subjectId, String subjectName, String subjectDescription) {

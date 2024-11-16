@@ -1,6 +1,5 @@
 package lk.ijse.gdse.instritutefirstsemfinal.dto.tm;
 
-
 import lombok.*;
 
 @Getter
@@ -12,12 +11,6 @@ public class SubjectTm {
 
     private String subjectId;
     private String subjectName;
-    private String subjectGrades;
+    private String subjectGrades; // Changed to String for table compatibility
     private String subjectDescription;
-
-    public SubjectTm(String subjectId, String subjectName, String subjectDescription) {
-        this.subjectId = subjectId;
-        this.subjectName = subjectName;
-        this.subjectDescription = subjectDescription;
-    }
 }

@@ -186,7 +186,7 @@ public class MainLayoutFormController implements Initializable {
 
     public void hBoxSubjectOnClicked(MouseEvent mouseEvent) {
         applyHBoxBackground(hBoxSubject);
-        navigateTo("/view/subjectForm.fxml", "SubjectForm");
+        navigateTo("/view/tableSubjectForm.fxml", "SubjectForm");
 
     }
 }
