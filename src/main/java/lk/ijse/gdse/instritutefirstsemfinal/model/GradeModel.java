@@ -6,7 +6,9 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GradeModel {
 
@@ -26,5 +28,7 @@ public class GradeModel {
         }
         return gradeList;
     }
+
+
 
 }

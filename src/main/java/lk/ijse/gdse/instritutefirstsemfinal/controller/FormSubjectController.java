@@ -1,12 +1,15 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import com.jfoenix.controls.JFXTextArea;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
@@ -17,10 +20,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class FormSubjectController implements Initializable {
 
@@ -31,14 +31,6 @@ public class FormSubjectController implements Initializable {
     public void setTblSubjectFormController(TableSubjectFormController tableSubjectFormController) {
         this.tableSubjectFormController = tableSubjectFormController;
     }
-
-
-    String subjectId;
-    String subjectName;
-    String subjectDescription;
-
-    String subjectRegex = "^[A-Za-z][A-Za-z0-9 .,_]*$";
-
 
     @FXML
     private Button btnDelete;
@@ -70,6 +62,44 @@ public class FormSubjectController implements Initializable {
     @FXML
     private TextField txtSubName;
 
+
+    ////////////////////////////////////////////////////////////////////////
+
+    String subjectId;
+    String subjectName;
+    String subjectDescription;
+
+    String subjectRegex = "^[A-Za-z][A-Za-z0-9 .,_]*$";
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ArrayList<GradeDto> grades = gradeModel.getGrades();
+        ArrayList<String>  items = new ArrayList<>();
+
+        for (GradeDto grade : grades) {
+            items.add(grade.getGradeName());
+        }
+        checkComboBoxGrade.getItems().addAll(items);
+
+        checkComboBoxGrade.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) change -> {
+            isSaveEnable();
+        });
+        checkComboBoxGrade.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super String>) change -> {
+            // Enable the reset button if any item is selected, disable if no items are selected
+            btnReset.setDisable(checkComboBoxGrade.getCheckModel().getCheckedItems().isEmpty());
+        });
+
+
+        refreshPage();
+    }
+
+
+
+
+
+    //////////////////////////////////// BUTTONS //////////////////////////////////
+
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         RegexUtil.resetStyle(txtSubName);
@@ -86,7 +116,6 @@ public class FormSubjectController implements Initializable {
             }
         }
     }
-
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
@@ -148,13 +177,15 @@ public class FormSubjectController implements Initializable {
         }
     }
 
-
-
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         RegexUtil.resetStyle(txtSubName);
         btnUpdate.setDisable(false);
+        subjectName = txtSubName.getText();
+        subjectDescription = tareaDescription.getText();
+        subjectId = lblSubID.getText();
+
+
 
         if (!btnUpdate.isDisable()) {
             subjectId = lblSubID.getText();
@@ -181,9 +212,13 @@ public class FormSubjectController implements Initializable {
 
             // Collect selected grade IDs from CheckComboBox (only IDs, not grade details)
             ObservableList<String> selectedItems = checkComboBoxGrade.getCheckModel().getCheckedItems();
-
             List<String> gradeIds = subjectModel.getGradeIdsFromNames(new ArrayList<>(selectedItems));
 
+            // Check if the current values are already in the table before proceeding with the update
+            if (isValuesUnchanged(subjectId, subjectName, subjectDescription, selectedItems)) {
+                AlertUtil.informationAlert(UserFormController.class, null, true, "No changes detected. Update is not necessary.");
+                return;
+            }
 
             // Create the DTO with updated data
             SubjectDto updatedSubjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
@@ -205,20 +240,25 @@ public class FormSubjectController implements Initializable {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////
 
 
 
 
 
-    @FXML
-    void lblSubNameRegexOnKeyTyped(KeyEvent event) {
-
-
-    }
-
+    /////////////////////////////
     @FXML
     void tareaDescriptionOnKeyPressed(KeyEvent event) {
-
+        if (tareaDescription.getText().isEmpty()) {
+            if (event.getCode() == KeyCode.LEFT) {
+                txtSubName.requestFocus();
+                txtSubName.positionCaret(txtSubName.getText().length());
+            }
+        }else{
+            if (event.getCode() == KeyCode.ENTER) {
+                checkComboBoxGrade.show();
+            }
+        }
     }
 
     @FXML
@@ -235,6 +275,8 @@ public class FormSubjectController implements Initializable {
     }
 
 
+
+    /////////////////////////////
     @FXML
     void txtSubNameOnKeyTyped(KeyEvent event) {
         subjectName = txtSubName.getText();
@@ -263,23 +305,23 @@ public class FormSubjectController implements Initializable {
 
     @FXML
     void txtSubNameOnKeyPressed(KeyEvent event) {
+        if (txtSubName.getText().isEmpty()) {
+            if (event.getCode() == KeyCode.LEFT){
+                checkComboBoxGrade.show();
+            }
 
-
-    }
-
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<GradeDto> grades = gradeModel.getGrades();
-        ArrayList<String>  items = new ArrayList<>();
-
-        for (GradeDto grade : grades) {
-            items.add(grade.getGradeName());
+        }else{
+            if (event.getCode() == KeyCode.ENTER){
+                tareaDescription.requestFocus();
+                tareaDescription.positionCaret(tareaDescription.getText().length());
+            }
         }
-        checkComboBoxGrade.getItems().addAll(items);
-        refreshPage();
     }
+
+
+
+
+    /////////////////////////////
 
     public void refreshPage(){
         String nextSubjectID = subjectModel.getNextSubjectID();
@@ -297,17 +339,29 @@ public class FormSubjectController implements Initializable {
 
     }
 
-    public void isSaveEnable(){
-        boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty() && txtSubName.getText().matches(subjectRegex);
+    public void isSaveEnable() {
+        // Validate the subject name
+        boolean isCheckName = txtSubName != null
+                && !txtSubName.getText().isEmpty()
+                && txtSubName.getText().matches(subjectRegex);
 
-        btnSave.setDisable(!isCheckName);
+        // Validate the CheckComboBox (at least one grade is selected)
+        boolean isCheckGrade = checkComboBoxGrade != null
+                && !checkComboBoxGrade.getCheckModel().getCheckedItems().isEmpty();
+
+        // Enable the Save button only if both conditions are true
+        btnSave.setDisable(!(isCheckName && isCheckGrade));
     }
 
     public void isResetEnable() {
         boolean isCheckName = txtSubName != null && !txtSubName.getText().isEmpty();
         boolean isCheckDescription = tareaDescription != null && !tareaDescription.getText().isEmpty();
 
-        btnReset.setDisable(!(isCheckName || isCheckDescription));
+        boolean isCheckComboBox = checkComboBoxGrade != null
+                && !checkComboBoxGrade.getCheckModel().getCheckedItems().isEmpty();
+
+        // Enable the reset button if any of the conditions are met
+        btnReset.setDisable(!(isCheckName || isCheckDescription || isCheckComboBox));
     }
 
     public void setUserDto(SubjectDto dto) {
@@ -338,6 +392,35 @@ public class FormSubjectController implements Initializable {
         btnSave.setDisable(true);
         btnUpdate.setDisable(false);
         btnDelete.setDisable(false);
+        RegexUtil.resetStyle(txtSubName);
+        lblSubNameRegex.setText("");
+    }
+
+
+
+    /////////////////////////////
+
+    private boolean isValuesUnchanged(String subjectId, String subjectName, String subjectDescription, List<String> gradeIds) {
+        // Fetch current subject
+        SubjectDto currentSubject = subjectModel.searchExitingSubjectBySubjectID(subjectId);
+
+        if (currentSubject == null) {
+            return false;
+        }
+//
+//        System.out.println("Current Subject ID: " + currentSubject.getSubjectId());
+//        System.out.println("Current Subject Name: " + currentSubject.getSubjectName());
+//        System.out.println("Current Subject Description: " + currentSubject.getSubjectDescription());
+//        System.out.println("Current Subject Grades: " + currentSubject.getGradeIds());
+
+        boolean isNameUnchanged = subjectName.equals(currentSubject.getSubjectName());
+        boolean isDescriptionUnchanged = subjectDescription.equals(currentSubject.getSubjectDescription());
+
+        // Compare the grades as sets to ignore order and duplicates
+        boolean isGradeUnchanged = new HashSet<>(gradeIds).equals(new HashSet<>(currentSubject.getGradeIds()));
+
+        // Return true if no values are changed, false if any value is different
+        return isNameUnchanged && isDescriptionUnchanged && isGradeUnchanged;
     }
 
 }

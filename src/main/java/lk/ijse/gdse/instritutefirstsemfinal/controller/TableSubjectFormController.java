@@ -2,6 +2,8 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,20 +17,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.UserDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
-import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class TableSubjectFormController implements Initializable {
+
     SubjectModel model = new SubjectModel();
     FormSubjectController formSubjectController = new FormSubjectController();
 
@@ -57,8 +56,13 @@ public class TableSubjectFormController implements Initializable {
     @FXML
     private TextField txtFindSubject;
 
+
+    boolean isButtonClicked = false;
+    FilteredList filter;
+
     @FXML
     private void btnSubjectOnAction(ActionEvent event) {
+        isButtonClicked = true;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/formSubject.fxml"));
             Parent load = loader.load();
@@ -91,36 +95,51 @@ public class TableSubjectFormController implements Initializable {
     @FXML
     private void tblSubjectOnClicked(MouseEvent event) {
         SubjectTm isSelected = tblSubject.getSelectionModel().getSelectedItem();
-        if (isSelected != null) {
-            String grades = isSelected.getSubjectGrades(); // උදා: "grade 1, grade 2, grade 3"
-            String[] gradeArray = new String[0]; // Default හිස් array එක
+        if (isButtonClicked){
+            if (isSelected != null) {
+                String grades = isSelected.getSubjectGrades(); // උදා: "grade 1, grade 2, grade 3"
+                String[] gradeArray = new String[0]; // Default හිස් array එක
 
-            if (grades != null && !grades.isEmpty()) {
-                // කොමාවෙන් වෙන් කර String[] එකක් ලෙස ලබා ගන්න
-                gradeArray = grades.split(", ");
+                if (grades != null && !grades.isEmpty()) {
+                    // කොමාවෙන් වෙන් කර String[] එකක් ලෙස ලබා ගන්න
+                    gradeArray = grades.split(", ");
+                }
+
+                // SubjectDto object එක නිර්මාණය කිරීම
+                SubjectDto dto = new SubjectDto(
+                        isSelected.getSubjectId(),
+                        isSelected.getSubjectName(),
+                        gradeArray, // gradeArray එක එකතු කරන ලදී
+                        isSelected.getSubjectDescription()
+                );
+                formSubjectController.setUserDto(dto);
+                formSubjectController.tableOnClickedButton();
+
             }
-
-            // SubjectDto object එක නිර්මාණය කිරීම
-            SubjectDto dto = new SubjectDto(
-                    isSelected.getSubjectId(),
-                    isSelected.getSubjectName(),
-                    gradeArray, // gradeArray එක එකතු කරන ලදී
-                    isSelected.getSubjectDescription()
-            );
-            formSubjectController.setUserDto(dto);
-            formSubjectController.tableOnClickedButton();
-
         }
     }
 
 
-
-
-
-        @FXML
+    @FXML
     private void txtFindSubjectOnKeyRelesed(KeyEvent event) {
-        // Add search functionality here
-    }
+            txtFindSubject.textProperty().addListener((observable, oldValue, newValue) -> {
+                filter.setPredicate((Predicate<? super SubjectTm>) (SubjectTm subjectTm) -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true; // Return all subjects if the search text is empty
+                    } else {
+                        // Perform case-insensitive matching
+                        return subjectTm.getSubjectName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                subjectTm.getSubjectId().toLowerCase().contains(newValue.toLowerCase()) ||
+                                subjectTm.getSubjectDescription().toLowerCase().contains(newValue.toLowerCase());
+                    }
+                });
+
+                SortedList<SubjectTm> sortedList = new SortedList<>(filter);
+                sortedList.comparatorProperty().bind(tblSubject.comparatorProperty());
+                tblSubject.setItems(sortedList);
+            });
+        }
+
 
     public void loadSubjectTable() {
         ArrayList<SubjectDto> subjectDtos = model.getAllSubjects();
@@ -142,6 +161,9 @@ public class TableSubjectFormController implements Initializable {
         }
 
         tblSubject.setItems(subjectTms);
+
+        filter = new FilteredList(subjectTms, e -> true);
+
     }
 
     @Override

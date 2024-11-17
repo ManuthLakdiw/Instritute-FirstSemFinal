@@ -8,9 +8,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class SubjectModel {
 
@@ -298,6 +296,31 @@ public class SubjectModel {
         }
         return false;
     }
+
+    public SubjectDto searchExitingSubjectBySubjectID(String subjectId) {
+        try {
+            ResultSet resultSet = CrudUtil.execute("SELECT s.sub_id, s.sub_name, GROUP_CONCAT(DISTINCT g.grade ORDER BY g.grade) AS grade_names, s.description FROM subject AS s LEFT JOIN subject_grade AS sg ON s.sub_id = sg.subject_id LEFT JOIN grade AS g ON sg.grade_id = g.g_id WHERE s.sub_id = ? GROUP BY s.sub_id, s.sub_name, s.description ORDER BY s.sub_id;", subjectId);
+
+            // Only process the first row of ResultSet (there should only be one row for a given subjectId)
+            if (resultSet.next()) {
+                String[] gradesArray = resultSet.getString(3) != null ? resultSet.getString(3).split(",") : new String[0];
+
+                // Create the SubjectDto object with data retrieved from the result set
+                SubjectDto subjectDto = new SubjectDto(
+                        resultSet.getString(1), // subjectId
+                        resultSet.getString(2), // subjectName
+                        gradesArray,            // gradesArray
+                        resultSet.getString(4)  // subjectDescription
+                );
+                return subjectDto;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 
 

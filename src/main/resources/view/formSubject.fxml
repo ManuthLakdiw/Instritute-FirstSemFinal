@@ -90,7 +90,7 @@
       </Label>
       <HBox layoutX="17.0" layoutY="187.0" prefHeight="21.0" prefWidth="359.0">
          <children>
-            <Label fx:id="lblSubNameRegex" alignment="TOP_LEFT" onKeyTyped="#lblSubNameRegexOnKeyTyped" prefHeight="17.0" prefWidth="557.0" textFill="#4a4848">
+            <Label fx:id="lblSubNameRegex" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="557.0" textFill="#4a4848">
                <font>
                   <Font name="Humnst777 Cn BT" size="10.0" />
                </font>
