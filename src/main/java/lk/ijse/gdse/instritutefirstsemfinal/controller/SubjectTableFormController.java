@@ -13,23 +13,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-public class TableSubjectFormController implements Initializable {
+public class SubjectTableFormController implements Initializable {
 
     SubjectModel model = new SubjectModel();
-    FormSubjectController formSubjectController = new FormSubjectController();
+    SubjectFormController subjectFormController = new SubjectFormController();
 
 
     @FXML
@@ -64,14 +67,14 @@ public class TableSubjectFormController implements Initializable {
     private void btnSubjectOnAction(ActionEvent event) {
         isButtonClicked = true;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/formSubject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/subjectForm.fxml"));
             Parent load = loader.load();
 
-            FormSubjectController controller = loader.getController();
+            SubjectFormController controller = loader.getController();
 
             controller.setTblSubjectFormController(this);
 
-            this.formSubjectController = controller;
+            this.subjectFormController = controller;
 
             Stage stage = new Stage();
             stage.initModality(null);
@@ -97,28 +100,44 @@ public class TableSubjectFormController implements Initializable {
         SubjectTm isSelected = tblSubject.getSelectionModel().getSelectedItem();
         if (isButtonClicked){
             if (isSelected != null) {
-                String grades = isSelected.getSubjectGrades(); // උදා: "grade 1, grade 2, grade 3"
-                String[] gradeArray = new String[0]; // Default හිස් array එක
+                String grades = isSelected.getSubjectGrades();
+                String[] gradeArray = new String[0];
 
                 if (grades != null && !grades.isEmpty()) {
                     // කොමාවෙන් වෙන් කර String[] එකක් ලෙස ලබා ගන්න
                     gradeArray = grades.split(", ");
                 }
 
-                // SubjectDto object එක නිර්මාණය කිරීම
                 SubjectDto dto = new SubjectDto(
                         isSelected.getSubjectId(),
                         isSelected.getSubjectName(),
-                        gradeArray, // gradeArray එක එකතු කරන ලදී
+                        gradeArray,
                         isSelected.getSubjectDescription()
                 );
-                formSubjectController.setUserDto(dto);
-                formSubjectController.tableOnClickedButton();
+                subjectFormController.setUserDto(dto);
+                subjectFormController.tableOnClickedButton();
 
+            }
+        }if (event.getButton() == MouseButton.SECONDARY) {
+            Optional<ButtonType> result = AlertUtil.ConfirmationAlert("Do you want to delete subject : " + isSelected.getSubjectName()+" ["+isSelected.getSubjectId()+"]", ButtonType.YES, ButtonType.NO);
+            if (result.isPresent()) { // Check if the user clicked a button
+                if (result.get() == ButtonType.YES) {
+                    Optional<ButtonType> confirmDelete = AlertUtil.ConfirmationAlert("Are you sure!", ButtonType.YES, ButtonType.NO);
+                    if (confirmDelete.isPresent()) {
+                        if (confirmDelete.get() == ButtonType.YES) {
+                            boolean isDeleted = model.deleteSubject(isSelected.getSubjectId());
+                            if (isDeleted) {
+                                AlertUtil.informationAlert(UserFormController.class,null,true,"User deleted successfully");
+                                loadSubjectTable();
+                            }else {
+                                AlertUtil.informationAlert(UserFormController.class,null,true,"User could not be deleted successfully");
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
 
     @FXML
     private void txtFindSubjectOnKeyRelesed(KeyEvent event) {

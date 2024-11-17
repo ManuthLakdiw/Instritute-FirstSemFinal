@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
@@ -22,13 +21,13 @@ import org.controlsfx.control.CheckComboBox;
 import java.net.URL;
 import java.util.*;
 
-public class FormSubjectController implements Initializable {
+public class SubjectFormController implements Initializable {
 
     SubjectModel subjectModel = new SubjectModel();
     GradeModel gradeModel = new GradeModel();
-    private TableSubjectFormController tableSubjectFormController;
+    private SubjectTableFormController tableSubjectFormController;
 
-    public void setTblSubjectFormController(TableSubjectFormController tableSubjectFormController) {
+    public void setTblSubjectFormController(SubjectTableFormController tableSubjectFormController) {
         this.tableSubjectFormController = tableSubjectFormController;
     }
 
@@ -224,7 +223,7 @@ public class FormSubjectController implements Initializable {
             SubjectDto updatedSubjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
 
             // Pass only the grade IDs to update the subject
-            boolean isUpdated = subjectModel.updateSubjectWithGrades(updatedSubjectDto, new ArrayList<>(gradeIds));
+             boolean isUpdated = subjectModel.updateSubjectWithGrades(updatedSubjectDto, new ArrayList<>(gradeIds));
             System.out.println(isUpdated);
 
             if (isUpdated) {

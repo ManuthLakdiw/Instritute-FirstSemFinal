@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
-import lk.ijse.gdse.instritutefirstsemfinal.util.NavigationUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -85,7 +84,7 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     void hBoxTeacherOnClicked(MouseEvent event) {
         applyHBoxBackground(hBoxTeacher);
-        navigateTo("/view/teacherForm.fxml", "TeacherForm");
+        navigateTo("/view/tableTeacherForm.fxml", "TeacherForm");
     }
 
     public void hBoxUserOnClicked(MouseEvent mouseEvent) {
@@ -186,7 +185,7 @@ public class MainLayoutFormController implements Initializable {
 
     public void hBoxSubjectOnClicked(MouseEvent mouseEvent) {
         applyHBoxBackground(hBoxSubject);
-        navigateTo("/view/tableSubjectForm.fxml", "SubjectForm");
+        navigateTo("/view/subjectTableForm.fxml", "SubjectForm");
 
     }
 }

@@ -183,6 +183,7 @@
     -fx-background-radius: 5px;
     -fx-padding: 10px;
     -fx-alignment: CENTER_LEFT; /* Align text to center-left */
+
 }
 
 /* Hover effect on rows */
@@ -240,6 +241,22 @@
 .table-view .scroll-bar .track {
     -fx-background-color: transparent; /* Light gray color for the track */
 }
+/* Target the specific column by nth-child or column identifier */
+.table-view .applicable-grades-column {
+    -fx-max-width: 200px; /* Limit width */
+    -fx-text-overflow: ellipsis; /* Add ellipsis */
+    -fx-white-space: nowrap; /* Ensure single-line display */
+    -fx-alignment: CENTER_LEFT; /* Align text to the left */
+}
+
+/* On hover, allow scrolling and full display */
+.table-view .applicable-grades-column:hover {
+    -fx-overflow: auto; /* Enable scrolling */
+    -fx-white-space: normal; /* Allow multi-line display */
+    -fx-max-height: 100px; /* Limit height for scrolling */
+    -fx-background-color: rgba(255, 255, 255, 0.9); /* Optional: hover background */
+}
+
 
 
 

@@ -12,6 +12,7 @@ module lk.ijse.gdse.instritutefirstsemfinal {
     opens lk.ijse.gdse.instritutefirstsemfinal.dto.tm to javafx.base;
     opens lk.ijse.gdse.instritutefirstsemfinal.controller to javafx.fxml;
     exports lk.ijse.gdse.instritutefirstsemfinal;
+    opens lk.ijse.gdse.instritutefirstsemfinal.dto to javafx.base;
 }
 
 

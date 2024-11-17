@@ -1,17 +1,22 @@
 package lk.ijse.gdse.instritutefirstsemfinal.dto.tm;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class TeacherTm {
-
     private String teacherId;
-    private String title;
     private String name;
     private String phoneNumber;
     private String email;
+    private String subjects;
+    private String grades;
+
+
+
 }

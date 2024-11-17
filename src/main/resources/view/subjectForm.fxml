@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<Pane fx:id="subjectPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.FormSubjectController">
+<Pane fx:id="subjectPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.SubjectFormController">
    <children>
-      <ImageView fitHeight="694.0" fitWidth="503.0" layoutX="593.0" layoutY="3.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="381.0" fitWidth="283.0" layoutX="503.0" layoutY="-2.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/studentregistration.png" />
          </image>
@@ -68,7 +68,7 @@
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
-      <HBox layoutX="17.0" layoutY="150.0" prefHeight="47.0" prefWidth="1024.0">
+      <HBox layoutX="17.0" layoutY="150.0" prefHeight="47.0" prefWidth="392.0">
          <children>
             <TextField fx:id="txtSubName" onKeyPressed="#txtSubNameOnKeyPressed" onKeyTyped="#txtSubNameOnKeyTyped" prefHeight="32.0" prefWidth="361.0" promptText="information and communication technology" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
