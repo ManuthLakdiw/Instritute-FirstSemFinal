@@ -2,6 +2,11 @@ package lk.ijse.gdse.instritutefirstsemfinal.dto;
 
 import lombok.*;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 // Lombok annotations at the class level
 @Getter
 @Setter
@@ -23,4 +28,9 @@ public class TeacherDto {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+
+
+
 }
+

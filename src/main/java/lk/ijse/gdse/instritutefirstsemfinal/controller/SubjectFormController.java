@@ -131,7 +131,13 @@ public class SubjectFormController implements Initializable {
         subjectName = txtSubName.getText();
         subjectDescription = tareaDescription.getText();
 
-        // Provide a default description if not specified
+        boolean isExitedSubName = subjectModel.checkExitingSubject(subjectName);
+
+        if (isExitedSubName) {
+            AlertUtil.informationAlert(UserFormController.class, null, true, "Subject name already exists!");
+            return;
+        }
+
         if (subjectDescription == null || subjectDescription.isEmpty()) {
             subjectDescription = "Not specified Description";
         }
@@ -159,10 +165,8 @@ public class SubjectFormController implements Initializable {
                 return;  // Exit the method if no valid grade_ids could be found
             }
 
-            // Create the SubjectDto object with the provided details
             SubjectDto subjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
 
-            // Save the subject and its associated grades
             boolean isSaved = subjectModel.saveSubjectWithGrades(subjectDto, gradeIds);
 
             // Show an alert based on the result of the save operation

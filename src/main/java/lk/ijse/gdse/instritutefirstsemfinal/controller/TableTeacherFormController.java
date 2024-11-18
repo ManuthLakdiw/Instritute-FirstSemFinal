@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -126,16 +123,35 @@ public class TableTeacherFormController implements Initializable {
         colTeachingSubjects.setCellValueFactory(new PropertyValueFactory<>("subjects"));
         colTeachingGrades.setCellValueFactory(new PropertyValueFactory<>("grades"));
 
-        loadTeacherTable();
+        // Apply custom styling to Teacher ID column
+        colTeacherID.setCellFactory(column -> {
+            return new TableCell<TeacherTm, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setStyle(""); // Reset style
+                    } else {
+                        setText(item);
+                        // Apply bold and larger font size to teacher ID
+                        setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+                    }
+                }
+            };
+        });
 
+        loadTeacherTable();
     }
+
 
     public void loadTeacherTable() {
         // Fetching teacher data
         ArrayList<TeacherDto> teacherDtos = teacherModel.getAllTeachers();
         ObservableList<TeacherTm> teacherTms = FXCollections.observableArrayList();
 
-        // Iterating through the teacher DTOs
+        String lastTeacherId = ""; // To track the last teacher ID
+
         for (TeacherDto teacherDto : teacherDtos) {
             String subjects = teacherDto.getSubjects() != null && teacherDto.getSubjects().length > 0
                     ? String.join(", ", teacherDto.getSubjects())
@@ -145,18 +161,45 @@ public class TableTeacherFormController implements Initializable {
                     ? String.join(", ", teacherDto.getGrades())
                     : "N/A";
 
+            // If it's the same teacher as the last one, we don't display their details again
+            String teacherId = teacherDto.getTeacherId();
+            String name = teacherId.equals(lastTeacherId) ? "" : teacherDto.getName();
+            String phone = teacherId.equals(lastTeacherId) ? "" : teacherDto.getPhoneNumber();
+            String email = teacherId.equals(lastTeacherId) ? "" : teacherDto.getEmail();
+
+            if (!teacherId.equals(lastTeacherId) && !lastTeacherId.isEmpty()) {
+                // Add a blank row to visually separate the teachers
+                TeacherTm blankRow = new TeacherTm("", "", "", "", "", "");
+                teacherTms.add(blankRow);
+
+            }
+
+            // Create the TeacherTm object with the teacher's details and subject/grades
             TeacherTm teacherTm = new TeacherTm(
-                    teacherDto.getTeacherId(),
-                    teacherDto.getName(),
-                    teacherDto.getPhoneNumber(),
-                    teacherDto.getEmail(),
+                    teacherId.equals(lastTeacherId) ? "" : teacherDto.getTeacherId(),
+                    name,
+                    phone,
+                    email,
                     subjects,
                     grades
             );
+
+
+            // Add the teacher row to the list
             teacherTms.add(teacherTm);
+
+            // Update lastTeacherId
+            lastTeacherId = teacherId; // Update the last teacher ID
         }
+
+        // Set the items in the table
         tblTeacher.setItems(teacherTms);
+
+
     }
+
+
+
 
 
 }

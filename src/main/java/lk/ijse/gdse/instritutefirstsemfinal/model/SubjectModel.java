@@ -321,7 +321,15 @@ public class SubjectModel {
     }
 
 
-
-
-
+    public boolean checkExitingSubject(String subjectName) {
+        try {
+            ResultSet resultSet = CrudUtil.execute("select sub_name from subject where sub_name = ?", subjectName);
+            if (resultSet.next()) {
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

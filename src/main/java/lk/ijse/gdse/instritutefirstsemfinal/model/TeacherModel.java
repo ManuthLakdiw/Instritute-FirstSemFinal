@@ -31,24 +31,13 @@
 
         public ArrayList<TeacherDto> getAllTeachers() {
             try {
-                ResultSet resultSet = CrudUtil.execute(
-                        "SELECT t.t_id, t.name, t.phone_number, t.email, " +
-                                "GROUP_CONCAT(DISTINCT s.sub_name ORDER BY s.sub_name) AS subjects, " +
-                                "GROUP_CONCAT(DISTINCT g.grade ORDER BY g.grade) AS grades " +
-                                "FROM teacher AS t " +
-                                "LEFT JOIN teacher_subject AS ts ON t.t_id = ts.teacher_id " +
-                                "LEFT JOIN subject AS s ON ts.subject_id = s.sub_id " +
-                                "LEFT JOIN teacher_grade AS tg ON t.t_id = tg.teacher_id " +
-                                "LEFT JOIN grade AS g ON tg.grade_id = g.g_id " +
-                                "GROUP BY t.t_id, t.name, t.phone_number, t.email " +
-                                "ORDER BY t.t_id;"
-                );
+                ResultSet resultSet = CrudUtil.execute("SELECT t.t_id, t.name, t.phone_number, t.email, s.sub_name AS subject, GROUP_CONCAT(DISTINCT g.grade ORDER BY g.grade) AS grades FROM teacher AS t LEFT JOIN teacher_subject AS ts ON t.t_id = ts.teacher_id LEFT JOIN subject AS s ON ts.subject_id = s.sub_id LEFT JOIN teacher_grade AS tg ON t.t_id = tg.teacher_id LEFT JOIN grade AS g ON tg.grade_id = g.g_id GROUP BY t.t_id, t.name, t.phone_number, t.email, s.sub_name ORDER BY t.t_id, s.sub_name");
 
                 ArrayList<TeacherDto> teachers = new ArrayList<>();
                 while (resultSet.next()) {
-                    String[] subjectArray = resultSet.getString("subjects") != null
-                            ? resultSet.getString("subjects").split(",")
-                            : new String[0];
+                    String[] subjectArray = resultSet.getString("subject") != null
+                            ? resultSet.getString("subject").split(",")
+                            : new String[0]; // Fixed the column name to "subject"
 
                     String[] gradeArray = resultSet.getString("grades") != null
                             ? resultSet.getString("grades").split(",")
@@ -70,6 +59,7 @@
             }
             return null;
         }
+
 
 
         public List<String> getSubjectIdsFromName(List<String> subjects) {
