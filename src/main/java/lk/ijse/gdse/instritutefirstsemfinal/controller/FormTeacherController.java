@@ -89,7 +89,16 @@ public class FormTeacherController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+
+
     }
+
+    @FXML
+    void btnUpdateOnAction(ActionEvent event) {
+
+
+    }
+
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
@@ -143,14 +152,6 @@ public class FormTeacherController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Failed to save teacher. Please try again!").show();
         }
     }
-
-
-    @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
-
-    }
-
 
     @FXML
     void txtContactNumberOnKeyPressed(KeyEvent event) {
@@ -214,7 +215,6 @@ public class FormTeacherController implements Initializable {
     }
 
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get all subjects from the model
@@ -223,9 +223,18 @@ public class FormTeacherController implements Initializable {
         txtEmailAddress.textProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
 
         // Add listener to ComboBox
-        cmbSubject.valueProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
+        cmbSubject.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Reset TreeView grades when subject changes
+            if (treeViewSUbAndGrades.getRoot() != null) {
+                for (TreeItem<String> gradeItem : treeViewSUbAndGrades.getRoot().getChildren()) {
+                    CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
+                    checkBoxItem.setSelected(false); // Unselect all grades
+                }
+            }
+            isSaveEnable(); // Recheck Save button state
+        });
 
-        // Ensure TreeView items are dynamically validated when a root is set
+        // Add listener to TreeView
         treeViewSUbAndGrades.rootProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 for (TreeItem<String> gradeItem : newValue.getChildren()) {
@@ -235,7 +244,6 @@ public class FormTeacherController implements Initializable {
             }
         });
 
-        // Call the refresh method
         refreshPage();
     }
 
@@ -270,27 +278,29 @@ public class FormTeacherController implements Initializable {
     }
 
     private void isSaveEnable() {
-        boolean isTitleValid = cmbSubject.getValue() != null && !cmbSubject.getValue().isEmpty();
-        boolean isNameValid = txtName != null && !txtName.getText().isEmpty() && txtName.getText().matches(nameRegex);
-        boolean isContactNumberValid = txtContactNumber != null && !txtContactNumber.getText().isEmpty() && txtContactNumber.getText().matches(phoneNumberRegex);
-        boolean isEmailValid = txtEmailAddress != null && !txtEmailAddress.getText().isEmpty() && txtEmailAddress.getText().matches(emailRegex);
+        // Validate TextFields
+        boolean isNameFilled = !txtName.getText().trim().isEmpty();
+        boolean isContactNumberFilled = !txtContactNumber.getText().trim().isEmpty();
+        boolean isEmailFilled = !txtEmailAddress.getText().trim().isEmpty();
 
-        // Check if at least one grade is selected in TreeView
+        // Validate ComboBox
+        boolean isSubjectSelected = cmbSubject.getValue() != null;
+
+        // Validate TreeView (at least one grade should be selected)
         boolean isGradeSelected = false;
-        if (treeViewSUbAndGrades != null && treeViewSUbAndGrades.getRoot() != null) {
+        if (treeViewSUbAndGrades.getRoot() != null) {
             for (TreeItem<String> gradeItem : treeViewSUbAndGrades.getRoot().getChildren()) {
                 CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
                 if (checkBoxItem.isSelected()) {
                     isGradeSelected = true;
-                    break; // No need to check further once we find a selected grade
+                    break;
                 }
             }
         }
 
-        // Enable/Disable the Save button based on the validation results
-        btnSave.setDisable(!(isTitleValid && isNameValid && isContactNumberValid && isEmailValid && isGradeSelected));
+        // Enable or Disable Save button based on validation
+        btnSave.setDisable(!(isNameFilled && isContactNumberFilled && isEmailFilled && isSubjectSelected && isGradeSelected));
     }
-
 
     private void checkFieldsEmpty() {
         // Check if the combo box, name, contact, email, or any grade is filled/selected
@@ -350,7 +360,6 @@ public class FormTeacherController implements Initializable {
         }
         isSaveEnable();
     }
-
 
     public void txtEmailAddressOnKeyPressed(KeyEvent keyEvent) {
         if (txtEmailAddress.getText().isEmpty()) {
@@ -442,8 +451,6 @@ public class FormTeacherController implements Initializable {
        isSaveEnable();
 
     }
-
-
 
     public void treeViewSUbAndGradesMouseEntered(MouseEvent mouseEvent) {
         if (cmbSubject.getSelectionModel().getSelectedItem() == null) {
