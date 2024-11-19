@@ -18,15 +18,16 @@ public class TeacherDto {
     private String name;
     private String phoneNumber;
     private String email;
-    private String[] subjects;
+    private String subject;
     private String[] grades;
 
     // Additional constructor for a partial object
-    public TeacherDto(String teacherId, String name, String phoneNumber, String email) {
+    public TeacherDto(String teacherId, String name, String phoneNumber, String email, String subject) {
         this.teacherId = teacherId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.subject = subject;
     }
 
 

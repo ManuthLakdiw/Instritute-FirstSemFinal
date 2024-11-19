@@ -150,53 +150,29 @@ public class TableTeacherFormController implements Initializable {
         ArrayList<TeacherDto> teacherDtos = teacherModel.getAllTeachers();
         ObservableList<TeacherTm> teacherTms = FXCollections.observableArrayList();
 
-        String lastTeacherId = ""; // To track the last teacher ID
-
         for (TeacherDto teacherDto : teacherDtos) {
-            String subjects = teacherDto.getSubjects() != null && teacherDto.getSubjects().length > 0
-                    ? String.join(", ", teacherDto.getSubjects())
-                    : "N/A";
-
             String grades = teacherDto.getGrades() != null && teacherDto.getGrades().length > 0
                     ? String.join(", ", teacherDto.getGrades())
                     : "N/A";
 
-            // If it's the same teacher as the last one, we don't display their details again
-            String teacherId = teacherDto.getTeacherId();
-            String name = teacherId.equals(lastTeacherId) ? "" : teacherDto.getName();
-            String phone = teacherId.equals(lastTeacherId) ? "" : teacherDto.getPhoneNumber();
-            String email = teacherId.equals(lastTeacherId) ? "" : teacherDto.getEmail();
-
-            if (!teacherId.equals(lastTeacherId) && !lastTeacherId.isEmpty()) {
-                // Add a blank row to visually separate the teachers
-                TeacherTm blankRow = new TeacherTm("", "", "", "", "", "");
-                teacherTms.add(blankRow);
-
-            }
-
-            // Create the TeacherTm object with the teacher's details and subject/grades
+            // Create the TeacherTm object with the teacher's details and grades
             TeacherTm teacherTm = new TeacherTm(
-                    teacherId.equals(lastTeacherId) ? "" : teacherDto.getTeacherId(),
-                    name,
-                    phone,
-                    email,
-                    subjects,
+                    teacherDto.getTeacherId(),
+                    teacherDto.getName(),
+                    teacherDto.getPhoneNumber(),
+                    teacherDto.getEmail(),
+                    teacherDto.getSubject(), // Directly using subject as a single value
                     grades
             );
 
-
             // Add the teacher row to the list
             teacherTms.add(teacherTm);
-
-            // Update lastTeacherId
-            lastTeacherId = teacherId; // Update the last teacher ID
         }
 
         // Set the items in the table
         tblTeacher.setItems(teacherTms);
-
-
     }
+
 
 
 

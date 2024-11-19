@@ -1,9 +1,5 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeView;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,22 +7,14 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import lk.ijse.gdse.instritutefirstsemfinal.dbConnection.DBConnection;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
-import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
-import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
-import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
-import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.CheckTreeView;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,8 +22,6 @@ import java.util.ResourceBundle;
 public class FormTeacherController implements Initializable {
 
     TeacherModel teacherModel = new TeacherModel();
-    SubjectDto subjectDto = new SubjectDto();
-    GradeModel gradeModel = new GradeModel();
     SubjectModel subjectModel = new SubjectModel();
     private TableTeacherFormController tableTeacherFormController;
 
@@ -51,7 +37,8 @@ public class FormTeacherController implements Initializable {
 
     private String nameRegex = "^[A-Za-z]+(\\.[A-Za-z]+)*(\\s[A-Za-z]+)*$";
     private String phoneNumberRegex = "^0\\d{9}$";
-    private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" ;;
+    private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    ;
 
     @FXML
     private Button btnDelete;
@@ -66,9 +53,10 @@ public class FormTeacherController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private CheckComboBox<String> checkComboBoxSubject;
+    private Label lblGrades;
 
-
+    @FXML
+    private ComboBox<String> cmbSubject;
 
     @FXML
     private CheckTreeView<String> treeViewSUbAndGrades;
@@ -99,105 +87,64 @@ public class FormTeacherController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        // Clear the TreeView root
-//        treeViewSUbAndGrades.setRoot(null);
-//
-//        // Create the root item for TreeView
-//        CheckBoxTreeItem<String> rootItem = new CheckBoxTreeItem<>("Subjects");
-//        rootItem.setExpanded(true); // Make the root expanded by default
-//
-//        // Get the selected subjects from CheckComboBox
-//        List<String> selectedSubjects = checkComboBoxSubject.getCheckModel().getCheckedItems();
-//
-//        // For each selected subject, get its grades and create CheckBoxTreeItems
-//        for (String subjectName : selectedSubjects) {
-//            // Get grades for the selected subject
-//            List<String> grades = gradeModel.getAllSubjects(subjectName);
-//
-//            // Create a CheckBoxTreeItem for the subject
-//            CheckBoxTreeItem<String> subjectItem = new CheckBoxTreeItem<>(subjectName);
-//
-//            // Add grades as child nodes to the subject node
-//            for (String grade : grades) {
-//                // Create a CheckBoxTreeItem for each grade
-//                CheckBoxTreeItem<String> gradeItem = new CheckBoxTreeItem<>(grade);
-//                subjectItem.getChildren().add(gradeItem);
-//            }
-//
-//            // Add a listener to select all children when the root is selected
-//            subjectItem.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//                // Select or deselect all child nodes (grades)
-//                for (TreeItem<String> child : subjectItem.getChildren()) {
-//                    if (child instanceof CheckBoxTreeItem) {
-//                        ((CheckBoxTreeItem<String>) child).setSelected(newValue);
-//                    }
-//                }
-//            });
-//
-//            // Add the subject item to the root item
-//            rootItem.getChildren().add(subjectItem);
-//        }
-//
-//        // Set the root for the TreeView
-//        treeViewSUbAndGrades.setRoot(rootItem);
-//    }
-
     }
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
+        cmbSubject.getSelectionModel().clearSelection();
         refreshPage();
 
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        List<String> selectedSubjects = checkComboBoxSubject.getCheckModel().getCheckedItems();
+        // Collect teacher details from the form
+        String teacherId = lblTeacherID.getText();
+        String name = txtName.getText();
+        String phoneNumber = txtContactNumber.getText();
+        String email = txtEmailAddress.getText();
+        String subjectName = cmbSubject.getSelectionModel().getSelectedItem();
+
+        // Collect grades from the tree view
         List<String> selectedGrades = new ArrayList<>();
+        TreeItem<String> root = treeViewSUbAndGrades.getRoot(); // TreeItem<String> instead of CheckTreeItem for root
 
-        for (TreeItem<String> subjectItem : treeViewSUbAndGrades.getRoot().getChildren()) {
-            CheckBoxTreeItem<String> checkBoxSubjectItem = (CheckBoxTreeItem<String>) subjectItem;
-
-            for (TreeItem<String> gradeItem : checkBoxSubjectItem.getChildren()) {
-                CheckBoxTreeItem<String> checkBoxGradeItem = (CheckBoxTreeItem<String>) gradeItem;
-
-                if (checkBoxGradeItem.isSelected()) {
-                    selectedGrades.add(checkBoxGradeItem.getValue());
+        if (root != null) {
+            // Traverse the children of the root to check selected grades
+            for (TreeItem<String> gradeItem : root.getChildren()) {
+                if (gradeItem instanceof CheckBoxTreeItem) {
+                    CheckBoxTreeItem<String> checkTreeItem = (CheckBoxTreeItem<String>) gradeItem;
+                    if (checkTreeItem.isSelected()) {
+                        selectedGrades.add(checkTreeItem.getValue()); // Add selected grade
+                    }
                 }
             }
         }
 
-        System.out.println(lblTeacherID.getText());
-        System.out.println(txtName.getText());
-        System.out.println(txtContactNumber.getText());
-        System.out.println(txtEmailAddress.getText());
+        // Validate input
+        if (teacherId.isEmpty() || name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || subjectName == null || selectedGrades.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please fill all fields and select at least one grade!").show();
+            return;
+        }
 
-        // Create TeacherDto object based on form input
-        TeacherDto teacherDto = new TeacherDto(
-                lblTeacherID.getText(),
-                txtName.getText(),
-                txtContactNumber.getText(),
-                txtEmailAddress.getText()
-        );
+        // Create TeacherDto object
+        TeacherDto teacherDto = new TeacherDto(teacherId, name, phoneNumber, email, subjectName);
 
-
-
-        // Save teacher and link subjects and grades
-        boolean isSaved = teacherModel.saveTeacher(teacherDto, selectedSubjects, selectedGrades);
+        // Save teacher details
+        boolean isSaved = teacherModel.saveTeacher(teacherDto, selectedGrades);
 
         if (isSaved) {
-            System.out.println("Teacher saved successfully!");
-            refreshPage();
-            tableTeacherFormController.loadTeacherTable();
+            new Alert(Alert.AlertType.INFORMATION, "Teacher saved successfully!").show();
+            refreshPage();  // Refresh the form
         } else {
-            System.out.println("Failed to save teacher.");
+            new Alert(Alert.AlertType.ERROR, "Failed to save teacher. Please try again!").show();
         }
     }
 
 
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+
 
     }
 
@@ -209,28 +156,73 @@ public class FormTeacherController implements Initializable {
 
     @FXML
     void txtContactNumberOnKeyTyped(KeyEvent event) {
+        contactNo = txtContactNumber.getText();
+        btnReset.setDisable(false);
+        lblPhoneNumber.setStyle("-fx-text-fill: #4a4848;");
+        ArrayList<TeacherDto> teacherDtos = teacherModel.getAllTeachers();
+        ArrayList<String> teacherContactNumbers = new ArrayList<>();
+
+        for (TeacherDto teacherDto : teacherDtos) {
+            teacherContactNumbers.add(teacherDto.getPhoneNumber());
+        }
+
+        if (contactNo.isEmpty()) {
+            btnReset.setDisable(true);
+            lblPhoneNumber.setText("");
+            RegexUtil.resetStyle(txtContactNumber);
+            checkFieldsEmpty();
+            return;
+        }
+
+        boolean contactExists = false;
+        for (String existingContactNumber : teacherContactNumbers) {
+            if (existingContactNumber.equals(contactNo)) {
+                contactExists = true;
+                break;
+            }
+        }
+
+
+        if (contactExists) {
+            lblPhoneNumber.setStyle("-fx-text-fill: red");
+            lblPhoneNumber.setText("ContactNumber already exists!");
+            RegexUtil.setErrorStyle(false, txtContactNumber);
+        } else if (contactNo.matches(phoneNumberRegex)) {
+            lblPhoneNumber.setText("");
+            RegexUtil.resetStyle(txtContactNumber);
+        } else if (!contactNo.matches(phoneNumberRegex)) {
+            lblPhoneNumber.setStyle("-fx-text-fill: red");
+            lblPhoneNumber.setText("ContactNumber must be 10 numbers and start with \"0\"");
+            RegexUtil.setErrorStyle(false, txtContactNumber);
+        }
+        isSaveEnable();
 
     }
 
-    @FXML
-    void txtEmailAddressOnKeyPressed(KeyEvent event) {
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Get all subjects from the model
+        ArrayList<SubjectDto> subjectInformations = subjectModel.getAllSubjects();
+
+        // Add subjects to the ComboBox
+        for (SubjectDto subjectDto : subjectInformations) {
+            cmbSubject.getItems().add(subjectDto.getSubjectName());
+        }
+
+//        cmbSubject.setOnAction(event -> {
+//            if (cmbSubject.getValue() != null) {
+//                btnReset.setDisable(false);
+//                isSaveEnable();
+//            }else {
+//                btnReset.setDisable(true);
+//            }
+//        });
+
+        refreshPage();
     }
 
-    @FXML
-    void txtEmailAddressOnKeyTyped(KeyEvent event) {
-
-    }
-
-    @FXML
-    void txtNameOnKeyPressed(KeyEvent event) {
-
-    }
-
-    @FXML
-    void txtNameOnKeyTyped(KeyEvent event) {
-
-    }
 
     private void refreshPage() {
 
@@ -238,13 +230,12 @@ public class FormTeacherController implements Initializable {
         lblTeacherID.setText(nextTeacherID);
 
         RegexUtil.resetStyle(txtContactNumber, txtEmailAddress, txtName);
-        checkComboBoxSubject.getCheckModel().clearChecks();
         treeViewSUbAndGrades.setRoot(null);
 
         btnSave.setVisible(true);
-//        btnSave.setDisable(true);
+        //        btnSave.setDisable(true);
         btnReset.setDisable(true);
-//        btnDelete.setDisable(true);
+        btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
         txtName.setText("");
         txtContactNumber.setText("");
@@ -252,83 +243,110 @@ public class FormTeacherController implements Initializable {
         lblEmail.setText("");
         lblName.setText("");
         lblPhoneNumber.setText("");
+        lblGrades.setText("");
     }
 
+    private void isSaveEnable() {
+        boolean isTitleValid = cmbSubject.getValue() != null && !cmbSubject.getValue().isEmpty();
+        boolean isNameValid = txtName != null && !txtName.getText().isEmpty() && txtName.getText().matches(nameRegex);
+        boolean isContactNumberValid = txtContactNumber != null && !txtContactNumber.getText().isEmpty() && txtContactNumber.getText().matches(phoneNumberRegex);
+        boolean isEmailValid = txtEmailAddress != null && !txtEmailAddress.getText().isEmpty() && txtEmailAddress.getText().matches(emailRegex);
 
-    private void populateSubjectCheckComboBox() {
-        try {
-            List<SubjectDto> subjects = subjectModel.getAllSubjects();
-
-            for (SubjectDto subject : subjects) {
-                checkComboBoxSubject.getItems().add(subject.getSubjectName());
+        // Check if at least one grade is selected in TreeView
+        boolean isGradeSelected = false;
+        if (treeViewSUbAndGrades != null && treeViewSUbAndGrades.getRoot() != null) {
+            for (TreeItem<String> gradeItem : treeViewSUbAndGrades.getRoot().getChildren()) {
+                CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
+                if (checkBoxItem.isSelected()) {
+                    isGradeSelected = true;
+                    break; // No need to check further once we find a selected grade
+                }
             }
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            AlertUtil.errorAlert(this.getClass(), null, "Failed to load subjects.");
         }
+
+        // Enable/Disable the Save button based on the validation results
+        btnSave.setDisable(!(isTitleValid && isNameValid && isContactNumberValid && isEmailValid && isGradeSelected));
     }
 
+
+    private void checkFieldsEmpty() {
+        // Check if the combo box, name, contact, email, or any grade is filled/selected
+        boolean isFilled = (cmbSubject.getValue() != null && !cmbSubject.getValue().isEmpty()) ||
+                (txtName.getText() != null && !txtName.getText().isEmpty()) ||
+                (txtContactNumber.getText() != null && !txtContactNumber.getText().isEmpty()) ||
+                (txtEmailAddress.getText() != null && !txtEmailAddress.getText().isEmpty());
+
+        // Check if at least one grade is selected
+        boolean isGradeSelected = false;
+        if (treeViewSUbAndGrades != null && treeViewSUbAndGrades.getRoot() != null) {
+            for (TreeItem<String> gradeItem : treeViewSUbAndGrades.getRoot().getChildren()) {
+                CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
+                if (checkBoxItem.isSelected()) {
+                    isGradeSelected = true;
+                    break; // No need to check further once we find a selected grade
+                }
+            }
+        }
+
+        // Enable/Disable the Reset button based on whether any field is filled or a grade is selected
+        btnReset.setDisable(!(isFilled || isGradeSelected));
+    }
 
     @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        refreshPage();
-        populateSubjectCheckComboBox();
+    private void cmbSubjectOnAction(ActionEvent actionEvent) {
+        String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
 
-        // Add a ListChangeListener to monitor changes in checked items
-        checkComboBoxSubject.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
-            // Whenever the list of checked items changes, update the TreeView
-            updateTreeViewForSelectedSubjects((ObservableList<String>) c.getList()); // c.getList() returns ObservableList
-        });
-    }
+        // If no subject is selected, disable the TreeView
+        if (selectedSubject == null) {
+            treeViewSUbAndGrades.setOpacity(0.5);
+            return;
+        }
+        checkFieldsEmpty();
+        treeViewSUbAndGrades.setOpacity(1);
+        ArrayList<SubjectDto> allSubjects = subjectModel.getAllSubjects();
 
-    private void updateTreeViewForSelectedSubjects(ObservableList<String> selectedSubjects) {
-        try {
-            // Clear the TreeView root
-            treeViewSUbAndGrades.setRoot(null);
+        for (SubjectDto subjectDto : allSubjects) {
+            if (subjectDto.getSubjectName().equals(selectedSubject)) {
+                String[] grades = subjectDto.getSubjectGrades();
 
-            // Create the root item for TreeView
-            CheckBoxTreeItem<String> rootItem = new CheckBoxTreeItem<>("Subjects");
-            rootItem.setExpanded(true); // Make the root expanded by default
+                // Create the root item for the TreeView with the selected subject
+                CheckBoxTreeItem<String> rootItem = new CheckBoxTreeItem<>(selectedSubject);
+                rootItem.setExpanded(true);
 
-            // For each selected subject, get its grades and create CheckBoxTreeItems
-            for (String subjectName : selectedSubjects) {
-                // Get grades for the selected subject
-                List<String> grades = gradeModel.getAllSubjects(subjectName);
-
-                // Create a CheckBoxTreeItem for the subject
-                CheckBoxTreeItem<String> subjectItem = new CheckBoxTreeItem<>(subjectName);
-
-                // Add grades as child nodes to the subject node
+                // Create grade items and add them to the root
                 for (String grade : grades) {
-                    // Create a CheckBoxTreeItem for each grade
                     CheckBoxTreeItem<String> gradeItem = new CheckBoxTreeItem<>(grade);
-                    subjectItem.getChildren().add(gradeItem);
+                    rootItem.getChildren().add(gradeItem);
                 }
 
-                // Add a listener to select all children when the subject is selected
-                subjectItem.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                    // Select or deselect all child nodes (grades)
-                    for (TreeItem<String> child : subjectItem.getChildren()) {
-                        if (child instanceof CheckBoxTreeItem) {
-                            ((CheckBoxTreeItem<String>) child).setSelected(newValue);
-                        }
-                    }
-                });
-
-                // Add the subject item to the root item
-                rootItem.getChildren().add(subjectItem);
+                // Set the root of the TreeView
+                treeViewSUbAndGrades.setRoot(rootItem);
+                return; // Exit once the subject is found and TreeView is updated
             }
-
-            // Set the root for the TreeView
-            treeViewSUbAndGrades.setRoot(rootItem);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            AlertUtil.errorAlert(this.getClass(), null, "Failed to load grades for subjects.");
         }
     }
 
+
+    public void txtEmailAddressOnKeyPressed(KeyEvent keyEvent) {
+    }
+
+    public void txtEmailAddressOnKeyTyped(KeyEvent keyEvent) {
+    }
+
+    public void txtNameOnKeyPressed(KeyEvent keyEvent) {
+    }
+
+    public void txtNameOnKeyTyped(KeyEvent keyEvent) {
+    }
+
+
+    public void treeViewSUbAndGradesMouseEntered(MouseEvent mouseEvent) {
+        if (cmbSubject.getSelectionModel().getSelectedItem() == null) {
+            lblGrades.setText("First you choose a Subject");
+        }
+    }
+
+    public void treeViewSUbAndGradesMouseExited(MouseEvent mouseEvent) {
+        lblGrades.setText("");
+    }
 }

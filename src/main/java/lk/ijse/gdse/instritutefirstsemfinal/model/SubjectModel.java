@@ -377,7 +377,7 @@ public class SubjectModel {
                         }
                     }
                 }
-                break; // Exit loop once the subject is found
+                break;
             }
         }
         return gradeIds;
@@ -399,7 +399,7 @@ public class SubjectModel {
                 subjectId = resultSet.getString("sub_id");
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle any potential SQL exceptions
+            e.printStackTrace();
         }
 
         return subjectId;

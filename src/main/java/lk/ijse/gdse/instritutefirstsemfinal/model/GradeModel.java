@@ -49,5 +49,44 @@ public class GradeModel {
 
 
 
+        // Fetch grades based on the subject name
+        public List<String> getGradesForSubject(String subjectName) throws SQLException {
+            List<String> grades = new ArrayList<>();
+
+            String sql = "SELECT g.grade_name FROM grade g " +
+                    "JOIN subject_grade sg ON g.grade_id = sg.grade_id " +
+                    "JOIN subject s ON sg.subject_id = s.subject_id " +
+                    "WHERE s.subject_name = ?";
+            ResultSet resultSet = CrudUtil.execute(sql, subjectName);
+
+            while (resultSet.next()) {
+                grades.add(resultSet.getString("grade_name"));
+            }
+
+            return grades;
+        }
+
+
+
+    public String getGradeIdFromName(String grade) {
+        String gradeID = null;
+
+        try {
+            // Prepare a query to retrieve the subject ID for a single subject name
+            String query = "SELECT g_id FROM grade WHERE grade = ?";
+
+            // Execute the query with the provided subject name
+            ResultSet resultSet = CrudUtil.execute(query, grade);
+
+            // Extract the subject ID from the result set
+            if (resultSet.next()) {
+                gradeID = resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gradeID;
+    }
 
 }
