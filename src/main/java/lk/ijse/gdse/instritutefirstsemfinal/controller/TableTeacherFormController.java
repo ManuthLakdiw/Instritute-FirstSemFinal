@@ -2,6 +2,8 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,15 +16,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.TeacherTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class TableTeacherFormController implements Initializable {
 
@@ -63,7 +70,10 @@ public class TableTeacherFormController implements Initializable {
     @FXML
     private TextField txtFindTeacher;
 
-    boolean isButtonClicked = false;
+    private FilteredList<TeacherTm> filter;  // Declare the filter as a member variable
+
+
+    public boolean isButtonClicked = false;
 
     @FXML
     void btnSendMailOnAction(ActionEvent event) {
@@ -72,7 +82,6 @@ public class TableTeacherFormController implements Initializable {
 
     @FXML
     void btnTeacherOnAction(ActionEvent event) {
-        isButtonClicked = true;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/formTeacherController.fxml"));
             Parent load = loader.load();
@@ -102,14 +111,51 @@ public class TableTeacherFormController implements Initializable {
         }
 
     }
-
     @FXML
     void tblTeacherOnClicked(MouseEvent event) {
+        isButtonClicked = true;
+                TeacherTm selectedItem =tblTeacher.getSelectionModel().getSelectedItem();
+                String grades = selectedItem.getGrades();
+                String[] gradeArray = new String[0];
+
+                if (grades != null && !grades.isEmpty()) {
+                    gradeArray = grades.split(", ");
+                }
+
+                TeacherDto dto = new TeacherDto(
+                        selectedItem.getTeacherId(),
+                        selectedItem.getName(),
+                        selectedItem.getPhoneNumber(),
+                        selectedItem.getEmail(),
+                        selectedItem.getSubjects(),
+                        gradeArray
+
+                );
+                formTeacherController.setDto(dto);
+                formTeacherController.tableOnClickedButton();
+
+
 
     }
 
     @FXML
     void txtFindTeacherOnKeyRelesed(KeyEvent event) {
+        txtFindTeacher.textProperty().addListener((observable, oldValue, newValue) -> {
+            filter.setPredicate((Predicate<? super TeacherTm>) (TeacherTm teacherTm) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // Return all subjects if the search text is empty
+                } else {
+                    // Perform case-insensitive matching
+                    return teacherTm.getTeacherId().toLowerCase().contains(newValue.toLowerCase()) ||
+                            teacherTm.getName().toLowerCase().contains(newValue.toLowerCase());
+
+                }
+            });
+
+            SortedList<TeacherTm> sortedList = new SortedList<>(filter);
+            sortedList.comparatorProperty().bind(tblTeacher.comparatorProperty());
+            tblTeacher.setItems(sortedList);
+        });
 
     }
 
@@ -123,30 +169,28 @@ public class TableTeacherFormController implements Initializable {
         colTeachingSubjects.setCellValueFactory(new PropertyValueFactory<>("subjects"));
         colTeachingGrades.setCellValueFactory(new PropertyValueFactory<>("grades"));
 
-        // Apply custom styling to Teacher ID column
-        colTeacherID.setCellFactory(column -> {
-            return new TableCell<TeacherTm, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                        setStyle(""); // Reset style
-                    } else {
-                        setText(item);
-                        // Apply bold and larger font size to teacher ID
-                        setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
-                    }
-                }
-            };
-        });
+//        colTeacherID.setCellFactory(column -> {
+//            return new TableCell<TeacherTm, String>() {
+//                @Override
+//                protected void updateItem(String item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    if (empty || item == null) {
+//                        setText(null);
+//                        setStyle(""); // Reset style
+//                    } else {
+//                        setText(item);
+//                        // Apply bold and larger font size to teacher ID
+//                        setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+//                    }
+//                }
+//            };
+//        });
 
         loadTeacherTable();
     }
 
 
     public void loadTeacherTable() {
-        // Fetching teacher data
         ArrayList<TeacherDto> teacherDtos = teacherModel.getAllTeachers();
         ObservableList<TeacherTm> teacherTms = FXCollections.observableArrayList();
 
@@ -155,23 +199,28 @@ public class TableTeacherFormController implements Initializable {
                     ? String.join(", ", teacherDto.getGrades())
                     : "N/A";
 
-            // Create the TeacherTm object with the teacher's details and grades
             TeacherTm teacherTm = new TeacherTm(
                     teacherDto.getTeacherId(),
                     teacherDto.getName(),
                     teacherDto.getPhoneNumber(),
                     teacherDto.getEmail(),
-                    teacherDto.getSubject(), // Directly using subject as a single value
+                    teacherDto.getSubject(),
                     grades
             );
 
-            // Add the teacher row to the list
             teacherTms.add(teacherTm);
         }
 
-        // Set the items in the table
         tblTeacher.setItems(teacherTms);
+
+        filter = new FilteredList(teacherTms, e -> true);
+
+
     }
+
+
+
+
 
 
 

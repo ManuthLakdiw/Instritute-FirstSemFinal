@@ -334,55 +334,6 @@ public class SubjectModel {
         return false;
     }
 
-    public List<String> getSubjectIdsFromNames(List<String> subjectNames) {
-        List<String> subjectIds = new ArrayList<>();
-
-        try {
-            // Convert List<String> to String[] to ensure proper parameter passing
-            String[] subjectNamesArray = subjectNames.toArray(new String[0]);
-
-            // Prepare a dynamic query with placeholders for each subject name
-            String query = "SELECT sub_id FROM subject WHERE sub_name IN (" +
-                    String.join(",", Collections.nCopies(subjectNames.size(), "?")) + ")";
-
-            // Execute the query with the provided subject names
-            ResultSet resultSet = CrudUtil.execute(query, (Object[]) subjectNamesArray);  // Cast to Object[] to pass to execute
-
-            // Extract the subject IDs from the result set
-            while (resultSet.next()) {
-                subjectIds.add(resultSet.getString("sub_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle any potential SQL exceptions
-        }
-
-        return subjectIds;
-    }
-
-
-    public List<String> getGradeIdsForSubject(String subjectName, List<String> gradeNames) {
-        List<String> gradeIds = new ArrayList<>();
-        // Get all subjects with their grades
-        ArrayList<SubjectDto> subjects = getAllSubjects(); // Assume this method fetches all subjects
-
-        // Loop through the subjects to find the one matching the subjectName
-        for (SubjectDto subject : subjects) {
-            if (subject.getSubjectName().equals(subjectName)) {
-                // Match grades for the subject and add their IDs
-                for (String grade : subject.getSubjectGrades()) {
-                    if (gradeNames.contains(grade)) {
-                        List<String> gradeId = getGradeIdsFromNames(Collections.singletonList(grade)); // Assuming this returns a list of IDs
-                        if (!gradeId.isEmpty()) {
-                            gradeIds.add(gradeId.get(0)); // Add the first ID from the returned list
-                        }
-                    }
-                }
-                break;
-            }
-        }
-        return gradeIds;
-    }
-
 
     public String getSubjectIdFromName(String subjectName) {
         String subjectId = null;

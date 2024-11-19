@@ -410,11 +410,6 @@ public class SubjectFormController implements Initializable {
         if (currentSubject == null) {
             return false;
         }
-//
-//        System.out.println("Current Subject ID: " + currentSubject.getSubjectId());
-//        System.out.println("Current Subject Name: " + currentSubject.getSubjectName());
-//        System.out.println("Current Subject Description: " + currentSubject.getSubjectDescription());
-//        System.out.println("Current Subject Grades: " + currentSubject.getGradeIds());
 
         boolean isNameUnchanged = subjectName.equals(currentSubject.getSubjectName());
         boolean isDescriptionUnchanged = subjectDescription.equals(currentSubject.getSubjectDescription());

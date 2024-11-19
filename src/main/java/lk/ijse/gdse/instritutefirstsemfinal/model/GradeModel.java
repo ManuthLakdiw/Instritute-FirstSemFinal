@@ -50,20 +50,22 @@ public class GradeModel {
 
 
         // Fetch grades based on the subject name
-        public List<String> getGradesForSubject(String subjectName) throws SQLException {
-            List<String> grades = new ArrayList<>();
+        public List<String> getGradesForSubject(String subjectName)  {
+            try {
+                List<String> grades = new ArrayList<>();
 
-            String sql = "SELECT g.grade_name FROM grade g " +
-                    "JOIN subject_grade sg ON g.grade_id = sg.grade_id " +
-                    "JOIN subject s ON sg.subject_id = s.subject_id " +
-                    "WHERE s.subject_name = ?";
-            ResultSet resultSet = CrudUtil.execute(sql, subjectName);
+                    String sql = "SELECT s.sub_name, g.grade FROM grade g JOIN subject_grade sg ON g.g_id = sg.grade_id JOIN subject s ON sg.subject_id = s.sub_id WHERE s.sub_name = ?";
+                ResultSet resultSet = CrudUtil.execute(sql, subjectName);
 
-            while (resultSet.next()) {
-                grades.add(resultSet.getString("grade_name"));
+                while (resultSet.next()) {
+                    grades.add(resultSet.getString(2));
+                }
+
+                return grades;
+            }catch (SQLException e){
+                e.printStackTrace();
             }
-
-            return grades;
+            return null;
         }
 
 
