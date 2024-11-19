@@ -12,6 +12,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.controlsfx.control.CheckTreeView;
 
@@ -122,11 +123,11 @@ public class FormTeacherController implements Initializable {
             }
         }
 
-        // Validate input
-        if (teacherId.isEmpty() || name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || subjectName == null || selectedGrades.isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Please fill all fields and select at least one grade!").show();
-            return;
-        }
+//        // Validate input
+//        if (teacherId.isEmpty() || name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || subjectName == null || selectedGrades.isEmpty()) {
+//            new Alert(Alert.AlertType.WARNING, "Please fill all fields and select at least one grade!").show();
+//            return;
+//        }
 
         // Create TeacherDto object
         TeacherDto teacherDto = new TeacherDto(teacherId, name, phoneNumber, email, subjectName);
@@ -135,8 +136,9 @@ public class FormTeacherController implements Initializable {
         boolean isSaved = teacherModel.saveTeacher(teacherDto, selectedGrades);
 
         if (isSaved) {
-            new Alert(Alert.AlertType.INFORMATION, "Teacher saved successfully!").show();
-            refreshPage();  // Refresh the form
+            AlertUtil.informationAlert(this.getClass(),null,true,"Teacher Saved Successfully");
+            refreshPage();
+            tableTeacherFormController.loadTeacherTable();// Refresh the form
         } else {
             new Alert(Alert.AlertType.ERROR, "Failed to save teacher. Please try again!").show();
         }
@@ -216,18 +218,36 @@ public class FormTeacherController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get all subjects from the model
+        txtName.textProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
+        txtContactNumber.textProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
+        txtEmailAddress.textProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
+
+        // Add listener to ComboBox
+        cmbSubject.valueProperty().addListener((observable, oldValue, newValue) -> isSaveEnable());
+
+        // Ensure TreeView items are dynamically validated when a root is set
+        treeViewSUbAndGrades.rootProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                for (TreeItem<String> gradeItem : newValue.getChildren()) {
+                    CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
+                    checkBoxItem.selectedProperty().addListener((obs, wasSelected, isSelected) -> isSaveEnable());
+                }
+            }
+        });
+
+        // Call the refresh method
+        refreshPage();
+    }
+
+
+    private void refreshPage() {
+        cmbSubject.getItems().clear();
         ArrayList<SubjectDto> subjectInformations = subjectModel.getAllSubjects();
 
         // Add subjects to the ComboBox
         for (SubjectDto subjectDto : subjectInformations) {
             cmbSubject.getItems().add(subjectDto.getSubjectName());
         }
-
-        refreshPage();
-    }
-
-
-    private void refreshPage() {
 
         String nextTeacherID = teacherModel.getNextTeacherID();
         lblTeacherID.setText(nextTeacherID);
@@ -236,7 +256,7 @@ public class FormTeacherController implements Initializable {
         treeViewSUbAndGrades.setRoot(null);
 
         btnSave.setVisible(true);
-        //        btnSave.setDisable(true);
+        btnSave.setDisable(true);
         btnReset.setDisable(true);
         btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
@@ -307,6 +327,7 @@ public class FormTeacherController implements Initializable {
         checkFieldsEmpty();
         treeViewSUbAndGrades.setOpacity(1);
         ArrayList<SubjectDto> allSubjects = subjectModel.getAllSubjects();
+        isSaveEnable();
 
         for (SubjectDto subjectDto : allSubjects) {
             if (subjectDto.getSubjectName().equals(selectedSubject)) {
@@ -327,6 +348,7 @@ public class FormTeacherController implements Initializable {
                 return; // Exit once the subject is found and TreeView is updated
             }
         }
+        isSaveEnable();
     }
 
 
@@ -344,14 +366,83 @@ public class FormTeacherController implements Initializable {
     }
 
     public void txtEmailAddressOnKeyTyped(KeyEvent keyEvent) {
+        email = txtEmailAddress.getText();
+        btnReset.setDisable(false);
+        ArrayList<TeacherDto> users = teacherModel.getAllTeachers();
+        ArrayList<String> teacherEmails = new ArrayList<>();
+
+        for (TeacherDto teacherDto : users) {
+            teacherEmails.add(teacherDto.getEmail());
+        }
+
+
+        if (email.isEmpty()) {
+            btnReset.setDisable(true);
+            lblEmail.setText("");
+            RegexUtil.resetStyle(txtEmailAddress);
+            checkFieldsEmpty();
+            return;
+        }
+
+        boolean contactExists = false;
+        for (String existingEmailAddress : teacherEmails) {
+            if (existingEmailAddress.equals(email)) {
+                contactExists = true;
+                break;
+            }
+        }
+
+        if (contactExists) {
+            lblEmail.setStyle("-fx-text-fill: red");
+            lblEmail.setText("Email Address already exists!");
+            RegexUtil.setErrorStyle(false, txtEmailAddress);
+        } else if (email.matches(emailRegex)) {
+            lblEmail.setText("");
+            RegexUtil.resetStyle(txtEmailAddress);
+        } else if (!email.matches(emailRegex)){
+            lblEmail.setStyle("-fx-text-fill: red");
+            lblEmail.setText("Email must start with letters, numbers, or underscores follow '@' ");
+            RegexUtil.setErrorStyle(false, txtEmailAddress);
+        }
+        isSaveEnable();
 
     }
 
     public void txtNameOnKeyPressed(KeyEvent keyEvent) {
+        if (!txtName.getText().isEmpty()) {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                txtContactNumber.requestFocus();
+                txtContactNumber.positionCaret(txtContactNumber.getText().length());
+            }
+        }
     }
 
     public void txtNameOnKeyTyped(KeyEvent keyEvent) {
+        name = txtName.getText().trim();
+        btnReset.setDisable(false);
+        lblName.setStyle("-fx-text-fill: #4a4848");
+        RegexUtil.resetStyle(txtName);
+
+            if (name.isEmpty()) {
+                btnReset.setDisable(true);
+                lblName.setText(" ");
+                 RegexUtil.resetStyle(txtName);
+                checkFieldsEmpty();
+            }else {
+                btnReset.setDisable(false);
+
+                if (!name.matches(nameRegex)) {
+                    lblName.setStyle("-fx-text-fill: red");
+                    RegexUtil.setErrorStyle(false,txtName);
+                    lblName.setText("Enter a valid name: use letters only, with optional dots or spaces");
+                }else {
+               lblName.setText(" ");
+               RegexUtil.resetStyle(txtName);}
+            }
+       isSaveEnable();
+
     }
+
 
 
     public void treeViewSUbAndGradesMouseEntered(MouseEvent mouseEvent) {
