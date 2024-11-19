@@ -73,8 +73,6 @@ public class TableTeacherFormController implements Initializable {
     private FilteredList<TeacherTm> filter;  // Declare the filter as a member variable
 
 
-    public boolean isButtonClicked = false;
-
     @FXML
     void btnSendMailOnAction(ActionEvent event) {
 
@@ -113,7 +111,6 @@ public class TableTeacherFormController implements Initializable {
     }
     @FXML
     void tblTeacherOnClicked(MouseEvent event) {
-        isButtonClicked = true;
                 TeacherTm selectedItem =tblTeacher.getSelectionModel().getSelectedItem();
                 String grades = selectedItem.getGrades();
                 String[] gradeArray = new String[0];

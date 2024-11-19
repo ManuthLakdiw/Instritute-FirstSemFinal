@@ -96,9 +96,6 @@ public class FormTeacherController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (tableTeacherFormController.isButtonClicked){
-
-        }
         // Get all subjects from the model
         txtName.textProperty().addListener((observable, oldValue, newValue) -> isSaveUpdateEnable());
         txtContactNumber.textProperty().addListener((observable, oldValue, newValue) -> isSaveUpdateEnable());
