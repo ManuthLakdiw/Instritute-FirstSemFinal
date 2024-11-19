@@ -84,7 +84,7 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     void hBoxTeacherOnClicked(MouseEvent event) {
         applyHBoxBackground(hBoxTeacher);
-        navigateTo("/view/tableTeacherForm.fxml", "TeacherForm");
+        navigateTo("/view/teacherTableForm.fxml", "TeacherForm");
     }
 
     public void hBoxUserOnClicked(MouseEvent mouseEvent) {

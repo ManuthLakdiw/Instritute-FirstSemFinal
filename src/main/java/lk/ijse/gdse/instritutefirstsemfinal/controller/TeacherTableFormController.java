@@ -16,14 +16,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.TeacherTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.TeacherModel;
-import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
-import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,10 +26,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-public class TableTeacherFormController implements Initializable {
+public class TeacherTableFormController implements Initializable {
 
     TeacherModel teacherModel = new TeacherModel();
-    FormTeacherController formTeacherController = new FormTeacherController();
+    TeacherFormController formTeacherController = new TeacherFormController();
 
     @FXML
     private Pane SubjectPane;
@@ -72,6 +67,7 @@ public class TableTeacherFormController implements Initializable {
 
     private FilteredList<TeacherTm> filter;  // Declare the filter as a member variable
 
+    boolean isClicked = false;
 
     @FXML
     void btnSendMailOnAction(ActionEvent event) {
@@ -80,11 +76,12 @@ public class TableTeacherFormController implements Initializable {
 
     @FXML
     void btnTeacherOnAction(ActionEvent event) {
+        isClicked = true;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/formTeacherController.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/teacherForm.fxml"));
             Parent load = loader.load();
 
-            FormTeacherController controller = loader.getController();
+            TeacherFormController controller = loader.getController();
 
             controller.setTableTeacherFormController(this);
 
@@ -109,30 +106,30 @@ public class TableTeacherFormController implements Initializable {
         }
 
     }
+
     @FXML
     void tblTeacherOnClicked(MouseEvent event) {
-                TeacherTm selectedItem =tblTeacher.getSelectionModel().getSelectedItem();
-                String grades = selectedItem.getGrades();
-                String[] gradeArray = new String[0];
+                if (isClicked) {
+                    TeacherTm selectedItem =tblTeacher.getSelectionModel().getSelectedItem();
+                    String grades = selectedItem.getGrades();
+                    String[] gradeArray = new String[0];
 
-                if (grades != null && !grades.isEmpty()) {
-                    gradeArray = grades.split(", ");
+                    if (grades != null && !grades.isEmpty()) {
+                        gradeArray = grades.split(", ");
+                    }
+
+                    TeacherDto dto = new TeacherDto(
+                            selectedItem.getTeacherId(),
+                            selectedItem.getName(),
+                            selectedItem.getPhoneNumber(),
+                            selectedItem.getEmail(),
+                            selectedItem.getSubjects(),
+                            gradeArray
+
+                    );
+                    formTeacherController.setDto(dto);
+                    formTeacherController.tableOnClickedButton();
                 }
-
-                TeacherDto dto = new TeacherDto(
-                        selectedItem.getTeacherId(),
-                        selectedItem.getName(),
-                        selectedItem.getPhoneNumber(),
-                        selectedItem.getEmail(),
-                        selectedItem.getSubjects(),
-                        gradeArray
-
-                );
-                formTeacherController.setDto(dto);
-                formTeacherController.tableOnClickedButton();
-
-
-
     }
 
     @FXML
@@ -155,7 +152,6 @@ public class TableTeacherFormController implements Initializable {
         });
 
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -214,14 +210,6 @@ public class TableTeacherFormController implements Initializable {
 
 
     }
-
-
-
-
-
-
-
-
 
 
 }
