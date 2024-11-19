@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -151,6 +152,17 @@ public class FormTeacherController implements Initializable {
 
     @FXML
     void txtContactNumberOnKeyPressed(KeyEvent event) {
+        if (txtContactNumber.getText().isEmpty()) {
+            if (event.getCode() == KeyCode.LEFT) {
+                txtName.requestFocus();
+                txtName.positionCaret(txtName.getText().length());
+            }
+        }else {
+            if (event.getCode() == KeyCode.ENTER) {
+                txtEmailAddress.requestFocus();
+                txtEmailAddress.positionCaret(txtEmailAddress.getText().length());
+            }
+        }
 
     }
 
@@ -210,15 +222,6 @@ public class FormTeacherController implements Initializable {
         for (SubjectDto subjectDto : subjectInformations) {
             cmbSubject.getItems().add(subjectDto.getSubjectName());
         }
-
-//        cmbSubject.setOnAction(event -> {
-//            if (cmbSubject.getValue() != null) {
-//                btnReset.setDisable(false);
-//                isSaveEnable();
-//            }else {
-//                btnReset.setDisable(true);
-//            }
-//        });
 
         refreshPage();
     }
@@ -328,9 +331,20 @@ public class FormTeacherController implements Initializable {
 
 
     public void txtEmailAddressOnKeyPressed(KeyEvent keyEvent) {
+        if (txtEmailAddress.getText().isEmpty()) {
+            if (keyEvent.getCode() == KeyCode.LEFT) {
+                txtContactNumber.requestFocus();
+                txtEmailAddress.positionCaret(txtEmailAddress.getText().length());
+            }
+        }else {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                cmbSubject.show();
+            }
+        }
     }
 
     public void txtEmailAddressOnKeyTyped(KeyEvent keyEvent) {
+
     }
 
     public void txtNameOnKeyPressed(KeyEvent keyEvent) {
