@@ -78,7 +78,7 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     void hBoxStudentOnClicked(MouseEvent event) {
         applyHBoxBackground(hBoxStudent);
-        navigateTo("/view/studentForm.fxml", "StudentForm");
+        navigateTo("/view/StudentTableForm.fxml", "StudentForm");
     }
 
     @FXML
@@ -107,7 +107,7 @@ public class MainLayoutFormController implements Initializable {
 
     }
 
-    public void navigateTo(String fxmlPath, String loadErrorpane) {
+    public  void navigateTo(String fxmlPath, String loadErrorpane) {
         if (fxmlPath.equals(currentLoadedFXML)) {
             return;
         }
