@@ -29,7 +29,7 @@
       </Label>
       <HBox layoutX="17.0" layoutY="156.0" prefHeight="38.0" prefWidth="784.0">
          <children>
-            <TextField fx:id="txtUserName" onKeyPressed="#txtUserNameOnKeyPressed" onKeyTyped="#txtUserNameOnkeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="John" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
+            <TextField fx:id="txtName" onKeyPressed="#txtNameOnKeyPressed" onKeyTyped="#txtNameOnkeyTyped" prefHeight="32.0" prefWidth="266.0" promptText="John" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -37,7 +37,7 @@
                   <Insets left="5.0" />
                </padding>
             </TextField>
-            <DatePicker fx:id="dpDOB" onKeyPressed="#dpDOBOnKeyPressed" onKeyTyped="#dpDOBOnKeyTyped" prefHeight="32.0" prefWidth="282.0" promptText="MM/DD/YYYY" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;" stylesheets="@../style/DatePicker.css">
+            <DatePicker fx:id="dpDOB" onAction="#dpDOBOnAction" prefHeight="32.0" prefWidth="282.0" promptText="MM/DD/YYYY" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5;" stylesheets="@../style/DatePicker.css">
                <padding>
                   <Insets left="5.0" />
                </padding>
@@ -60,19 +60,28 @@
       </HBox>
       <HBox layoutX="17.0" layoutY="192.0" prefHeight="18.0" prefWidth="786.0">
          <children>
-            <Label fx:id="lblName" prefHeight="18.0" prefWidth="266.0" />
+            <Label fx:id="lblName" prefHeight="18.0" prefWidth="266.0">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font></Label>
             <Label fx:id="lblDOB" prefHeight="18.0" prefWidth="282.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
             </Label>
             <Label fx:id="lblFee" prefHeight="18.0" prefWidth="168.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
             </Label>
          </children></HBox>
-      <Label layoutX="333.0" layoutY="113.0" prefHeight="48.0" prefWidth="128.0" text="Date Of Birth">
+      <Label layoutX="313.0" layoutY="113.0" prefHeight="48.0" prefWidth="128.0" text="Date Of Birth">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
@@ -187,7 +196,7 @@
             <CheckComboBox fx:id="checkCBoxSubject" onKeyPressed="#checkCBoxSubjectOnKeyPressed" prefHeight="32.0" prefWidth="776.0" />
          </children>
       </HBox>
-      <Label layoutX="645.0" layoutY="113.0" prefHeight="48.0" prefWidth="128.0" text="Admission Fee">
+      <Label layoutX="625.0" layoutY="113.0" prefHeight="48.0" prefWidth="128.0" text="Admission Fee">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
@@ -202,14 +211,17 @@
             <Bloom />
          </effect>
       </Line>
-      <Label layoutX="645.0" layoutY="214.0" prefHeight="48.0" prefWidth="128.0" text="Grade">
+      <Label layoutX="625.0" layoutY="214.0" prefHeight="48.0" prefWidth="128.0" text="Grade">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
       </Label>
       <HBox layoutX="17.0" layoutY="294.0" prefHeight="17.0" prefWidth="795.0">
          <children>
-            <Label fx:id="lblAddress" prefHeight="18.0" prefWidth="577.0" />
+            <Label fx:id="lblAddress" prefHeight="18.0" prefWidth="577.0">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font></Label>
          </children></HBox>
       <Label layoutX="17.0" layoutY="303.0" prefHeight="48.0" prefWidth="128.0" text="Subejct">
          <font>
@@ -218,11 +230,17 @@
       </Label>
       <HBox layoutX="17.0" layoutY="531.0" prefHeight="17.0" prefWidth="795.0">
          <children>
-            <Label fx:id="lblParentName" prefHeight="18.0" prefWidth="266.0" />
+            <Label fx:id="lblParentName" prefHeight="18.0" prefWidth="266.0">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font></Label>
             <Label fx:id="lblEmail" prefHeight="18.0" prefWidth="479.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font>
             </Label>
          </children></HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="17.0" layoutY="636.0" prefHeight="50.0" prefWidth="776.0" styleClass="button-admin" stylesheets="@../style/Button.css">
@@ -263,7 +281,10 @@
       </HBox>
       <HBox layoutX="17.0" layoutY="620.0" prefHeight="17.0" prefWidth="795.0">
          <children>
-            <Label fx:id="lblPhoneNumber" prefHeight="18.0" prefWidth="429.0" />
+            <Label fx:id="lblPhoneNumber" prefHeight="18.0" prefWidth="429.0">
+               <font>
+                  <Font name="Humnst777 Cn BT" size="10.0" />
+               </font></Label>
          </children>
       </HBox>
    </children>

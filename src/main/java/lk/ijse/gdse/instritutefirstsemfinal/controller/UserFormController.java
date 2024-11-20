@@ -86,8 +86,8 @@ public class UserFormController implements Initializable {
     private String passwordWeakRegex = "^(?=.{1,})([a-zA-Z]+|[0-9]+|[^a-zA-Z0-9]+)$";
     private String passwordMediumRegex = "^(?=.*[a-zA-Z])(?=.*[0-9]).{4,}$";
     private String passwordStrongRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{6,}$";
-    private String phoneNumberRegex = "^0\\d{9}$";
-    private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private String phoneNumberRegex = "^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$";
+    private String emailRegex = "[\\w]*@*[a-z]*\\.*[\\w]{5,}(\\.)*(com)*(@gmail\\.com)";
 
 
     @Override
@@ -162,28 +162,28 @@ public class UserFormController implements Initializable {
             for (TextField field : fields) {
                 if (field.getText().isEmpty()) {
                     AlertUtil.informationAlert(UserFormController.class, null, true, "Fields cannot be empty. Please fill in all fields.");
-                    RegexUtil.setErrorStyle(true,field);
+                    RegexUtil.setErrorStyle(false,field);
                     return;
                 }
             }
 
 
             if (!phoneNumber.matches(phoneNumberRegex)) {
-                RegexUtil.setErrorStyle(true,txtContactNumber);
+                RegexUtil.setErrorStyle(false,txtContactNumber);
                 AlertUtil.informationAlert(UserFormController.class, null, false, "Phone number format is incorrect. It must start with '0' and be 10 digits.");
                 return;
             }
 
 
             if (!email.matches(emailRegex)) {
-                RegexUtil.setErrorStyle(true,txtEmailAddress);
+                RegexUtil.setErrorStyle(false,txtEmailAddress);
                 AlertUtil.informationAlert(UserFormController.class, null, false, "Email format is incorrect. Please provide a valid email.");
                 return;
             }
 
 
             if (!txtNewPassword.getText().equals(txtConfirmPassword.getText())) {
-                RegexUtil.setErrorStyle(true,txtConfirmPassword);
+                RegexUtil.setErrorStyle(false,txtConfirmPassword);
                 AlertUtil.informationAlert(UserFormController.class, null, true, "Passwords do not match.");
                 return;
 

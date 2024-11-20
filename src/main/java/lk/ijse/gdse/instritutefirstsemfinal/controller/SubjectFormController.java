@@ -123,10 +123,8 @@ public class SubjectFormController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        // Get the selected grades from the CheckComboBox
         ObservableList<String> selectedItems = checkComboBoxGrade.getCheckModel().getCheckedItems();
 
-        // Get the subject details from the UI
         subjectId = lblSubID.getText();
         subjectName = txtSubName.getText();
         subjectDescription = tareaDescription.getText();
@@ -145,31 +143,26 @@ public class SubjectFormController implements Initializable {
         // Validate subjectId and subjectName
         if (subjectId == null || subjectId.isEmpty() || subjectName == null || subjectName.isEmpty()) {
             AlertUtil.informationAlert(UserFormController.class, null, true, "Subject ID or Subject Name cannot be empty.");
-            return;  // Exit the method if subjectId or subjectName is empty
+            return;
         }
 
-        // Validate that at least one grade is selected
         if (selectedItems.isEmpty()) {
             AlertUtil.informationAlert(UserFormController.class, null, true, "Please select at least one grade.");
-            return;  // Exit the method if no grades are selected
+            return;
         }
 
-        // Proceed with saving if the button is enabled
         if (!btnSave.isDisable()) {
-            // Get the grade IDs for all selected grades
             List<String> gradeIds = subjectModel.getGradeIdsFromNames(new ArrayList<>(selectedItems));
 
-            // Validate that gradeIds is not empty
             if (gradeIds.isEmpty()) {
                 AlertUtil.informationAlert(UserFormController.class, null, true, "Invalid grade selection.");
-                return;  // Exit the method if no valid grade_ids could be found
+                return;
             }
 
             SubjectDto subjectDto = new SubjectDto(subjectId, subjectName, subjectDescription);
 
             boolean isSaved = subjectModel.saveSubjectWithGrades(subjectDto, gradeIds);
 
-            // Show an alert based on the result of the save operation
             if (isSaved) {
                 AlertUtil.informationAlert(UserFormController.class, null, true, "Subject Saved Successfully");
                 refreshPage();  // Refresh the page after successful save

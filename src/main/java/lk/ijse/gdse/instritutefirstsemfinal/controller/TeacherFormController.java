@@ -90,8 +90,8 @@ public class TeacherFormController implements Initializable {
     String email;
 
     private String nameRegex = "^[A-Za-z]+(\\.[A-Za-z]+)*(\\s[A-Za-z]+)*$";
-    private String phoneNumberRegex = "^0\\d{9}$";
-    private String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private String phoneNumberRegex = "^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$";
+    private String emailRegex = "[\\w]*@*[a-z]*\\.*[\\w]{5,}(\\.)*(com)*(@gmail\\.com)";
 
 
     @Override
@@ -103,11 +103,10 @@ public class TeacherFormController implements Initializable {
 
         // Add listener to ComboBox
         cmbSubject.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Reset TreeView grades when subject changes
             if (treeViewSUbAndGrades.getRoot() != null) {
                 for (TreeItem<String> gradeItem : treeViewSUbAndGrades.getRoot().getChildren()) {
                     CheckBoxTreeItem<String> checkBoxItem = (CheckBoxTreeItem<String>) gradeItem;
-                    checkBoxItem.setSelected(false); // Unselect all grades
+                    checkBoxItem.setSelected(false);
                 }
             }
             isSaveUpdateEnable(); // Recheck Save button state
@@ -317,7 +316,7 @@ public class TeacherFormController implements Initializable {
             RegexUtil.resetStyle(txtContactNumber);
         } else if (!contactNo.matches(phoneNumberRegex)) {
             lblPhoneNumber.setStyle("-fx-text-fill: red");
-            lblPhoneNumber.setText("ContactNumber must be 10 numbers and start with \"0\"");
+            lblPhoneNumber.setText("Invalid Mobile Number");
             RegexUtil.setErrorStyle(false, txtContactNumber);
         }
         isSaveUpdateEnable();

@@ -39,7 +39,7 @@
             </PasswordField>
          </children>
       </HBox>
-      <HBox layoutX="37.0" layoutY="200.0" prefHeight="17.0" prefWidth="858.0">
+      <HBox layoutX="17.0" layoutY="200.0" prefHeight="17.0" prefWidth="858.0">
          <children>
             <Label fx:id="lblNewPassword" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="266.0" textFill="#4a4848">
                <font>
@@ -175,7 +175,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox layoutX="37.0" layoutY="293.0" prefHeight="17.0" prefWidth="852.0">
+      <HBox layoutX="17.0" layoutY="293.0" prefHeight="17.0" prefWidth="852.0">
          <children>
             <Label fx:id="lblPhoneNumber" alignment="TOP_LEFT" prefHeight="32.0" prefWidth="266.0" textFill="#4a4848">
                <font>
