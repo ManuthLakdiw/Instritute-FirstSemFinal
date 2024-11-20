@@ -1,26 +1,37 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.StudentDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.StudentTm;
+import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 
-public class StudentOtherInfoTableFormController {
+public class StudentOtherInfoTableFormController implements Initializable {
 
     private String currentLoadedFXML = "";
+    StudentModel studentModel = new StudentModel();
 
     @FXML
     private Pane StudentOtherInfoPane;
@@ -29,28 +40,28 @@ public class StudentOtherInfoTableFormController {
     private Button btnSendMail;
 
     @FXML
-    private TableColumn<?, ?> colAddress;
+    private TableColumn<StudentTm, String> colAddress;
 
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn<StudentTm, String> colEmail;
 
     @FXML
-    private TableColumn<?, ?> colParentName;
+    private TableColumn<StudentTm, String> colParentName;
 
     @FXML
-    private TableColumn<?, ?> colPhoneNumber;
+    private TableColumn<StudentTm, String> colPhoneNumber;
 
     @FXML
-    private TableColumn<?, ?> colStudentID;
+    private TableColumn<StudentTm, String> colStudentID;
 
     @FXML
-    private TableColumn<?, ?> colStudentName;
+    private TableColumn<StudentTm, String> colStudentName;
 
     @FXML
     private Label lblBack;
 
     @FXML
-    private TableView<?> tblStudentOtherInfo;
+    private TableView<StudentTm> tblStudentOtherInfo;
 
     @FXML
     private TextField txtFindStudent;
@@ -111,4 +122,36 @@ public class StudentOtherInfoTableFormController {
     }
 
 
+    public void loadTable(){
+        ArrayList<StudentDto> dtos = studentModel.getAllStudents();
+        ObservableList<StudentTm> studentTms = FXCollections.observableArrayList();
+
+        for (StudentDto dto : dtos) {
+            StudentTm studentTm = new StudentTm(
+                    dto.getId(),
+                    dto.getName(),
+                    dto.getParentName(),
+                    dto.getPhoneNumber(),
+                    dto.getEmail(),
+                    dto.getAddress()
+
+            );
+            studentTms.add(studentTm);
+        }
+        tblStudentOtherInfo.setItems(studentTms);
+
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colParentName.setCellValueFactory(new PropertyValueFactory<>("parentName"));
+        colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colStudentID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        loadTable();
+    }
 }
