@@ -1,26 +1,38 @@
 package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.StudentDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.StudentTm;
+import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class StudentTableFormController {
+public class StudentTableFormController implements Initializable {
     StudentFormController studentFormController = new StudentFormController();
+    StudentModel studentModel = new StudentModel();
 
     @FXML
     private Pane StudentPane;
@@ -32,28 +44,28 @@ public class StudentTableFormController {
     private Button btnOtherInfo;
 
     @FXML
-    private TableColumn<?, ?> colAddBy;
+    private TableColumn<StudentTm, String> colAddBy;
 
     @FXML
-    private TableColumn<?, ?> colAdmissionFee;
+    private TableColumn<StudentTm, Double> colAdmissionFee;
 
     @FXML
-    private TableColumn<?, ?> colDOB;
+    private TableColumn<StudentTm, LocalDate> colDOB;
 
     @FXML
-    private TableColumn<?, ?> colGrade;
+    private TableColumn<StudentTm, String> colGrade;
 
     @FXML
-    private TableColumn<?, ?> colStudentID;
+    private TableColumn<StudentTm, String> colStudentID;
 
     @FXML
-    private TableColumn<?, ?> colStudentName;
+    private TableColumn<StudentTm, String> colStudentName;
 
     @FXML
-    private TableColumn<?, ?> colSubject;
+    private TableColumn<StudentTm, String> colSubject;
 
     @FXML
-    private TableView<?> tblStudent;
+    private TableView<StudentTm> tblStudent;
 
     @FXML
     private TextField txtFindStudent;
@@ -146,4 +158,44 @@ public class StudentTableFormController {
         }
     }
 
+
+    public void loadTable() {
+        ArrayList<StudentDto> studentDtos = studentModel.getAllStudents();
+        ObservableList<StudentTm> studentTmList = FXCollections.observableArrayList();
+
+        for (StudentDto studentDto : studentDtos) {
+            // Convert the subjects from String[] to a comma-separated string
+            String subjectsString = String.join(", ", studentDto.getSubjects());
+
+            // Create the StudentTm object with the formatted subjects
+            StudentTm studentTm = new StudentTm(
+                    studentDto.getId(),
+                    studentDto.getName(),
+                    studentDto.getBirthday(),
+                    studentDto.getAdmissionFee(),
+                    studentDto.getGrade(),
+                    subjectsString,  // Pass a single String here instead of String[]
+                    studentDto.getAddedBy()
+            );
+
+            // Add to the observable list
+            studentTmList.add(studentTm);
+        }
+
+        // Set the items to the table
+        tblStudent.setItems(studentTmList);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colAddBy.setCellValueFactory(new PropertyValueFactory<>("addedBy"));
+        colAdmissionFee.setCellValueFactory(new PropertyValueFactory<>("admissionFee"));
+        colStudentID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colSubject.setCellValueFactory(new PropertyValueFactory<>("subjects"));
+        colGrade.setCellValueFactory(new PropertyValueFactory<>("grade"));
+        colDOB.setCellValueFactory(new PropertyValueFactory<>("birthday"));
+
+        loadTable();
+    }
 }
