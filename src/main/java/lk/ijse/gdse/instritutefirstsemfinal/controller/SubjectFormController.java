@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;

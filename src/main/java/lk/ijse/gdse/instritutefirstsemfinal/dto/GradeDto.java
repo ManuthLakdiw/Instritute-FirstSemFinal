@@ -1,4 +1,4 @@
-package lk.ijse.gdse.instritutefirstsemfinal.dto.tm;
+package lk.ijse.gdse.instritutefirstsemfinal.dto;
 
 
 import lombok.*;

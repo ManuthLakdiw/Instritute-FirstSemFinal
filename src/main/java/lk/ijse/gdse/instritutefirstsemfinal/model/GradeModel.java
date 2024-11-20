@@ -1,7 +1,6 @@
 package lk.ijse.gdse.instritutefirstsemfinal.model;
 
-import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
-import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.GradeDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 
 import java.sql.ResultSet;
