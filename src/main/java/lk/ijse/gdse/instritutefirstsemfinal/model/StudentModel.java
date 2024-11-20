@@ -5,11 +5,28 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.CrudUtil;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class StudentModel {
 
+    public String getNextStudentID() {
+        try {
+            ResultSet resultSet = CrudUtil.execute("select s_id from student order by s_id desc limit 1");
+            if (resultSet.next()) {
+                String lastID = resultSet.getString(1);
+                String substring = lastID.substring(1);
+                int number = Integer.parseInt(substring);
+                int newId = ++number;
+                return String.format("S%04d", newId);
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "S0001";
+    }
     public ArrayList<StudentDto> getAllStudents() {
         ArrayList<StudentDto> students = new ArrayList<>();
         try {

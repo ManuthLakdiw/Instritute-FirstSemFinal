@@ -3,17 +3,23 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
 import org.controlsfx.control.CheckComboBox;
 
-public class StudentFormController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class StudentFormController implements Initializable {
 
     private StudentTableFormController studentTableFormController;
+    StudentModel studentModel = new StudentModel();
 
     public void setStudentTableFormController(StudentTableFormController studentTableFormController) {
         this.studentTableFormController = studentTableFormController;
@@ -185,4 +191,9 @@ public class StudentFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        String studentID = studentModel.getNextStudentID();
+        lblStudentID.setText(studentID);
+    }
 }
