@@ -341,8 +341,17 @@ public class TeacherModel {
     }
 
 
+    public String getEmailByTeacherID(String selectedTeacherId) {
+        try {
+            ResultSet resultSet = CrudUtil.execute("select email from teacher where t_id = ?", selectedTeacherId);
+            if (resultSet.next()) {
 
+                return resultSet.getString("email");
+            }
 
-
-
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "Not in database";
+    }
 }

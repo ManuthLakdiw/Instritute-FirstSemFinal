@@ -30,6 +30,7 @@ public class TeacherTableFormController implements Initializable {
 
     TeacherModel teacherModel = new TeacherModel();
     TeacherFormController formTeacherController = new TeacherFormController();
+    SendMailToTeacherFormController sendMailToTeacherFormController = new SendMailToTeacherFormController();
 
     @FXML
     private Pane SubjectPane;
@@ -71,6 +72,35 @@ public class TeacherTableFormController implements Initializable {
 
     @FXML
     void btnSendMailOnAction(ActionEvent event) {
+        TeacherTm teacherTm = tblTeacher.getSelectionModel().getSelectedItem();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sendMailToTeacherForm.fxml"));
+            Parent load = loader.load();
+
+            SendMailToTeacherFormController controller = loader.getController();
+
+            controller.setTableTeacherFormController(this);
+
+            this.sendMailToTeacherFormController = controller;
+
+            Stage stage = new Stage();
+            stage.initModality(null);
+            stage.setTitle("Email Form");
+            stage.setScene(new Scene(load));
+
+            stage.initModality(null);
+
+            stage.initOwner(btnSendMail.getScene().getWindow());
+
+            stage.setResizable(false);
+
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
