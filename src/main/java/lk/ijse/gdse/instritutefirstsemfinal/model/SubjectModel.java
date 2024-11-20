@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SubjectModel {
+    GradeModel gradeModel = new GradeModel();
 
     public String getNextSubjectID() {
         try {
@@ -77,17 +78,14 @@ public class SubjectModel {
                 return false;  // Return early if subject insert fails
             }
 
-            // Step 4: Validate grade relationships before inserting into the `subject_grade` table
             for (String gradeId : gradeIds) {
-                // Check if the grade_id exists in the `grade` table
-                boolean isGradeValid = isGradeExists(gradeId);
+                boolean isGradeValid = gradeModel.isGradeExists(gradeId);
                 if (!isGradeValid) {
                     System.out.println("Invalid grade ID: " + gradeId);
-                    connection.rollback();  // Rollback transaction if grade does not exist
-                    return false;  // Return early if invalid grade_id is found
+                    connection.rollback();
+                    return false;
                 }
 
-                // If the grade exists, insert the grade relation into the `subject_grade` table
                 boolean isGradeRelationSaved = CrudUtil.execute(
                         "INSERT INTO subject_grade (subject_id, grade_id) VALUES (?, ?)",
                         subjectDto.getSubjectId(),
@@ -101,7 +99,6 @@ public class SubjectModel {
                 }
             }
 
-            // Step 5: Commit the transaction if everything is successful
             connection.commit();
             return true;
 
@@ -112,7 +109,7 @@ public class SubjectModel {
                     connection.rollback();
                 }
             } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace();  // Rollback failure
+                rollbackException.printStackTrace();
             }
             return false;
         } finally {
@@ -128,21 +125,7 @@ public class SubjectModel {
     }
 
     // Method to check if the grade exists in the `grade` table
-    private boolean isGradeExists(String gradeId) {
-        try {
-            ResultSet resultSet = CrudUtil.execute(
-                    "SELECT COUNT(*) FROM grade WHERE g_id = ?",
-                    gradeId
-            );
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1) > 0;  // Return true if the grade exists, otherwise false
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public List<String> getGradeIdsFromNames(List<String> gradeNames) {
         List<String> gradeIds = new ArrayList<>();

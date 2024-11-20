@@ -10,16 +10,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
+import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
 import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class StudentFormController implements Initializable {
 
     private StudentTableFormController studentTableFormController;
     StudentModel studentModel = new StudentModel();
+    GradeModel gradeModel = new GradeModel();
 
     public void setStudentTableFormController(StudentTableFormController studentTableFormController) {
         this.studentTableFormController = studentTableFormController;
@@ -41,10 +46,10 @@ public class StudentFormController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private CheckComboBox<?> checkCBoxSubject;
+    private CheckComboBox<String> checkCBoxSubject;
 
     @FXML
-    private JFXComboBox<?> cmbGrade;
+    private JFXComboBox<String> cmbGrade;
 
     @FXML
     private DatePicker dpDOB;
@@ -98,7 +103,7 @@ public class StudentFormController implements Initializable {
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
-
+        refreshPage();
     }
 
     @FXML
@@ -118,8 +123,25 @@ public class StudentFormController implements Initializable {
 
     @FXML
     void cmbGradeOnAction(ActionEvent event) {
+        String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
+        if (selectedGrade != null && !selectedGrade.isEmpty()) {
+            // Enable the reset button
+            btnReset.setDisable(false);
 
+            // Clear previous subjects
+            checkCBoxSubject.getItems().clear();
+            String gradeID = gradeModel.getGradeIdFromName(selectedGrade);
+            ArrayList<String> subjects = gradeModel.getSubjectsByGradeId(gradeID);
+
+            if (subjects != null) {
+                checkCBoxSubject.getItems().addAll(subjects);
+            }
+        } else {
+            // Disable the reset button if no grade is selected
+            btnReset.setDisable(true);
+        }
     }
+
 
     @FXML
     void dpDOBOnKeyPressed(KeyEvent event) {
@@ -193,7 +215,36 @@ public class StudentFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        refreshPage();
+    }
+
+    public void refreshPage(){
+
         String studentID = studentModel.getNextStudentID();
         lblStudentID.setText(studentID);
+        checkCBoxSubject.getItems().clear();
+
+        ArrayList<GradeDto> grades = gradeModel.getGrades();
+        cmbGrade.getItems().clear();
+        if (grades != null) {
+            for (GradeDto grade : grades) {
+                String gradeName = grade.getGradeName();
+                if (gradeName != null && !gradeName.isEmpty()) {
+                    cmbGrade.getItems().add(gradeName);
+                }
+            }
+        }
+
+
+        ArrayList<Label> labels =   new ArrayList<>(Arrays.asList(lblAddress,lblName,lblDOB,lblFee,lblParentName,lblPhoneNumber,lblEmail));
+
+        for (Label label : labels) {
+            label.setText("");
+        }
+
+        btnDelete.setDisable(true);
+        btnReset.setDisable(true);
+        btnSave.setDisable(true);
+        btnUpdate.setDisable(true);
     }
 }

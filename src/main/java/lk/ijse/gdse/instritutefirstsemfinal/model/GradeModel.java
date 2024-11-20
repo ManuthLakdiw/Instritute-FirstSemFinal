@@ -28,28 +28,7 @@ public class GradeModel {
 
 
 
-    public List<String> getAllSubjects(String subject) {
-        List<String> gradesList = new ArrayList<>();
-        try {
-            ResultSet resultSet = CrudUtil.execute("SELECT GROUP_CONCAT(DISTINCT g.grade ORDER BY g.grade) AS grade_names FROM subject AS s LEFT JOIN subject_grade AS sg ON s.sub_id = sg.subject_id LEFT JOIN grade AS g ON sg.grade_id = g.g_id where sub_name = ? GROUP BY s.sub_id, s.sub_name, s.description ORDER BY s.sub_id", subject);
-
-            if (resultSet.next()) {
-                String grades = resultSet.getString(1);
-                if (grades != null) {
-                    // Convert the comma-separated string into a List
-                    gradesList = Arrays.asList(grades.split(","));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return gradesList;
-    }
-
-
-
-        // Fetch grades based on the subject name
-        public List<String> getGradesForSubject(String subjectName)  {
+    public List<String> getGradesForSubject(String subjectName)  {
             try {
                 List<String> grades = new ArrayList<>();
 
@@ -65,7 +44,7 @@ public class GradeModel {
                 e.printStackTrace();
             }
             return null;
-        }
+    }
 
 
 
@@ -88,6 +67,35 @@ public class GradeModel {
         }
 
         return gradeID;
+    }
+
+    public ArrayList<String> getSubjectsByGradeId(String gradeId) {
+        ArrayList<String> subjects = new ArrayList<>();
+        String query = "SELECT subject.sub_name FROM subject JOIN subject_grade ON subject.sub_id = subject_grade.subject_id WHERE subject_grade.grade_id = ?";
+        try (ResultSet resultSet = CrudUtil.execute(query, gradeId)) {
+            while (resultSet.next()) { // The `while` block should be here.
+                subjects.add(resultSet.getString("sub_name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjects;
+    }
+
+    public boolean isGradeExists(String gradeId) {
+        try {
+            ResultSet resultSet = CrudUtil.execute(
+                    "SELECT COUNT(*) FROM grade WHERE g_id = ?",
+                    gradeId
+            );
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
