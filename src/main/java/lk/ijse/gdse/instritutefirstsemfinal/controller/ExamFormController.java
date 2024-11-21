@@ -195,11 +195,33 @@ public class ExamFormController implements Initializable {
                 description
         );
 
+
+
+        String exitingSubject = "";
+        String exitingGrade = "";
+        LocalDate exitingDate = null;
+        String exitingDescription = "";
+        String exitingType = "";
+
         ArrayList<ExamDto> exitingExam = examModel.isExitingExam(id);
 
-//        for (ExamDto examDto1 : exitingExam){
-//            examDto1.getExamType().equals()
-//        }
+            for (ExamDto examDto1 : exitingExam){
+                 exitingSubject = examDto1.getSubject();
+                 exitingGrade = examDto1.getGrade();
+                exitingDate = examDto1.getExamDate();
+                exitingDescription = examDto1.getExamDescription();
+                exitingType = examDto1.getExamType();
+
+
+            }
+
+
+                if (exitingGrade.equals(gradeID) && exitingSubject.equals(subjectID) && exitingDate.isEqual(date) && exitingDescription.equals(description) && exitingType.equals(type)){
+                    AlertUtil.informationAlert(this.getClass(),null,true,"No changes detected. Update is not necessary.");
+                    return;
+                }
+
+
 
 
             boolean isUpdated = examModel.updateExam(examDto);

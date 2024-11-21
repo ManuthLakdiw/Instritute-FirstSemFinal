@@ -95,11 +95,11 @@ public class ExamModel {
             if (resultSet.next()) {
                 ExamDto exam = new ExamDto(
                         resultSet.getString(1),
+                        resultSet.getString(6),
                         resultSet.getString(2),
-                        resultSet.getString(3),
                         resultSet.getDate(4).toLocalDate(),
-                        resultSet.getString(5),
-                        resultSet.getString(6)
+                        resultSet.getString(3),
+                        resultSet.getString(5)
                 );
                 exams.add(exam);
             }
