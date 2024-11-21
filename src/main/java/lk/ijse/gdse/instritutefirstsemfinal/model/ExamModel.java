@@ -17,7 +17,7 @@ public class ExamModel {
                 String substring = lastID.substring(1);
                 int number = Integer.parseInt(substring);
                 int newId = ++number;
-                return String.format("S%03d", newId);
+                return String.format("E%03d", newId);
 
             }
         }catch (SQLException e){

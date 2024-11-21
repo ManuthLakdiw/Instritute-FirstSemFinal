@@ -34,7 +34,7 @@
                   <ComboBox fx:id="cmbSubject" onAction="#cmbSubjectOnAction" onKeyPressed="#cmbSubjectOnKeyPressed" prefHeight="32.0" prefWidth="266.0" promptText="choose a Subject" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css" />
                </children>
             </VBox>
-            <JFXTextArea fx:id="tareaBody" focusColor="TRANSPARENT" prefHeight="138.0" prefWidth="461.0" style="-fx-border-width: 1px; -fx-border-color: #03045E; -fx-border-radius: 5px;" unFocusColor="TRANSPARENT">
+            <JFXTextArea fx:id="tareaBody" focusColor="TRANSPARENT" onKeyTyped="#tareaBodyOnKeyTyped" prefHeight="138.0" prefWidth="461.0" style="-fx-border-width: 1px; -fx-border-color: #03045E; -fx-border-radius: 5px;" unFocusColor="TRANSPARENT">
                <font>
                   <Font name="Arial Bold" size="13.0" />
                </font>

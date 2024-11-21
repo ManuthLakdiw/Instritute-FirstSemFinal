@@ -68,7 +68,7 @@ public class ExamTableFormController implements Initializable {
     void btnExamActionOnAction(ActionEvent event) {
         isClicked = true;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/studentForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/examForm.fxml"));
             Parent load = loader.load();
 
             ExamFormController controller = loader.getController();
@@ -79,7 +79,7 @@ public class ExamTableFormController implements Initializable {
 
             Stage stage = new Stage();
             stage.initModality(null);
-            stage.setTitle("User Form");
+            stage.setTitle("Exam Form");
             stage.setScene(new Scene(load));
 
             stage.initModality(null);
