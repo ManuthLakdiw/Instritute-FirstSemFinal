@@ -100,6 +100,20 @@ public class ExamTableFormController implements Initializable {
 
     @FXML
     void tblUserOnClicked(MouseEvent event) {
+        ExamTm isSelected = tblExam.getSelectionModel().getSelectedItem();
+
+        ExamDto examDto = new ExamDto(
+                isSelected.getExamId(),
+                isSelected.getGrade(),
+                isSelected.getSubject(),
+                isSelected.getExamDate(),
+                isSelected.getExamType(),
+                isSelected.getExamDescription()
+        );
+
+        examFormController.setDto(examDto);
+        examFormController.buttonAction();
+
 
     }
 

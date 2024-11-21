@@ -241,6 +241,7 @@ public class ExamFormController implements Initializable {
 
 
     public void refreshPage(){
+        btnSave.setVisible(true);
         String nextExamID = examModel.getNextExamID();
         lblExamID.setText(nextExamID);
         tareaBody.clear();
@@ -277,7 +278,7 @@ public class ExamFormController implements Initializable {
         }
 
         btnSave.setDisable(true);
-        btnDelete.setDisable(false);
+        btnDelete.setDisable(true);
         btnReset.setDisable(true);
         btnUpdate.setDisable(true);
 
@@ -308,6 +309,25 @@ public class ExamFormController implements Initializable {
     }
 
 
+    public void setDto(ExamDto examDto) {
+        lblExamID.setText(examDto.getExamId());
+        tareaBody.setText(examDto.getExamDescription());
+        dPickerDate.setValue(examDto.getExamDate());
+        cmbExamType.getSelectionModel().select(examDto.getExamType().equals("Not Specified Type") ? "None" : examDto.getExamType());
+        cmbGrade.getSelectionModel().select(examDto.getGrade());
+        String gradeID = gradeModel.getGradeIdFromName(examDto.getGrade());
+        cmbSubject.getItems().clear();
+        ArrayList<String> subjects = gradeModel.getSubjectsByGradeId(gradeID);
 
+        cmbSubject.getItems().addAll(subjects);
+        cmbSubject.getSelectionModel().select(examDto.getSubject());
 
+    }
+
+    public void buttonAction(){
+        btnSave.setVisible(false);
+        btnDelete.setDisable(false);
+        btnUpdate.setDisable(false);
+
+    }
 }
