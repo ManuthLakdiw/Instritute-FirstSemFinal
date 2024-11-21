@@ -71,4 +71,51 @@ public class ExamModel {
         }
         return false;
     }
+
+    public boolean updateExam(ExamDto examDto) {
+        try {
+            return CrudUtil.execute("UPDATE exam SET subject_id = ?, exam_type = ?, date = ?, description = ?, grade = ? WHERE exam_id = ?",
+                    examDto.getSubject(),
+                    examDto.getExamType(),
+                    examDto.getExamDate(),
+                    examDto.getExamDescription(),
+                    examDto.getGrade(),
+                    examDto.getExamId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<ExamDto> isExitingExam(String examID) {
+        ArrayList<ExamDto> exams = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("select * from exam where exam_id = ?", examID);
+            if (resultSet.next()) {
+                ExamDto exam = new ExamDto(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getString(5),
+                        resultSet.getString(6)
+                );
+                exams.add(exam);
+            }
+            return exams;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean deleteExam(String id) {
+        try {
+            return CrudUtil.execute("delete from exam where exam_id = ?",id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

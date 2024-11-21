@@ -4,10 +4,7 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -23,6 +20,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ExamFormController implements Initializable {
@@ -84,6 +82,22 @@ public class ExamFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        id = lblExamID.getText();
+
+        Optional<ButtonType> buttonType = AlertUtil.ConfirmationAlert("Are you sure Do want to delete this exam schedule",ButtonType.NO,ButtonType.YES);
+        if (buttonType.get() == ButtonType.YES) {
+            boolean isDeleted = examModel.deleteExam(id);
+            if (isDeleted) {
+                AlertUtil.informationAlert(this.getClass(),null,true,"Exam deleted successfully");
+                refreshPage();
+                examTableFormController.loadExamTable();
+            }else {
+                AlertUtil.informationAlert(this.getClass(),null,true,"Exam could not be deleted");
+
+            }
+        }
+
+
 
     }
 
@@ -142,8 +156,65 @@ public class ExamFormController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        // Get the values from the UI components
+        id = lblExamID.getText();
+        subject = cmbSubject.getValue();
+        type = cmbExamType.getValue();
+        grade = cmbGrade.getValue();
+        date = dPickerDate.getValue();
+        description = tareaBody.getText();
+
+        // Fetch the grade and subject IDs based on the names selected in the UI
+        String gradeID = gradeModel.getGradeIdFromName(grade);
+        String subjectID = subjectModel.getSubjectIdFromName(subject);
+
+        if (date == null){
+            AlertUtil.informationAlert(this.getClass(),null,false,"Please choose a date");
+            return;
+        }
+        if (subject==null || subject.isEmpty() || grade==null || grade.isEmpty() || subject == null || subject.isEmpty()){
+            AlertUtil.informationAlert(this.getClass(),null,false,"Please fill all the fields");
+            return;
+        }
+
+        if (description.isEmpty()) {
+            description = "Not Specified Description";
+        }
+
+        if (type.equalsIgnoreCase("None")) {
+            type = "Not Specified Type";
+        }
+
+
+        ExamDto examDto = new ExamDto(
+                id,
+                gradeID,
+                subjectID,
+                date,
+                type,
+                description
+        );
+
+        ArrayList<ExamDto> exitingExam = examModel.isExitingExam(id);
+
+//        for (ExamDto examDto1 : exitingExam){
+//            examDto1.getExamType().equals()
+//        }
+
+
+            boolean isUpdated = examModel.updateExam(examDto);
+
+
+            if (isUpdated) {
+                AlertUtil.informationAlert(this.getClass(), null, true, "Exam updated successfully");
+                refreshPage();
+                examTableFormController.loadExamTable();
+            } else {
+                AlertUtil.informationAlert(this.getClass(), null, false, "Error while updating exam");
+            }
 
     }
+
 
     @FXML
     void cmbExamTypeOnAction(ActionEvent event) {
