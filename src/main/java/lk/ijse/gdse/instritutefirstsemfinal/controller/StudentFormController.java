@@ -6,16 +6,11 @@
         import javafx.event.ActionEvent;
         import javafx.fxml.FXML;
         import javafx.fxml.Initializable;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.DatePicker;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TextField;
+        import javafx.scene.control.*;
         import javafx.scene.input.KeyEvent;
         import javafx.scene.layout.Pane;
         import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
         import lk.ijse.gdse.instritutefirstsemfinal.dto.StudentDto;
-        import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
-        import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
         import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
         import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
         import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
@@ -25,11 +20,7 @@
 
         import java.net.URL;
         import java.time.LocalDate;
-        import java.time.format.DateTimeFormatter;
-        import java.util.ArrayList;
-        import java.util.Arrays;
-        import java.util.List;
-        import java.util.ResourceBundle;
+        import java.util.*;
 
         public class StudentFormController implements Initializable {
 
@@ -122,13 +113,27 @@
             String address;
             LocalDate dob;
             String grade;
-            String [] subjects;
 
 
 
             @FXML
             void btnDeleteOnAction(ActionEvent event) {
 
+                // Show confirmation alert to the user
+                Optional<ButtonType> buttonType = AlertUtil.ConfirmationAlert("Are you sure you want to delete this Student?", ButtonType.NO, ButtonType.YES);
+                if (buttonType.isPresent() && buttonType.get() == ButtonType.YES) {
+                    // Call deleteStudent method to perform the deletion
+                    boolean isDeleted = studentModel.deleteStudent(lblStudentID.getText());
+
+                    if (isDeleted) {
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Student deleted successfully.");
+                        refreshPage();
+                        studentTableFormController.loadTable();  // Update student table
+                    } else {
+                        // Notify the user of failure
+                        AlertUtil.informationAlert(UserFormController.class, null, true, "Student could not be deleted!");
+                    }
+                }
             }
 
             @FXML
@@ -271,17 +276,19 @@
                     System.out.println(grade);
                     btnReset.setDisable(false);
 
-                    // Clear previous subjects
                     checkCBoxSubject.getItems().clear();
                     String gradeID = gradeModel.getGradeIdFromName(selectedGrade);
                     ArrayList<String> subjects = gradeModel.getSubjectsByGradeId(gradeID);
 
                     if (subjects != null) {
                         checkCBoxSubject.getItems().addAll(subjects);
+                        isResetEnable();
                     }
                 } else {
                     btnReset.setDisable(true);
                 }
+                isSaveEnabled();
+
 
             }
 
@@ -298,6 +305,10 @@
             @FXML
             void txtAddressOnKeyTyped(KeyEvent event) {
                 address = txtAddress.getText();
+                isSaveEnabled();
+                isResetEnable();
+
+
 
             }
 
@@ -316,7 +327,8 @@
                     btnReset.setDisable(true);
                     lblEmail.setText("");
                     RegexUtil.resetStyle(txtEmail);
-
+                    isResetEnable();
+                    return;
                 }else {
                       if (email.matches(emailRegex)) {
                           lblEmail.setText("");
@@ -327,9 +339,9 @@
                           RegexUtil.setErrorStyle(false, txtEmail);
                       }
 
-
-
                 }
+                isSaveEnabled();
+
 
             }
 
@@ -347,6 +359,8 @@
                if (stringFee.isEmpty()) {
                    btnReset.setDisable(true);
                    lblFee.setText("");
+                   isResetEnable();
+
                }else{
                    if (stringFee.matches(feeRegex)) {
                        fee = Double.parseDouble(stringFee);
@@ -359,6 +373,8 @@
 
                    }
                }
+                isSaveEnabled();
+
             }
 
             @FXML
@@ -378,6 +394,8 @@
                     lblParentName.setText(" ");
                     RegexUtil.resetStyle(txtParentName);
 //                    checkFieldsEmpty();
+                    isResetEnable();
+
                 }else {
                     btnReset.setDisable(false);
                     if (!parentName.matches(nameRegex)) {
@@ -389,6 +407,8 @@
                         RegexUtil.resetStyle(txtParentName);}
                 }
 //                isSaveEnable();
+                isSaveEnabled();
+
 
             }
 
@@ -410,6 +430,8 @@
                     lblPhoneNumber.setText("");
                     RegexUtil.resetStyle(txtPhoneNumber);
 //                   checkFieldsEmpty();
+                    isResetEnable();
+
                     return;
                 }
 
@@ -422,6 +444,8 @@
                     RegexUtil.setErrorStyle(false, txtPhoneNumber);
                 }
 //               isSaveEnable();
+                isSaveEnabled();
+
 
             }
 
@@ -441,6 +465,8 @@
                     lblName.setText(" ");
                     RegexUtil.resetStyle(txtName);
 //                    checkFieldsEmpty();
+                    isResetEnable();
+
                 }else {
                     btnReset.setDisable(false);
                     if (!name.matches(nameRegex)) {
@@ -451,8 +477,7 @@
                         lblName.setText(" ");
                         RegexUtil.resetStyle(txtName);}
                 }
-//                isSaveEnable();
-
+                isSaveEnabled();
             }
 
 
@@ -461,8 +486,9 @@
                 lblStudentID.setText(studentID);
 
 
-                checkCBoxSubject.getItems().clear();
-//                checkCBoxSubject.getCheckModel().clearChecks();  // Clears all selections
+
+              checkCBoxSubject.getCheckModel().clearChecks();
+                checkCBoxSubject.getItems().clear();// Clears all selections
 
                 ArrayList<GradeDto> grades = gradeModel.getGrades();
                 cmbGrade.getItems().clear();
@@ -495,11 +521,11 @@
 
                 RegexUtil.resetStyle(txtParentName, txtAddress, txtEmail, txtPhoneNumber, txtName, txtFee);
 
-
+                btnSave.setVisible(true);
                 btnDelete.setDisable(true);
                 btnReset.setDisable(true);
-                btnSave.setDisable(false);
-                btnUpdate.setDisable(false);
+                btnSave.setDisable(true);
+                btnUpdate.setDisable(true);
             }
 
 
@@ -513,12 +539,35 @@
             public void initialize(URL url, ResourceBundle resourceBundle) {
                 refreshPage();
 
+                cmbGrade.valueProperty().addListener((observable, oldValue, newValue) -> {
+                    isSaveEnabled();
+                    isResetEnable();
+                });
+
+                // Listener for DatePicker (DOB)
+                dpDOB.valueProperty().addListener((observable, oldValue, newValue) -> {
+                    isSaveEnabled();
+                    isResetEnable();
+                });
+
+                // Listener for CheckListView (Subject Checkboxes)
+                checkCBoxSubject.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super String>) change -> {
+                    isSaveEnabled();
+                    isResetEnable();
+                });
             }
 
             public void dpDOBOnAction(ActionEvent actionEvent) {
                 dob = dpDOB.getValue();
 
+                if (dob != null) {
+                    btnReset.setDisable(false);
+                }
+
                 System.out.println(dob);
+
+                isSaveEnabled();
+
 
             }
 
@@ -544,7 +593,11 @@
                 }
 
 
-                checkCBoxSubject.getCheckModel().clearChecks();
+                if (!checkCBoxSubject.getCheckModel().getCheckedItems().isEmpty()) {
+                    checkCBoxSubject.getCheckModel().clearChecks();
+                }
+
+
 
 
                 String[] subjectGrades = studentDto.getSubjects();
@@ -558,6 +611,69 @@
                     }
                 }
             }
+
+            public void isSaveEnabled() {
+                // Check if the student ID is empty
+                boolean checkID = lblStudentID != null && lblStudentID.getText().isEmpty();
+
+                // Check if the name matches the regex
+                boolean checkName = txtName != null && !txtName.getText().matches(nameRegex);
+
+                // Check if the email matches the regex
+                boolean checkEmail = txtEmail != null && !txtEmail.getText().matches(emailRegex);
+
+                // Check if the address is empty
+                boolean checkAddress = txtAddress != null && txtAddress.getText().isEmpty();
+
+                // Check if the phone number matches the regex
+                boolean checkPhoneNumber = txtPhoneNumber != null && !txtPhoneNumber.getText().matches(phoneNumberRegex);
+
+                // Check if the fee matches the regex
+                boolean checkFee = txtFee != null && !txtFee.getText().matches(feeRegex);
+
+                // Check if the date of birth is not selected
+                boolean checkDOB = dpDOB != null && dpDOB.getValue() == null;
+
+                // Check if the grade has not been selected
+                boolean checkGrade = cmbGrade.getValue() == null;
+
+                // Check if at least one subject checkbox is selected
+                boolean checkGrades = checkCBoxSubject != null
+                        && !checkCBoxSubject.getCheckModel().getCheckedItems().isEmpty();
+
+                // Disable the save button if any condition is not met
+                btnSave.setDisable(checkID || checkName || checkEmail || checkAddress
+                        || checkPhoneNumber || checkFee || checkDOB || checkGrade || !checkGrades);
+            }
+
+            public void isResetEnable() {
+                // Check if Name, Description, or ComboBox has any value
+                boolean isCheckName = txtName != null && !txtName.getText().isEmpty();
+                boolean isCheckDescription = txtAddress != null && !txtAddress.getText().isEmpty();
+                boolean isCheckComboBox = cmbGrade != null && cmbGrade.getValue() != null;
+                boolean isCheckCBoxSubject = checkCBoxSubject != null && !checkCBoxSubject.getCheckModel().getCheckedItems().isEmpty();
+
+                // Enable the reset button if any field has input
+                btnReset.setDisable(!(isCheckName || isCheckDescription || isCheckComboBox || isCheckCBoxSubject));
+            }
+
+            public void tableClickButton(){
+                btnSave.setVisible(false);
+                btnReset.setDisable(false);
+                btnUpdate.setDisable(false);
+                btnDelete.setDisable(false);
+
+
+                RegexUtil.resetStyle(txtName, txtAddress, txtEmail, txtPhoneNumber,txtFee,txtParentName);
+                lblName.setText("");
+                lblParentName.setText("");
+                lblPhoneNumber.setText("");
+                lblAddress.setText("");
+                lblFee.setText("");
+                lblDOB.setText("");
+                lblEmail.setText("");
+            }
+
 
 
         }

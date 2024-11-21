@@ -115,33 +115,32 @@ public class StudentTableFormController implements Initializable {
     @FXML
     void tblStudentOnMouseClicked(MouseEvent event) {
         StudentTm studentTm = tblStudent.getSelectionModel().getSelectedItem();
+        if (isClicked){
+            if (studentTm != null) {
+                ArrayList<StudentDto> studentDtos = studentModel.getStudentsById(studentTm.getId());
 
-        if (studentTm != null) {
-            ArrayList<StudentDto> studentDtos = studentModel.getStudentsById(studentTm.getId());
-
-
-            StudentDto dto = null;
-
-
-            for (StudentDto studentDto : studentDtos) {
-                dto = new StudentDto(
-                        studentDto.getId(),
-                        studentDto.getBirthday(),
-                        studentDto.getName(),
-                        studentDto.getAdmissionFee(),
-                        studentDto.getParentName(),
-                        studentDto.getEmail(),
-                        studentDto.getPhoneNumber(),
-                        studentDto.getAddress(),
-                        studentDto.getAddedBy(),
-                        studentDto.getGrade(),
-                        studentDto.getSubjects()
-                );
-            }
+                StudentDto dto = null;
+                for (StudentDto studentDto : studentDtos) {
+                    dto = new StudentDto(
+                            studentDto.getId(),
+                            studentDto.getBirthday(),
+                            studentDto.getName(),
+                            studentDto.getAdmissionFee(),
+                            studentDto.getParentName(),
+                            studentDto.getEmail(),
+                            studentDto.getPhoneNumber(),
+                            studentDto.getAddress(),
+                            studentDto.getAddedBy(),
+                            studentDto.getGrade(),
+                            studentDto.getSubjects()
+                    );
+                }
 
 
-            if (dto != null) {
-                studentFormController.setStudentDto(dto);
+                if (dto != null) {
+                    studentFormController.setStudentDto(dto);
+                    studentFormController.tableClickButton();
+                }
             }
         }
     }

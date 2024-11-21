@@ -109,6 +109,7 @@ public class StudentModel {
         System.out.println(studentDto.getGrade());
         System.out.println(studentDto.getAddedBy());
         System.out.println(studentDto.getSubjects());
+
         Connection connection = null;
 
         try {
@@ -246,17 +247,6 @@ public class StudentModel {
 
 
     public boolean updateStudent(StudentDto studentDto, List<String> subjectIds) {
-        System.out.println(studentDto.getId());
-        System.out.println(studentDto.getName());
-        System.out.println(studentDto.getBirthday());
-        System.out.println(studentDto.getAdmissionFee());
-        System.out.println(studentDto.getParentName());
-        System.out.println(studentDto.getEmail());
-        System.out.println(studentDto.getPhoneNumber());
-        System.out.println(studentDto.getAddress());
-        System.out.println(studentDto.getGrade());
-        System.out.println(studentDto.getAddedBy());
-        System.out.println(studentDto.getSubjects());
 
         Connection connection = null;
 
@@ -329,6 +319,62 @@ public class StudentModel {
             }
         }
     }
+
+    public boolean deleteStudent(String studentId) {
+        Connection connection = null;
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            if (connection == null) {
+                System.out.println("Failed to establish database connection.");
+                return false;
+            }
+            connection.setAutoCommit(false);
+
+            // Step 1: Delete from student_subject table based on student_id
+            boolean isGradesDeleted = CrudUtil.execute("DELETE FROM student_subject WHERE student_id = ?", studentId);
+            System.out.println("Grades delete status: " + isGradesDeleted);
+
+            if (!isGradesDeleted) {
+                connection.rollback();
+                return false;
+            }
+
+            // Step 2: Delete the student record from student table
+            boolean isStudentDeleted = CrudUtil.execute("DELETE FROM student WHERE s_id = ?", studentId);
+            System.out.println("Student delete status: " + isStudentDeleted);
+
+            if (!isStudentDeleted) {
+                connection.rollback();
+                return false;
+            }
+
+            // Commit the transaction if everything is successful
+            connection.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error deleting student: " + e.getMessage());
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    System.out.println("Transaction rolled back.");
+                } catch (SQLException rollbackException) {
+                    rollbackException.printStackTrace();
+                }
+            }
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);  // Reset auto-commit mode
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
 
 
 
