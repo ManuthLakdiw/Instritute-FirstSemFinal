@@ -140,7 +140,6 @@ public class SubjectFormController implements Initializable {
             subjectDescription = "Not specified Description";
         }
 
-        // Validate subjectId and subjectName
         if (subjectId == null || subjectId.isEmpty() || subjectName == null || subjectName.isEmpty()) {
             AlertUtil.informationAlert(UserFormController.class, null, true, "Subject ID or Subject Name cannot be empty.");
             return;
@@ -188,7 +187,6 @@ public class SubjectFormController implements Initializable {
             subjectName = txtSubName.getText();
             subjectDescription = tareaDescription.getText();
 
-            // Default description if not provided
             if (subjectDescription == null || subjectDescription.isEmpty()) {
                 subjectDescription = "Not specified Description";
             }
@@ -206,11 +204,9 @@ public class SubjectFormController implements Initializable {
                 return;
             }
 
-            // Collect selected grade IDs from CheckComboBox (only IDs, not grade details)
             ObservableList<String> selectedItems = checkComboBoxGrade.getCheckModel().getCheckedItems();
             List<String> gradeIds = subjectModel.getGradeIdsFromNames(new ArrayList<>(selectedItems));
 
-            // Check if the current values are already in the table before proceeding with the update
             if (isValuesUnchanged(subjectId, subjectName, subjectDescription, selectedItems)) {
                 AlertUtil.informationAlert(UserFormController.class, null, true, "No changes detected. Update is not necessary.");
                 return;

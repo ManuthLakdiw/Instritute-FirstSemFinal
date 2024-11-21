@@ -223,9 +223,8 @@
                     return;
                 }
 
-                // Field validation
                 if (id.isEmpty() || name.isEmpty() || parentName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
-                        || address.isEmpty() || grade == null) {
+                        || address.isEmpty() || grade == null || birthday == null) {
                     AlertUtil.informationAlert(this.getClass(), null, true, "All fields must be filled!");
                     return;
                 }
@@ -235,20 +234,39 @@
                     return;
                 }
 
-                // Get subject IDs
                 List<String> subjectIds = subjectModel.getSubjectIdsFromNames(new ArrayList<>(selectedItems));
                 if (subjectIds.isEmpty()) {
                     AlertUtil.informationAlert(this.getClass(), null, true, "Invalid subject selection.");
                     return;
                 }
 
-                // Convert subject IDs to array for DTO
                 String[] subjectArray = subjectIds.toArray(new String[0]);
 
                 String gradeID = gradeModel.getGradeIdFromName(grade);
 
-                // Create StudentDto for updating
                 StudentDto studentDto = new StudentDto(id, birthday, name, fee, parentName, email, phoneNumber, address, admin, gradeID, subjectArray);
+
+                ArrayList<StudentDto> students = studentModel.getStudentsById(lblStudentID.getText());
+
+                for (StudentDto studentDto1 : students) {
+                    // Check if all fields (except ID) match
+                    boolean isSameGrade = studentDto1.getGrade().equals(grade);
+                    boolean isSameName = studentDto1.getName().equals(name);
+                    boolean isSameParentName = studentDto1.getParentName().equals(parentName);
+                    boolean isSamePhone = studentDto1.getPhoneNumber().equals(phoneNumber);
+                    boolean isSameEmail = studentDto1.getEmail().equals(email);
+                    boolean isSameAddress = studentDto1.getAddress().equals(address);
+                    boolean isSameDOB = studentDto1.getBirthday().equals(birthday);
+                    boolean isSameSubjects = Arrays.equals(studentDto1.getSubjects(), selectedItems.toArray(new String[0]));
+
+
+
+
+                    if (isSameGrade && isSameName && isSameParentName && isSamePhone && isSameEmail && isSameAddress && isSameSubjects && isSameDOB ) {
+                        AlertUtil.informationAlert(this.getClass(), null, true, "No changes detected. Update is not necessary.");
+                        return;
+                    }
+                }
 
                 // Update the student
                 boolean isUpdated = studentModel.updateStudent(studentDto, subjectIds);
@@ -673,6 +691,7 @@
                 lblDOB.setText("");
                 lblEmail.setText("");
             }
+
 
 
 
