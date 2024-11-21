@@ -55,74 +55,74 @@ public class SubjectModel {
         return null;
     }
 
-    public boolean saveSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
-        Connection connection = null;
-        try {
-            // Step 1: Establish a database connection
-            connection = DBConnection.getInstance().getConnection();
+        public boolean saveSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
+            Connection connection = null;
+            try {
+                // Step 1: Establish a database connection
+                connection = DBConnection.getInstance().getConnection();
 
-            // Step 2: Start transaction
-            connection.setAutoCommit(false);
+                // Step 2: Start transaction
+                connection.setAutoCommit(false);
 
-            // Step 3: Insert subject into the `subject` table
-            boolean isSubjectSaved = CrudUtil.execute(
-                    "INSERT INTO subject (sub_id, sub_name, description) VALUES (?, ?, ?)",
-                    subjectDto.getSubjectId(),
-                    subjectDto.getSubjectName(),
-                    subjectDto.getSubjectDescription()
-            );
-
-            if (!isSubjectSaved) {
-                connection.rollback();
-                System.out.println("Subject insertion failed");
-                return false;  // Return early if subject insert fails
-            }
-
-            for (String gradeId : gradeIds) {
-                boolean isGradeValid = gradeModel.isGradeExists(gradeId);
-                if (!isGradeValid) {
-                    System.out.println("Invalid grade ID: " + gradeId);
-                    connection.rollback();
-                    return false;
-                }
-
-                boolean isGradeRelationSaved = CrudUtil.execute(
-                        "INSERT INTO subject_grade (subject_id, grade_id) VALUES (?, ?)",
+                // Step 3: Insert subject into the `subject` table
+                boolean isSubjectSaved = CrudUtil.execute(
+                        "INSERT INTO subject (sub_id, sub_name, description) VALUES (?, ?, ?)",
                         subjectDto.getSubjectId(),
-                        gradeId
+                        subjectDto.getSubjectName(),
+                        subjectDto.getSubjectDescription()
                 );
 
-                if (!isGradeRelationSaved) {
+                if (!isSubjectSaved) {
                     connection.rollback();
-                    System.out.println("Failed to save grade relation for grade ID: " + gradeId);
-                    return false;  // Return early if grade relation insert fails
+                    System.out.println("Subject insertion failed");
+                    return false;  // Return early if subject insert fails
                 }
-            }
 
-            connection.commit();
-            return true;
+                for (String gradeId : gradeIds) {
+                    boolean isGradeValid = gradeModel.isGradeExists(gradeId);
+                    if (!isGradeValid) {
+                        System.out.println("Invalid grade ID: " + gradeId);
+                        connection.rollback();
+                        return false;
+                    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                if (connection != null) {
-                    connection.rollback();
+                    boolean isGradeRelationSaved = CrudUtil.execute(
+                            "INSERT INTO subject_grade (subject_id, grade_id) VALUES (?, ?)",
+                            subjectDto.getSubjectId(),
+                            gradeId
+                    );
+
+                    if (!isGradeRelationSaved) {
+                        connection.rollback();
+                        System.out.println("Failed to save grade relation for grade ID: " + gradeId);
+                        return false;  // Return early if grade relation insert fails
+                    }
                 }
-            } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace();
-            }
-            return false;
-        } finally {
-            // Step 6: Restore auto commit and close connection
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true);
-                }
+
+                connection.commit();
+                return true;
+
             } catch (SQLException e) {
                 e.printStackTrace();
+                try {
+                    if (connection != null) {
+                        connection.rollback();
+                    }
+                } catch (SQLException rollbackException) {
+                    rollbackException.printStackTrace();
+                }
+                return false;
+            } finally {
+                // Step 6: Restore auto commit and close connection
+                try {
+                    if (connection != null) {
+                        connection.setAutoCommit(true);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
 
     // Method to check if the grade exists in the `grade` table
 
@@ -338,5 +338,20 @@ public class SubjectModel {
 
         return subjectId;
     }
+
+
+        // Method to get multiple subject IDs from their names
+        public List<String> getSubjectIdsFromNames(List<String> subjectNames) {
+            List<String> subjectIds = new ArrayList<>();
+
+            for (String subjectName : subjectNames) {
+                String subjectId = getSubjectIdFromName(subjectName); // Call your single retrieval method
+                if (subjectId != null) {
+                    subjectIds.add(subjectId); // Add to list only if the ID is not null
+                }
+            }
+
+            return subjectIds;
+        }
 
 }

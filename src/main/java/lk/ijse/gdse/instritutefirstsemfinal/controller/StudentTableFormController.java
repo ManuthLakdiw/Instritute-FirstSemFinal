@@ -114,7 +114,36 @@ public class StudentTableFormController implements Initializable {
 
     @FXML
     void tblStudentOnMouseClicked(MouseEvent event) {
+        StudentTm studentTm = tblStudent.getSelectionModel().getSelectedItem();
 
+        if (studentTm != null) {
+            ArrayList<StudentDto> studentDtos = studentModel.getStudentsById(studentTm.getId());
+
+
+            StudentDto dto = null;
+
+
+            for (StudentDto studentDto : studentDtos) {
+                dto = new StudentDto(
+                        studentDto.getId(),
+                        studentDto.getBirthday(),
+                        studentDto.getName(),
+                        studentDto.getAdmissionFee(),
+                        studentDto.getParentName(),
+                        studentDto.getEmail(),
+                        studentDto.getPhoneNumber(),
+                        studentDto.getAddress(),
+                        studentDto.getAddedBy(),
+                        studentDto.getGrade(),
+                        studentDto.getSubjects()
+                );
+            }
+
+
+            if (dto != null) {
+                studentFormController.setStudentDto(dto);
+            }
+        }
     }
 
     @FXML
@@ -164,25 +193,23 @@ public class StudentTableFormController implements Initializable {
         ObservableList<StudentTm> studentTmList = FXCollections.observableArrayList();
 
         for (StudentDto studentDto : studentDtos) {
-            // Convert the subjects from String[] to a comma-separated string
             String subjectsString = String.join(", ", studentDto.getSubjects());
 
-            // Create the StudentTm object with the formatted subjects
             StudentTm studentTm = new StudentTm(
                     studentDto.getId(),
                     studentDto.getName(),
                     studentDto.getBirthday(),
                     studentDto.getAdmissionFee(),
                     studentDto.getGrade(),
-                    subjectsString,  // Pass a single String here instead of String[]
+                    subjectsString,
                     studentDto.getAddedBy()
             );
 
-            // Add to the observable list
+
             studentTmList.add(studentTm);
         }
 
-        // Set the items to the table
+
         tblStudent.setItems(studentTmList);
     }
 

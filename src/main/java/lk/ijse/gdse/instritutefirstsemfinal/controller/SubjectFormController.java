@@ -165,8 +165,8 @@ public class SubjectFormController implements Initializable {
 
             if (isSaved) {
                 AlertUtil.informationAlert(UserFormController.class, null, true, "Subject Saved Successfully");
-                refreshPage();  // Refresh the page after successful save
-                tableSubjectFormController.loadSubjectTable();  // Reload the subject table
+                refreshPage();
+                tableSubjectFormController.loadSubjectTable();
             } else {
                 AlertUtil.errorAlert(UserFormController.class, null,  "Subject Save Failed");
             }
@@ -361,22 +361,18 @@ public class SubjectFormController implements Initializable {
     }
 
     public void setUserDto(SubjectDto dto) {
-        // Step 1: Set text fields and labels
         lblSubID.setText(dto.getSubjectId());
         txtSubName.setText(dto.getSubjectName());
         tareaDescription.setText(dto.getSubjectDescription());
 
-        // Step 2: Clear previous selections in the CheckComboBox
         checkComboBoxGrade.getCheckModel().clearChecks();
 
-        // Step 3: Mark grades in the CheckComboBox
-        String[] subjectGrades = dto.getSubjectGrades(); // e.g., ["grade 1", "grade 2"]
+        String[] subjectGrades = dto.getSubjectGrades();
 
         if (subjectGrades != null) {
             for (String grade : subjectGrades) {
-                // Check if the grade exists in the CheckComboBox options
                 if (checkComboBoxGrade.getItems().contains(grade)) {
-                    checkComboBoxGrade.getCheckModel().check(grade); // Mark the grade
+                    checkComboBoxGrade.getCheckModel().check(grade);
                 }
             }
         }

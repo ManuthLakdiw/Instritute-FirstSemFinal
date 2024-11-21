@@ -13,9 +13,13 @@
         import javafx.scene.input.KeyEvent;
         import javafx.scene.layout.Pane;
         import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
+        import lk.ijse.gdse.instritutefirstsemfinal.dto.StudentDto;
+        import lk.ijse.gdse.instritutefirstsemfinal.dto.SubjectDto;
         import lk.ijse.gdse.instritutefirstsemfinal.dto.TeacherDto;
         import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
         import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
+        import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
+        import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
         import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
         import org.controlsfx.control.CheckComboBox;
 
@@ -24,6 +28,7 @@
         import java.time.format.DateTimeFormatter;
         import java.util.ArrayList;
         import java.util.Arrays;
+        import java.util.List;
         import java.util.ResourceBundle;
 
         public class StudentFormController implements Initializable {
@@ -31,6 +36,7 @@
             private StudentTableFormController studentTableFormController;
             StudentModel studentModel = new StudentModel();
             GradeModel gradeModel = new GradeModel();
+            SubjectModel subjectModel = new SubjectModel();
 
             public void setStudentTableFormController(StudentTableFormController studentTableFormController) {
                 this.studentTableFormController = studentTableFormController;
@@ -132,16 +138,125 @@
 
             @FXML
             void btnSaveOnAction(ActionEvent event) {
+                String id = lblStudentID.getText();
+                LocalDate birthday = dpDOB.getValue();
+                String name = txtName.getText();
+                String parentName = txtParentName.getText();
+                String phoneNumber = txtPhoneNumber.getText().trim();
+                System.out.println("Phone Number: [" + phoneNumber + "] Length: " + phoneNumber.length());
+                String email = txtEmail.getText();
+                String address = txtAddress.getText();
+                String grade = cmbGrade.getValue(); // Ensure cmbGrade returns a valid grade ID
                 ObservableList<String> selectedItems = checkCBoxSubject.getCheckModel().getCheckedItems();
+                String admin = LoginFormController.uName;
+
+                double fee;
+                try {
+                    fee = Double.parseDouble(txtFee.getText());
+                } catch (NumberFormatException e) {
+                    AlertUtil.errorAlert(this.getClass(), null, "Invalid fee. Please enter a numeric value.");
+                    return;
+                }
+
+                // Field validation
+                if (id.isEmpty() || name.isEmpty() || parentName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
+                        || address.isEmpty() || grade == null) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "All fields must be filled!");
+                    return;
+                }
+
+                if (selectedItems.isEmpty()) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Please select at least one subject.");
+                    return;
+                }
+
+                // Get subject IDs
+                List<String> subjectIds = subjectModel.getSubjectIdsFromNames(new ArrayList<>(selectedItems));
+                if (subjectIds.isEmpty()) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Invalid subject selection.");
+                    return;
+                }
 
 
+                String[] subjectArray = subjectIds.toArray(new String[0]);
 
+                String gradeID = gradeModel.getGradeIdFromName(grade);
+
+                StudentDto studentDto = new StudentDto(id, birthday, name, fee, parentName, email, phoneNumber, address, admin, gradeID, subjectArray);
+
+
+                boolean isSaved = studentModel.saveStudent(studentDto, subjectIds);
+
+                if (isSaved) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Student Saved Successfully!");
+                    refreshPage();
+                    studentTableFormController.loadTable();
+                } else {
+                    AlertUtil.errorAlert(this.getClass(), null, "Student Save Failed.");
+                }
             }
+
 
             @FXML
             void btnUpdateOnAction(ActionEvent event) {
+                String id = lblStudentID.getText();
+                LocalDate birthday = dpDOB.getValue();
+                String name = txtName.getText();
+                String parentName = txtParentName.getText();
+                String phoneNumber = txtPhoneNumber.getText().trim();
+                String email = txtEmail.getText();
+                String address = txtAddress.getText();
+                String grade = cmbGrade.getValue();
+                ObservableList<String> selectedItems = checkCBoxSubject.getCheckModel().getCheckedItems();
+                String admin = LoginFormController.uName;
 
+                double fee;
+                try {
+                    fee = Double.parseDouble(txtFee.getText());
+                } catch (NumberFormatException e) {
+                    AlertUtil.errorAlert(this.getClass(), null, "Invalid fee. Please enter a numeric value.");
+                    return;
+                }
+
+                // Field validation
+                if (id.isEmpty() || name.isEmpty() || parentName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty()
+                        || address.isEmpty() || grade == null) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "All fields must be filled!");
+                    return;
+                }
+
+                if (selectedItems.isEmpty()) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Please select at least one subject.");
+                    return;
+                }
+
+                // Get subject IDs
+                List<String> subjectIds = subjectModel.getSubjectIdsFromNames(new ArrayList<>(selectedItems));
+                if (subjectIds.isEmpty()) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Invalid subject selection.");
+                    return;
+                }
+
+                // Convert subject IDs to array for DTO
+                String[] subjectArray = subjectIds.toArray(new String[0]);
+
+                String gradeID = gradeModel.getGradeIdFromName(grade);
+
+                // Create StudentDto for updating
+                StudentDto studentDto = new StudentDto(id, birthday, name, fee, parentName, email, phoneNumber, address, admin, gradeID, subjectArray);
+
+                // Update the student
+                boolean isUpdated = studentModel.updateStudent(studentDto, subjectIds);
+
+                if (isUpdated) {
+                    AlertUtil.informationAlert(this.getClass(), null, true, "Student Updated Successfully!");
+                    refreshPage();
+                    studentTableFormController.loadTable();
+                } else {
+                    AlertUtil.errorAlert(this.getClass(), null, "Student Update Failed.");
+                }
             }
+
 
             @FXML
             void checkCBoxSubjectOnKeyPressed(KeyEvent event) {
@@ -317,7 +432,7 @@
             @FXML
             void txtNameOnkeyTyped(KeyEvent event) {
                 name = txtName.getText().trim();
-                btnSave.setDisable(false);
+                btnReset.setDisable(false);
                 lblName.setStyle("-fx-text-fill: #4a4848");
                 RegexUtil.resetStyle(txtName);
 
@@ -341,16 +456,17 @@
             }
 
 
-            public void refreshPage(){
+            public void refreshPage() {
                 String studentID = studentModel.getNextStudentID();
                 lblStudentID.setText(studentID);
 
+
                 checkCBoxSubject.getItems().clear();
-                checkCBoxSubject.getCheckModel().clearChecks();  // Clears all selections
+//                checkCBoxSubject.getCheckModel().clearChecks();  // Clears all selections
 
                 ArrayList<GradeDto> grades = gradeModel.getGrades();
                 cmbGrade.getItems().clear();
-                if (grades != null) {
+                if (grades != null && !grades.isEmpty()) {
                     for (GradeDto grade : grades) {
                         String gradeName = grade.getGradeName();
                         if (gradeName != null && !gradeName.isEmpty()) {
@@ -359,10 +475,12 @@
                     }
                 }
 
+
                 ArrayList<Label> labels = new ArrayList<>(Arrays.asList(lblAddress, lblName, lblDOB, lblFee, lblParentName, lblPhoneNumber, lblEmail));
                 for (Label label : labels) {
                     label.setText("");
                 }
+
 
                 txtEmail.setText("");
                 txtAddress.setText("");
@@ -371,16 +489,19 @@
                 txtParentName.setText("");
                 txtFee.setText("");
 
+
                 dpDOB.setValue(null);
+
 
                 RegexUtil.resetStyle(txtParentName, txtAddress, txtEmail, txtPhoneNumber, txtName, txtFee);
 
-                // Disable buttons
+
                 btnDelete.setDisable(true);
                 btnReset.setDisable(true);
-                btnSave.setDisable(true);
-                btnUpdate.setDisable(true);
+                btnSave.setDisable(false);
+                btnUpdate.setDisable(false);
             }
+
 
 
 
@@ -397,7 +518,48 @@
             public void dpDOBOnAction(ActionEvent actionEvent) {
                 dob = dpDOB.getValue();
 
+                System.out.println(dob);
+
             }
+
+
+            public void setStudentDto(StudentDto studentDto) {
+                lblStudentID.setText(studentDto.getId());
+                txtName.setText(studentDto.getName());
+                txtEmail.setText(studentDto.getEmail());
+                txtAddress.setText(studentDto.getAddress());
+                txtPhoneNumber.setText(studentDto.getPhoneNumber());
+                txtFee.setText(String.valueOf(studentDto.getAdmissionFee()));
+                dpDOB.setValue(studentDto.getBirthday());
+                cmbGrade.setValue(studentDto.getGrade());
+                txtParentName.setText(studentDto.getParentName());
+
+                String gradeID = gradeModel.getGradeIdFromName(studentDto.getGrade());
+
+                ArrayList<String> subjects = gradeModel.getSubjectsByGradeId(gradeID);
+
+                checkCBoxSubject.getItems().clear();
+                if (subjects != null) {
+                    checkCBoxSubject.getItems().addAll(subjects);
+                }
+
+
+                checkCBoxSubject.getCheckModel().clearChecks();
+
+
+                String[] subjectGrades = studentDto.getSubjects();
+
+
+                if (subjectGrades != null) {
+                    for (String grade : subjectGrades) {
+                        if (checkCBoxSubject.getItems().contains(grade)) {
+                            checkCBoxSubject.getCheckModel().check(grade);
+                        }
+                    }
+                }
+            }
+
+
         }
 
 
