@@ -8,12 +8,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.ExamDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.GradeDto;
 import lk.ijse.gdse.instritutefirstsemfinal.model.ExamModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 
 import java.lang.reflect.Array;
 import java.net.URL;
@@ -99,6 +102,40 @@ public class ExamFormController implements Initializable {
         date = dPickerDate.getValue();
         description = tareaBody.getText();
 
+        String gradeID = gradeModel.getGradeIdFromName(grade);
+        String subjectID = subjectModel.getSubjectIdFromName(subject);
+
+        if (description.isEmpty()){
+            description = "Not Specified Description";
+        }
+
+        if (type.equalsIgnoreCase("None")){
+            type = "Not Specified Type";
+        }
+        if (!btnSave.isDisable()){
+            ExamDto examDto = new ExamDto(
+                    id,
+                    gradeID,
+                    subjectID,
+                    date,
+                    type,
+                    description
+            );
+
+
+            boolean isSaved = examModel.saveExam(examDto);
+
+
+            if (isSaved){
+                AlertUtil.informationAlert(this.getClass(),null,true,"Exam saved successfully");
+                refreshPage();
+                examTableFormController.loadExamTable();
+
+            }else {
+                AlertUtil.informationAlert(this.getClass(),null,false,"Error while saving exam");
+            }
+        }
+
 
 
     }
@@ -115,8 +152,16 @@ public class ExamFormController implements Initializable {
 
     @FXML
     void cmbExamTypeOnKeyPressed(KeyEvent event) {
+        if (cmbExamType.getSelectionModel().getSelectedItem() != null) {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (cmbSubject.getSelectionModel().getSelectedItem() == null) {
+                    cmbSubject.show();
+                }
+            }
+        }
 
     }
+
 
     @FXML
     void cmbGradeOnAction(ActionEvent event) {
@@ -134,7 +179,13 @@ public class ExamFormController implements Initializable {
 
     @FXML
     void cmbGradeOnKeyPresssed(KeyEvent event) {
-
+        if (cmbGrade.getSelectionModel().getSelectedItem() != null) {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (cmbExamType.getSelectionModel().getSelectedItem() == null) {
+                    cmbExamType.show();
+                }
+            }
+        }
 
     }
 
@@ -159,26 +210,33 @@ public class ExamFormController implements Initializable {
 
         cmbGrade.valueProperty().addListener((observable, oldValue, newValue) -> {
             idSaveEnable();
+            isResetEnable();
         });
 
         cmbSubject.valueProperty().addListener((observable, oldValue, newValue) -> {
             idSaveEnable();
+            isResetEnable();
+
         });
 
         cmbExamType.valueProperty().addListener((observable, oldValue, newValue) -> {
             idSaveEnable();
+            isResetEnable();
+
         });
 
         dPickerDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             idSaveEnable();
+            isResetEnable();
+
         });
     }
 
     @FXML
     private void tareaBodyOnKeyTyped(KeyEvent keyEvent) {
         description = tareaBody.getText();
-
         idSaveEnable();
+        isResetEnable();
     }
 
 
@@ -219,8 +277,8 @@ public class ExamFormController implements Initializable {
         }
 
         btnSave.setDisable(true);
-        btnDelete.setDisable(true);
-        btnReset.setDisable(false);
+        btnDelete.setDisable(false);
+        btnReset.setDisable(true);
         btnUpdate.setDisable(true);
 
 
@@ -233,10 +291,23 @@ public class ExamFormController implements Initializable {
         boolean checkSubject = cmbSubject.getValue() == null;
         boolean checkExamType = cmbExamType.getValue() == null;
         boolean checkDate = dPickerDate.getValue() == null;
-        boolean checkDescription =  tareaBody != null &&tareaBody.getText().isEmpty();
 
-        btnSave.setDisable(checkGrade || checkSubject || checkExamType || checkDate || checkDescription);
+
+        btnSave.setDisable(checkGrade || checkSubject || checkExamType || checkDate);
     }
+
+    public void isResetEnable(){
+        boolean isCheckDescription = tareaBody != null && !tareaBody.getText().isEmpty();
+        boolean isCheckGrade = cmbGrade != null && cmbGrade.getValue() != null;
+        boolean isCheckSubject = cmbSubject != null && cmbSubject.getValue() != null;
+        boolean isCheckExamType = cmbExamType != null && cmbExamType.getValue() != null;
+        boolean isCheckDate = dPickerDate != null &&dPickerDate.getValue() != null;
+
+        btnReset.setDisable(!(isCheckGrade || isCheckSubject || isCheckExamType || isCheckDescription || isCheckDate));
+
+    }
+
+
 
 
 }

@@ -50,4 +50,25 @@ public class ExamModel {
         return null;
     }
 
+    public boolean saveExam(ExamDto examDto) {
+        System.out.println(examDto.getExamDate());
+        System.out.println(examDto.getGrade());
+        System.out.println(examDto.getExamId());
+        System.out.println(examDto.getSubject());
+        System.out.println(examDto.getExamType());
+        System.out.println(examDto.getExamId());
+        try {
+            return CrudUtil.execute("insert into exam values(?,?,?,?,?,?)",
+                    examDto.getExamId(),
+                    examDto.getSubject(),
+                    examDto.getExamType(),
+                    examDto.getExamDate(),
+                    examDto.getExamDescription(),
+                    examDto.getGrade()
+            );
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

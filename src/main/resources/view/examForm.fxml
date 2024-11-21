@@ -95,7 +95,7 @@
             </Label>
          </children>
       </HBox>
-      <Label layoutX="313.0" layoutY="202.0" prefHeight="48.0" prefWidth="128.0" text="Description">
+      <Label layoutX="313.0" layoutY="202.0" prefHeight="48.0" prefWidth="128.0" text="Description (optional)">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
