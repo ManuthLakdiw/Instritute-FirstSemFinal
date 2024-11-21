@@ -14,6 +14,8 @@ import java.util.List;
 
 public class StudentModel {
 
+
+
     public String getNextStudentID() {
         try {
             ResultSet resultSet = CrudUtil.execute("select s_id from student order by s_id desc limit 1");
@@ -30,6 +32,7 @@ public class StudentModel {
         }
         return "S0001";
     }
+
     public ArrayList<StudentDto> getAllStudents() {
         ArrayList<StudentDto> students = new ArrayList<>();
         try {
@@ -95,8 +98,6 @@ public class StudentModel {
         return students;
     }
 
-
-
     public boolean saveStudent(StudentDto studentDto, List<String> subjectIds) {
         System.out.println(studentDto.getId());
         System.out.println(studentDto.getName());
@@ -113,11 +114,9 @@ public class StudentModel {
         Connection connection = null;
 
         try {
-            // Start a database transaction
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
 
-            // Insert student details into the student table
             String studentInsertQuery = "INSERT INTO student (s_id, birthday, name, admission_fee, parent_name, email, phone_number, address, added_by, grade) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             boolean isStudentSaved = CrudUtil.execute(
@@ -140,7 +139,6 @@ public class StudentModel {
                 return false;
             }
 
-            // Insert subject details into the student_subject table
             String studentSubjectInsertQuery = "INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)";
 
             for (String subjectId : subjectIds) {
@@ -152,7 +150,6 @@ public class StudentModel {
                 }
             }
 
-            // Commit the transaction if everything succeeds
             connection.commit();
             return true;
 
@@ -160,7 +157,7 @@ public class StudentModel {
             e.printStackTrace();
             try {
                 if (connection != null) {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
@@ -169,7 +166,7 @@ public class StudentModel {
         } finally {
             try {
                 if (connection != null) {
-                    connection.setAutoCommit(true); // Restore default auto-commit behavior
+                    connection.setAutoCommit(true);
                 }
             } catch (SQLException finalEx) {
                 finalEx.printStackTrace();
@@ -180,7 +177,7 @@ public class StudentModel {
     public ArrayList<StudentDto> getStudentsById(String studentId) {
         ArrayList<StudentDto> students = new ArrayList<>();
         try {
-            // Execute the query to get students by student ID
+
             ResultSet resultSet = CrudUtil.execute(
                     "SELECT s.s_id AS 'Student ID', " +
                             "s.name AS 'Student Name', " +
@@ -201,9 +198,9 @@ public class StudentModel {
                             "GROUP BY s.s_id;",studentId
             );
 
-            // Process the result set
+
             while (resultSet.next()) {
-                // Map each row to a StudentDto object
+
                 String id = resultSet.getString(1);
                 String name = resultSet.getString(2);
                 LocalDate birthday = resultSet.getDate(3) != null
@@ -217,11 +214,11 @@ public class StudentModel {
                 String grade = resultSet.getString(9);
                 String addedBy = resultSet.getString(11);
 
-                // Split the subjects string into an array
+
                 String subjectsString = resultSet.getString(10);
                 String[] subjects = subjectsString != null ? subjectsString.split(", ") : new String[0];
 
-                // Create a StudentDto object
+
                 StudentDto studentDto = new StudentDto(
                         id,
                         birthday,
@@ -236,7 +233,7 @@ public class StudentModel {
                         subjects
                 );
 
-                // Add the student to the list
+
                 students.add(studentDto);
             }
         } catch (Exception e) {
@@ -245,17 +242,14 @@ public class StudentModel {
         return students;
     }
 
-
     public boolean updateStudent(StudentDto studentDto, List<String> subjectIds) {
 
         Connection connection = null;
 
         try {
-            // Start a database transaction
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
 
-            // Update student details in the student table
             String studentUpdateQuery = "UPDATE student SET birthday = ?, name = ?, admission_fee = ?, parent_name = ?, email = ?, phone_number = ?, address = ?, added_by = ?, grade = ? WHERE s_id = ?";
             boolean isStudentUpdated = CrudUtil.execute(
                     studentUpdateQuery,
@@ -276,7 +270,7 @@ public class StudentModel {
                 return false;
             }
 
-            // Remove existing subjects from student_subject table
+
             String deleteSubjectQuery = "DELETE FROM student_subject WHERE student_id = ?";
             boolean isSubjectsDeleted = CrudUtil.execute(deleteSubjectQuery, studentDto.getId());
 
@@ -285,7 +279,7 @@ public class StudentModel {
                 return false;
             }
 
-            // Insert updated subjects into the student_subject table
+
             String studentSubjectInsertQuery = "INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)";
             for (String subjectId : subjectIds) {
                 boolean isSubjectLinked = CrudUtil.execute(studentSubjectInsertQuery, studentDto.getId(), subjectId);
@@ -295,7 +289,7 @@ public class StudentModel {
                 }
             }
 
-            // Commit the transaction if everything succeeds
+
             connection.commit();
             return true;
 
@@ -303,7 +297,7 @@ public class StudentModel {
             e.printStackTrace();
             try {
                 if (connection != null) {
-                    connection.rollback(); // Rollback transaction in case of error
+                    connection.rollback();
                 }
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
@@ -312,7 +306,7 @@ public class StudentModel {
         } finally {
             try {
                 if (connection != null) {
-                    connection.setAutoCommit(true); // Restore default auto-commit behavior
+                    connection.setAutoCommit(true);
                 }
             } catch (SQLException finalEx) {
                 finalEx.printStackTrace();
@@ -330,7 +324,7 @@ public class StudentModel {
             }
             connection.setAutoCommit(false);
 
-            // Step 1: Delete from student_subject table based on student_id
+
             boolean isGradesDeleted = CrudUtil.execute("DELETE FROM student_subject WHERE student_id = ?", studentId);
             System.out.println("Grades delete status: " + isGradesDeleted);
 
@@ -339,7 +333,7 @@ public class StudentModel {
                 return false;
             }
 
-            // Step 2: Delete the student record from student table
+
             boolean isStudentDeleted = CrudUtil.execute("DELETE FROM student WHERE s_id = ?", studentId);
             System.out.println("Student delete status: " + isStudentDeleted);
 
@@ -348,7 +342,7 @@ public class StudentModel {
                 return false;
             }
 
-            // Commit the transaction if everything is successful
+
             connection.commit();
             return true;
 
@@ -366,7 +360,7 @@ public class StudentModel {
         } finally {
             if (connection != null) {
                 try {
-                    connection.setAutoCommit(true);  // Reset auto-commit mode
+                    connection.setAutoCommit(true);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

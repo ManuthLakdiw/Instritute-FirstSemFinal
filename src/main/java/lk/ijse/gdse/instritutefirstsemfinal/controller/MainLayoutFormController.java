@@ -62,6 +62,14 @@ public class MainLayoutFormController implements Initializable {
     @FXML
     private HBox hBoxUser;
 
+    @FXML
+    private HBox hBoxExam;
+
+    @FXML
+    private Button btnExam;
+
+
+
 
 
 
@@ -103,7 +111,7 @@ public class MainLayoutFormController implements Initializable {
         btnLogout.setMouseTransparent(true);
         btnUser.setMouseTransparent(true);
         btnSubject.setMouseTransparent(true);
-
+        btnExam.setMouseTransparent(true);
 
     }
 
@@ -143,7 +151,6 @@ public class MainLayoutFormController implements Initializable {
     }
 
     private void applyHBoxBackground(HBox hbox) {
-        // Remove the 'selected' style from the last clicked HBox if it exists
         if (lastClickedHBox != null) {
             lastClickedHBox.getStyleClass().remove("selected");
         }
@@ -187,5 +194,12 @@ public class MainLayoutFormController implements Initializable {
         applyHBoxBackground(hBoxSubject);
         navigateTo("/view/subjectTableForm.fxml", "SubjectForm");
 
+    }
+
+
+
+    public void hBoxExamOnCLicked(MouseEvent mouseEvent) {
+        applyHBoxBackground(hBoxExam);
+        navigateTo("/view/examTableForm.fxml", "ExamForm");
     }
 }

@@ -9,6 +9,9 @@ import java.util.*;
 
 public class GradeModel {
 
+
+
+
     public ArrayList<GradeDto> getGrades() {
         ArrayList<GradeDto> gradeList = new ArrayList<>();
         try {
@@ -25,8 +28,6 @@ public class GradeModel {
         }
         return gradeList;
     }
-
-
 
     public List<String> getGradesForSubject(String subjectName)  {
             try {
@@ -46,19 +47,17 @@ public class GradeModel {
             return null;
     }
 
-
-
     public String getGradeIdFromName(String grade) {
         String gradeID = null;
 
         try {
-            // Prepare a query to retrieve the subject ID for a single subject name
+
             String query = "SELECT g_id FROM grade WHERE grade = ?";
 
-            // Execute the query with the provided subject name
+
             ResultSet resultSet = CrudUtil.execute(query, grade);
 
-            // Extract the subject ID from the result set
+
             if (resultSet.next()) {
                 gradeID = resultSet.getString(1);
             }
@@ -73,7 +72,7 @@ public class GradeModel {
         ArrayList<String> subjects = new ArrayList<>();
         String query = "SELECT subject.sub_name FROM subject JOIN subject_grade ON subject.sub_id = subject_grade.subject_id WHERE subject_grade.grade_id = ?";
         try (ResultSet resultSet = CrudUtil.execute(query, gradeId)) {
-            while (resultSet.next()) { // The `while` block should be here.
+            while (resultSet.next()) {
                 subjects.add(resultSet.getString("sub_name"));
             }
         } catch (SQLException e) {

@@ -13,6 +13,10 @@ import java.util.*;
 public class SubjectModel {
     GradeModel gradeModel = new GradeModel();
 
+
+
+
+
     public String getNextSubjectID() {
         try {
             ResultSet resultSet = CrudUtil.execute("select sub_id from subject order by sub_id desc limit 1");
@@ -29,7 +33,6 @@ public class SubjectModel {
         }
         return "SUB001";
     }
-
 
     public ArrayList<SubjectDto> getAllSubjects() {
         ArrayList<SubjectDto> subjects = new ArrayList<>();
@@ -55,16 +58,16 @@ public class SubjectModel {
         return null;
     }
 
-        public boolean saveSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
+    public boolean saveSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
             Connection connection = null;
             try {
-                // Step 1: Establish a database connection
+
                 connection = DBConnection.getInstance().getConnection();
 
-                // Step 2: Start transaction
+
                 connection.setAutoCommit(false);
 
-                // Step 3: Insert subject into the `subject` table
+
                 boolean isSubjectSaved = CrudUtil.execute(
                         "INSERT INTO subject (sub_id, sub_name, description) VALUES (?, ?, ?)",
                         subjectDto.getSubjectId(),
@@ -75,7 +78,7 @@ public class SubjectModel {
                 if (!isSubjectSaved) {
                     connection.rollback();
                     System.out.println("Subject insertion failed");
-                    return false;  // Return early if subject insert fails
+                    return false;
                 }
 
                 for (String gradeId : gradeIds) {
@@ -95,7 +98,7 @@ public class SubjectModel {
                     if (!isGradeRelationSaved) {
                         connection.rollback();
                         System.out.println("Failed to save grade relation for grade ID: " + gradeId);
-                        return false;  // Return early if grade relation insert fails
+                        return false;
                     }
                 }
 
@@ -124,21 +127,15 @@ public class SubjectModel {
             }
         }
 
-    // Method to check if the grade exists in the `grade` table
-
-
     public List<String> getGradeIdsFromNames(List<String> gradeNames) {
         List<String> gradeIds = new ArrayList<>();
 
         try {
-            // Prepare a dynamic query with placeholders for each grade name
             String query = "SELECT g_id FROM grade WHERE grade IN (" +
                     String.join(",", Collections.nCopies(gradeNames.size(), "?")) + ")";
 
-            // Execute the query with the provided grade names
             ResultSet resultSet = CrudUtil.execute(query, gradeNames.toArray());
 
-            // Extract the grade IDs from the result set
             while (resultSet.next()) {
                 gradeIds.add(resultSet.getString("g_id"));
             }
@@ -148,11 +145,6 @@ public class SubjectModel {
 
         return gradeIds;
     }
-
-
-
-
-
 
     public boolean updateSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
         Connection connection = null;
@@ -224,9 +216,6 @@ public class SubjectModel {
         }
         return false;
     }
-
-
-
 
     public boolean deleteSubject(String subjectId) {
         Connection connection = null;
@@ -304,7 +293,6 @@ public class SubjectModel {
         return null;
     }
 
-
     public boolean checkExitingSubject(String subjectName) {
         try {
             ResultSet resultSet = CrudUtil.execute("select sub_name from subject where sub_name = ?", subjectName);
@@ -316,7 +304,6 @@ public class SubjectModel {
         }
         return false;
     }
-
 
     public String getSubjectIdFromName(String subjectName) {
         String subjectId = null;
@@ -339,9 +326,7 @@ public class SubjectModel {
         return subjectId;
     }
 
-
-        // Method to get multiple subject IDs from their names
-        public List<String> getSubjectIdsFromNames(List<String> subjectNames) {
+    public List<String> getSubjectIdsFromNames(List<String> subjectNames) {
             List<String> subjectIds = new ArrayList<>();
 
             for (String subjectName : subjectNames) {

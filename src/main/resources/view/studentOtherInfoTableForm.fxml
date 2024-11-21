@@ -66,19 +66,11 @@
             <Bloom />
          </effect>
       </Line>
-      <HBox alignment="TOP_RIGHT" layoutX="37.0" layoutY="613.0" prefHeight="49.0" prefWidth="1024.0">
+      <HBox layoutX="37.0" layoutY="613.0" prefHeight="49.0" prefWidth="1024.0">
          <children>
-            <Button fx:id="btnSendMail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnSendMailOnAction" prefHeight="35.0" prefWidth="172.0" style="-fx-background-color: #4a3549; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Send Email" textFill="WHITE">
+            <Button fx:id="btnSendMail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnSendMailOnAction" prefHeight="35.0" prefWidth="111.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-border-color: #4a3549; -fx-border-radius: 5px; -fx-border-width: 2px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Send a Email" textFill="#03045e">
                <font>
-                  <Font name="Arial Bold" size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="707.0" />
-               </HBox.margin>
-            </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #4a3549; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Actions" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold" size="16.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Button>
          </children>

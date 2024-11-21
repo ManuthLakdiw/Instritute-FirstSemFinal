@@ -3,6 +3,8 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.StudentDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.StudentTm;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.SubjectTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.StudentModel;
 import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
 
@@ -29,6 +32,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class StudentTableFormController implements Initializable {
     StudentFormController studentFormController = new StudentFormController();
@@ -72,6 +76,8 @@ public class StudentTableFormController implements Initializable {
 
     private String currentLoadedFXML = "";
     boolean isClicked = false;
+
+    FilteredList filter;
 
     @FXML
     void btnActionOnClicked(ActionEvent event) {
@@ -148,6 +154,23 @@ public class StudentTableFormController implements Initializable {
     @FXML
     void txtFindStudentOnKeyRelesed(KeyEvent event) {
 
+        txtFindStudent.textProperty().addListener((observable, oldValue, newValue) -> {
+            filter.setPredicate((Predicate<? super StudentTm>) (StudentTm studentTm) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // Return all subjects if the search text is empty
+                } else {
+                    // Perform case-insensitive matching
+                    return studentTm.getId().toLowerCase().contains(newValue.toLowerCase()) ||
+                            studentTm.getName().toLowerCase().contains(newValue.toLowerCase()) ||
+                            studentTm.getGrade().toLowerCase().contains(newValue.toLowerCase());
+                }
+            });
+
+            SortedList<StudentTm> sortedList = new SortedList<>(filter);
+            sortedList.comparatorProperty().bind(tblStudent.comparatorProperty());
+            tblStudent.setItems(sortedList);
+        });
+
     }
 
 
@@ -210,6 +233,9 @@ public class StudentTableFormController implements Initializable {
 
 
         tblStudent.setItems(studentTmList);
+
+        filter = new FilteredList(studentTmList, e -> true);
+
     }
 
     @Override
