@@ -118,5 +118,26 @@ public class ResultModel {
         return false;
     }
 
+    public boolean updateResult(ResultDto resultDto) {
+        String studentID = studentModel.getStudentIDFromName(resultDto.getStudent());
+        String grade = gradeModel.getGradeIdFromName(resultDto.getGrade());
+        try {
+            return CrudUtil.execute("UPDATE result SET exam_id = ?, student_id = ?, marks = ?, exam_grade = ?, status = ?, grade = ? WHERE result_id = ?",
+                    resultDto.getExam(),
+                    studentID,
+                    resultDto.getMarks(),
+                    resultDto.getGradeArchieved(),
+                    resultDto.getStatus(),
+                    grade,
+                    resultDto.getResultID()
+            );
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 }

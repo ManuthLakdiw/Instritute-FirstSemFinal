@@ -136,7 +136,7 @@ public class ResultFormController implements Initializable {
         boolean isSaved = resultModel.saveResult(dto);
 
         if (isSaved) {
-            AlertUtil.informationAlert(this.getClass(),null,true,"Result saved Successfully");
+            AlertUtil.informationAlert(this.getClass(),null,false,"Result saved Successfully");
             lblResultID.setText(resultModel.getNextResultID());
             radioBtnNotPArticipant.setSelected(false);
             txtMarks.setText("");
@@ -155,8 +155,48 @@ public class ResultFormController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        resultId = lblResultID.getText();
+        if (!txtMarks.getText().isEmpty()) {
+            marks = Integer.parseInt(txtMarks.getText());
+        }
+        grade = cmbGrade.getValue();
+        subject = cmbSubject.getValue();
+        student = cmbStudent.getValue();
+        examId = cmbExamID.getValue();
 
+        // Grade calculation
+        gradeArchived = (marks >= 75) ? "A" : (marks >= 65) ? "B" : (marks >= 50) ? "C" : (marks >= 35) ? "S" : "W";
+
+        // Status calculation
+        status = (radioBtnNotPArticipant.isSelected()) ? "Absent" : (marks >= 35) ? "Pass" : "Fail";
+        if (status.equals("Absent")) {
+            gradeArchived = "F";
+        }
+
+        ResultDto dto = new ResultDto(
+                resultId,
+                grade,
+                subject,
+                examId,
+                student,
+                marks,
+                gradeArchived,
+                status
+        );
+
+        boolean isUpdated = resultModel.updateResult(dto);
+
+        if (isUpdated) {
+            AlertUtil.informationAlert(this.getClass(), null, true, "Result updated successfully");
+            refreshPage();
+            resultTableFormController.loadTable();
+
+        } else {
+            AlertUtil.informationAlert(this.getClass(), null, true, "Result update failed");
+
+        }
     }
+
 
     @FXML
     void radioBtnNotPArticipantOnAction(ActionEvent event) {
@@ -330,6 +370,7 @@ public class ResultFormController implements Initializable {
 
 
     public void refreshPage(){
+        btnSave.setVisible(true);
         cmbGrade.getSelectionModel().clearSelection();
         String resultId = resultModel.getNextResultID();
         lblResultID.setText(resultId);
@@ -364,20 +405,38 @@ public class ResultFormController implements Initializable {
 
         boolean checkMarks = true;
         if (!txtMarks.isDisable()) {
-            checkMarks = txtMarks.getText().matches(marksRegex); // Check if marks are valid
+            checkMarks = txtMarks.getText().matches(marksRegex);
         }
 
         boolean isFormValid = !checkID && !checkGrade && !checkSubject && !checkExamID && !checkStudent && checkMarks;
 
-        // Enable/Disable Save button based on form validity
         btnSave.setDisable(!isFormValid);
 
-        // Enable/Disable Reset button based on whether any field has a value
         boolean isResetEnabled = !(lblResultID.getText().isEmpty() && cmbGrade.getValue() == null && cmbSubject.getValue() == null && cmbExamID.getValue() == null && cmbStudent.getValue() == null && txtMarks.getText().isEmpty());
         btnReset.setDisable(!isResetEnabled);
     }
 
 
+    public void setDto(ResultDto dto) {
+        lblResultID.setText(dto.getResultID());
+        cmbGrade.setValue(dto.getGrade());
+        cmbSubject.setValue(dto.getSubject());
+        cmbStudent.setValue(dto.getStudent());
+        cmbExamID.setValue(dto.getExam());
+        if (dto.getStatus().equalsIgnoreCase("Absent")){
+            radioBtnNotPArticipant.setSelected(true);
+            txtMarks.setDisable(true);
+        }else {
+            radioBtnNotPArticipant.setSelected(false);
+            txtMarks.setDisable(false);
+        }
+        txtMarks.setText(String.valueOf(dto.getMarks()));
+    }
 
-
+    public void setButtons() {
+        btnSave.setVisible(false);
+        btnUpdate.setDisable(false);
+        btnReset.setDisable(false);
+        btnDelete.setDisable(false);
+    }
 }

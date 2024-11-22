@@ -105,11 +105,32 @@ public class ResultTableFormController implements Initializable {
 
     @FXML
     void tblUserOnClicked(MouseEvent event) {
+        ResultTm isSelected = tblResult.getSelectionModel().getSelectedItem();
+        if (isClicked) {
+            if (isSelected != null) {
+                ResultDto dto = new ResultDto(
+                        isSelected.getResultID(),
+                        isSelected.getGrade(),
+                        isSelected.getSubject(),
+                        isSelected.getExam(),
+                        isSelected.getStudent(),
+                        isSelected.getMarks(),
+                        isSelected.getGradeArchieved(),
+                        isSelected.getStatus()
+                );
+
+                resultFormController.setDto(dto);
+                resultFormController.setButtons();
+            }
+
+
+        }
 
     }
 
     @FXML
     void txtFindResultOnKeyRelesed(KeyEvent event) {
+
 
     }
 
