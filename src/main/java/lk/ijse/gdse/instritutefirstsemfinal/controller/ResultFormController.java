@@ -31,6 +31,16 @@ public class ResultFormController implements Initializable {
     SubjectModel subjectModel = new SubjectModel();
     GradeModel gradeModel = new GradeModel();
 
+    String marksRegex = "^(100|[1-9]?[0-9])$";
+
+    String resultId;
+    int marks;
+    String grade;
+    String subject;
+    String student;
+    String examId;
+
+
     private ResultTableFormController resultTableFormController;
     public void setResultTableFormController(ResultTableFormController resultTableFormController) {
         this.resultTableFormController = resultTableFormController;
@@ -102,6 +112,12 @@ public class ResultFormController implements Initializable {
     @FXML
     void radioBtnNotPArticipantOnAction(ActionEvent event) {
 
+        if (radioBtnNotPArticipant.isSelected()) {
+
+            txtMarks.setDisable(true);
+        } else {
+            txtMarks.setDisable(false);
+        }
     }
 
 
@@ -121,17 +137,14 @@ public class ResultFormController implements Initializable {
     private void cmbGradeOnAction(ActionEvent event) {
         String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
 
-        // Clear the subject, student, and exam fields whenever the grade is changed
         cmbSubject.getItems().clear();
         cmbExamID.getItems().clear();
         cmbStudent.getItems().clear();
         lblExamIdDesc.setText("");
 
         if (selectedGrade != null) {
-            // Get Grade ID from selected Grade Name
             String gradeId = gradeModel.getGradeIdFromName(selectedGrade);
 
-            // Fetch subjects corresponding to the selected grade
             String[] subjectIDs = resultModel.getExamSubjectsByGrade(gradeId);
             Set<String> subjectNamesSet = new HashSet<>();
 
@@ -142,10 +155,8 @@ public class ResultFormController implements Initializable {
                 }
             }
 
-            // Add the fetched subjects to the subject dropdown
             cmbSubject.getItems().addAll(subjectNamesSet);
 
-            // Handle subject selection and update student list if necessary
             if (!subjectNamesSet.isEmpty()) {
                 String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
                 if (selectedSubject != null) {
@@ -165,23 +176,19 @@ public class ResultFormController implements Initializable {
         String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
         String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
 
-        // Clear the student and exam fields before updating them
         cmbStudent.getItems().clear();
         cmbExamID.getItems().clear();
         lblExamIdDesc.setText("");
 
         if (selectedSubject != null && selectedGrade != null) {
-            // Get Subject ID and Grade ID
             String subjectId = subjectModel.getSubjectIdFromName(selectedSubject);
             String gradeId = gradeModel.getGradeIdFromName(selectedGrade);
 
-            // Fetch students for the selected grade and subject
             ArrayList<String> studentNames = resultModel.getStudentsByGradeAndSubject(gradeId, subjectId);
             if (studentNames != null && !studentNames.isEmpty()) {
                 cmbStudent.getItems().addAll(studentNames);
             }
 
-            // Fetch exams for the selected subject
             String[] examIDs = examModel.getExamIDsfromSubject(subjectId);
             if (examIDs != null && examIDs.length > 0) {
                 cmbExamID.getItems().addAll(examIDs);
@@ -222,6 +229,7 @@ public class ResultFormController implements Initializable {
 
     @FXML
     void txtMarksOnKeyTyped(KeyEvent event) {
+
 
     }
 
