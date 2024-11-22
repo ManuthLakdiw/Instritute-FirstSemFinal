@@ -12,10 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.ExamDto;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.ResultDto;
 import lk.ijse.gdse.instritutefirstsemfinal.model.ExamModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.GradeModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.ResultModel;
 import lk.ijse.gdse.instritutefirstsemfinal.model.SubjectModel;
+import lk.ijse.gdse.instritutefirstsemfinal.util.AlertUtil;
+import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.net.URL;
@@ -39,6 +42,8 @@ public class ResultFormController implements Initializable {
     String subject;
     String student;
     String examId;
+    String gradeArchived;
+    String status;
 
 
     private ResultTableFormController resultTableFormController;
@@ -96,11 +101,55 @@ public class ResultFormController implements Initializable {
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
-
+        refreshPage();
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        resultId = lblResultID.getText();
+        if (!txtMarks.getText().isEmpty()) {
+            marks = Integer.parseInt(txtMarks.getText());
+        }
+        grade = cmbGrade.getValue();
+        subject = cmbSubject.getValue();
+        student = cmbStudent.getValue();
+        examId = cmbExamID.getValue();
+
+        gradeArchived = (marks >= 75) ? "A" : (marks >= 65) ? "B" : (marks >= 50) ? "C" : (marks >= 35) ? "S" : "W";
+
+        status = (radioBtnNotPArticipant.isSelected()) ? "Absent" : (marks >= 35) ? "Pass" : "Fail";
+        if (status.equals("Absent")) {
+            gradeArchived = "F";
+        }
+
+        ResultDto dto = new ResultDto(
+                resultId,
+                grade,
+                subject,
+                examId,
+                student,
+                marks,
+                gradeArchived,
+                status
+        );
+
+        boolean isSaved = resultModel.saveResult(dto);
+
+        if (isSaved) {
+            AlertUtil.informationAlert(this.getClass(),null,true,"Result saved Successfully");
+            lblResultID.setText(resultModel.getNextResultID());
+            radioBtnNotPArticipant.setSelected(false);
+            txtMarks.setText("");
+            cmbStudent.getSelectionModel().clearSelection();
+            cmbStudent.show();
+            txtMarks.setDisable(false);
+            isSaveEnable();
+            resultTableFormController.loadTable();
+
+        }else {
+            AlertUtil.informationAlert(this.getClass(),null,true,"Result Save Failed");
+
+        }
 
     }
 
@@ -113,11 +162,15 @@ public class ResultFormController implements Initializable {
     void radioBtnNotPArticipantOnAction(ActionEvent event) {
 
         if (radioBtnNotPArticipant.isSelected()) {
-
             txtMarks.setDisable(true);
+            RegexUtil.resetStyle(txtMarks);
+            txtMarks.clear();
+
         } else {
             txtMarks.setDisable(false);
+            txtMarks.clear();
         }
+        isSaveEnable();
     }
 
 
@@ -168,6 +221,7 @@ public class ResultFormController implements Initializable {
                 }
             }
         }
+        isSaveEnable();
     }
 
 
@@ -198,6 +252,7 @@ public class ResultFormController implements Initializable {
         } else {
             System.out.println("Selected Subject or Grade is null");
         }
+        isSaveEnable();
     }
 
 
@@ -214,6 +269,7 @@ public class ResultFormController implements Initializable {
                 }
             }
         }
+        isSaveEnable();
     }
 
 
@@ -229,7 +285,21 @@ public class ResultFormController implements Initializable {
 
     @FXML
     void txtMarksOnKeyTyped(KeyEvent event) {
+        String marksCheck = txtMarks.getText();
 
+
+        if (txtMarks.getText().isEmpty()) {
+            RegexUtil.resetStyle(txtMarks);
+        }else {
+            if (txtMarks.getText().matches(marksRegex)) {
+                marks = Integer.parseInt(marksCheck);
+                RegexUtil.resetStyle(txtMarks);
+            }else {
+                RegexUtil.setErrorStyle(false,txtMarks);
+
+            }
+        }
+        isSaveEnable();
 
     }
 
@@ -243,12 +313,71 @@ public class ResultFormController implements Initializable {
             uniqueGrades.add(examDto.getGrade());
         }
         cmbGrade.getItems().addAll(uniqueGrades);
+
+        refreshPage();
     }
 
 
     public void cmbStudentOnAction(ActionEvent actionEvent) {
+        student = cmbStudent.getSelectionModel().getSelectedItem();
+        isSaveEnable();
     }
 
     public void cmbStudentOnActionOnKeyPressed(KeyEvent keyEvent) {
     }
+
+
+
+
+    public void refreshPage(){
+        cmbGrade.getSelectionModel().clearSelection();
+        String resultId = resultModel.getNextResultID();
+        lblResultID.setText(resultId);
+
+        RegexUtil.resetStyle(txtMarks);
+
+        cmbStudent.getItems().clear();
+        cmbExamID.getItems().clear();
+        cmbSubject.getItems().clear();
+        cmbExamID.getItems().clear();
+
+        txtMarks.clear();
+        radioBtnNotPArticipant.setSelected(false);
+        txtMarks.setDisable(false);
+        txtMarks.setText("");
+
+
+        btnSave.setDisable(true);
+        btnSave.setDisable(true);
+        btnUpdate.setDisable(true);
+        btnReset.setDisable(true);
+
+    }
+
+
+    public void isSaveEnable() {
+        boolean checkID = lblResultID != null && lblResultID.getText().isEmpty();
+        boolean checkGrade = cmbGrade.getValue() == null;
+        boolean checkSubject = cmbSubject.getValue() == null;
+        boolean checkExamID = cmbExamID.getValue() == null;
+        boolean checkStudent = cmbStudent.getValue() == null;
+
+        boolean checkMarks = true;
+        if (!txtMarks.isDisable()) {
+            checkMarks = txtMarks.getText().matches(marksRegex); // Check if marks are valid
+        }
+
+        boolean isFormValid = !checkID && !checkGrade && !checkSubject && !checkExamID && !checkStudent && checkMarks;
+
+        // Enable/Disable Save button based on form validity
+        btnSave.setDisable(!isFormValid);
+
+        // Enable/Disable Reset button based on whether any field has a value
+        boolean isResetEnabled = !(lblResultID.getText().isEmpty() && cmbGrade.getValue() == null && cmbSubject.getValue() == null && cmbExamID.getValue() == null && cmbStudent.getValue() == null && txtMarks.getText().isEmpty());
+        btnReset.setDisable(!isResetEnabled);
+    }
+
+
+
+
 }

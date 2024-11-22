@@ -97,4 +97,25 @@ public class GradeModel {
         return false;
     }
 
+    public String getGradeNameFromID(String gradeId) {
+        String gradeName = null;
+
+        try {
+
+            String query = "SELECT grade FROM grade WHERE g_id = ?";
+
+
+            ResultSet resultSet = CrudUtil.execute(query, gradeId);
+
+
+            if (resultSet.next()) {
+                gradeName = resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gradeName;
+    }
+
 }

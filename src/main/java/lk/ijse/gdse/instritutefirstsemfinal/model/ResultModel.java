@@ -12,20 +12,38 @@ public class ResultModel {
 
     SubjectModel subjectModel = new SubjectModel();
     StudentModel studentModel = new StudentModel();
+    GradeModel gradeModel = new GradeModel();
 
 
+    public String getNextResultID(){
+        try {
+            ResultSet resultSet = CrudUtil.execute("select result_id from result order by result_id desc limit 1");
+            if (resultSet.next()) {
+                String lastID = resultSet.getString(1);
+                String substring = lastID.substring(1);
+                int number = Integer.parseInt(substring);
+                int newId = ++number;
+                return String.format("R%03d", newId);
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return "R001";
 
 
+    }
     public ArrayList<ResultDto> getAllResults() {
         ArrayList<ResultDto> results = new ArrayList<>();
         try {
             ResultSet resultSet = CrudUtil.execute("SELECT r.result_id,r.grade , e.subject_id, r.exam_id, r.student_id, r.marks, r.exam_grade, r.status FROM result r LEFT JOIN exam e ON r.exam_id = e.exam_id");
             while (resultSet.next()) {
+                String gradeName =  gradeModel.getGradeNameFromID(resultSet.getString("grade"));
                 String studentName = studentModel.getOneStudentById(resultSet.getString("student_id"));
                 String subjectName = subjectModel.getSubjectNameFromId(resultSet.getString("subject_id"));
                 ResultDto resultDto = new ResultDto(
                         resultSet.getString(1),
-                        resultSet.getString(2),
+                        gradeName,
                         subjectName,
                         resultSet.getString(4),
                         studentName,
@@ -76,6 +94,28 @@ public class ResultModel {
             e.printStackTrace();
         }
         return studentNames;
+    }
+
+
+    public boolean saveResult(ResultDto resultDto) {
+        String studentID = studentModel.getStudentIDFromName(resultDto.getStudent());
+        String grade = gradeModel.getGradeIdFromName(resultDto.getGrade());
+        try {
+            return CrudUtil.execute("INSERT INTO result (result_id, exam_id, student_id, marks, exam_grade, status, grade) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    resultDto.getResultID(),
+                    resultDto.getExam(),
+                    studentID,
+                    resultDto.getMarks(),
+                    resultDto.getGradeArchieved(),
+                    resultDto.getStatus(),
+                    grade
+            );
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

@@ -382,6 +382,18 @@ public class StudentModel {
         return studentId;
     }
 
+    public String getStudentIDFromName(String studentName) {
+        try {
+            ResultSet resultSet = CrudUtil.execute("SELECT s_id FROM student WHERE name = ?", studentName);
+            if (resultSet.next()) {
+                return resultSet.getString("s_id");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return studentName;
+    }
+
 
 
 }
