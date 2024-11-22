@@ -2,6 +2,8 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,12 +21,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.ResultDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.ResultTm;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.StudentTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.ResultModel;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class ResultTableFormController implements Initializable {
 
@@ -68,6 +72,8 @@ public class ResultTableFormController implements Initializable {
 
     @FXML
     private TextField txtFindResult;
+
+    FilteredList filter;
 
     boolean isClicked = false;
     @FXML
@@ -130,6 +136,25 @@ public class ResultTableFormController implements Initializable {
 
     @FXML
     void txtFindResultOnKeyRelesed(KeyEvent event) {
+        txtFindResult.textProperty().addListener((observable, oldValue, newValue) -> {
+            filter.setPredicate((Predicate<? super ResultTm>) (ResultTm resultTm) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // Return all subjects if the search text is empty
+                } else {
+                    // Perform case-insensitive matching
+                    return resultTm.getResultID().toLowerCase().contains(newValue.toLowerCase()) ||
+                            resultTm.getGrade().toLowerCase().contains(newValue.toLowerCase()) ||
+                            resultTm.getStatus().toLowerCase().contains(newValue.toLowerCase()) ||
+                            resultTm.getGradeArchieved().toLowerCase().contains(newValue.toLowerCase()) ||
+                            resultTm.getSubject().toLowerCase().contains(newValue.toLowerCase());
+
+                }
+            });
+
+            SortedList<ResultTm> sortedList = new SortedList<>(filter);
+            sortedList.comparatorProperty().bind(tblResult.comparatorProperty());
+            tblResult.setItems(sortedList);
+        });
 
 
     }
@@ -151,6 +176,8 @@ public class ResultTableFormController implements Initializable {
             resultTms.add(resultTm);
         }
         tblResult.setItems(resultTms);
+
+        filter = new FilteredList(resultTms, e -> true);
 
     }
 

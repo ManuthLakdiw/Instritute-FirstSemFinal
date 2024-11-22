@@ -5,10 +5,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.ExamDto;
@@ -22,10 +19,7 @@ import lk.ijse.gdse.instritutefirstsemfinal.util.RegexUtil;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 public class ResultFormController implements Initializable {
 
@@ -96,8 +90,24 @@ public class ResultFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        resultId = lblResultID.getText();
 
+        Optional<ButtonType> buttonType = AlertUtil.ConfirmationAlert("Are you sure?,This action will permanently delete the selected result.",ButtonType.NO,ButtonType.YES);
+
+        if (buttonType.get() == ButtonType.YES) {
+            boolean isDeleted = resultModel.deleteResult(resultId);
+
+            if (isDeleted) {
+                AlertUtil.informationAlert(this.getClass(), null, true, "Result deleted successfully.");
+                lblResultID.setText(resultModel.getNextResultID());
+                refreshPage();
+                resultTableFormController.loadTable();
+            } else {
+                AlertUtil.informationAlert(this.getClass(), null, true, "Result deletion failed.");
+            }
+        }
     }
+
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
@@ -389,7 +399,7 @@ public class ResultFormController implements Initializable {
 
 
         btnSave.setDisable(true);
-        btnSave.setDisable(true);
+        btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
         btnReset.setDisable(true);
 

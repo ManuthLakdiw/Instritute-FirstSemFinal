@@ -138,6 +138,16 @@ public class ResultModel {
         return false;
     }
 
+    public boolean deleteResult(String resultId) {
+        try {
+            return CrudUtil.execute("DELETE FROM result WHERE result_id = ?", resultId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 
 }
