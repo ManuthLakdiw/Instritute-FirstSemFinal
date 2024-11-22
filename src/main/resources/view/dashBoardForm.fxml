@@ -1,17 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.DashBoardFormController">
    <children>
-      <Label layoutX="290.0" layoutY="198.0" prefHeight="301.0" prefWidth="584.0" text="DashBoard">
-         <font>
-            <Font size="96.0" />
-         </font>
-      </Label>
-      <VBox alignment="CENTER" layoutX="44.0" layoutY="5.0" prefHeight="60.0" prefWidth="1002.0" style="-fx-background-color: E9E9E9; -fx-background-radius: 30px 0px 30px 0px;" />
+      <HBox fx:id="hBox2" layoutX="75.0" layoutY="58.0" prefHeight="147.0" prefWidth="958.0">
+         <children>
+            <HBox opacity="0.68" prefHeight="147.0" prefWidth="275.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="hbox1" stylesheets="@../style/DashBoard.css">
+               <children>
+                  <VBox prefHeight="132.0" prefWidth="170.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="170.0" text="Student">
+                           <font>
+                              <Font name="Baloo Paaji 2 Bold" size="37.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblStudent" prefHeight="53.0" prefWidth="178.0" text="2000" textFill="WHITE">
+                           <font>
+                              <Font name="Toppan Bunkyu Midashi Gothic Extrabold" size="39.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="59.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/student.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
+            <HBox opacity="0.68" prefHeight="147.0" prefWidth="275.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="hbox1" stylesheets="@../style/DashBoard.css">
+               <children>
+                  <VBox prefHeight="107.0" prefWidth="263.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="170.0" text="Teacher">
+                           <font>
+                              <Font name="Baloo Paaji 2 Bold" size="37.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblTeacher" prefHeight="53.0" prefWidth="178.0" text="2000" textFill="WHITE">
+                           <font>
+                              <Font name="Toppan Bunkyu Midashi Gothic Extrabold" size="39.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="57.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/teacher.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets left="67.0" />
+               </HBox.margin>
+            </HBox>
+            <HBox opacity="0.68" prefHeight="147.0" prefWidth="275.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="hbox1" stylesheets="@../style/DashBoard.css">
+               <children>
+                  <VBox prefHeight="107.0" prefWidth="263.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="170.0" text="Exams">
+                           <font>
+                              <Font name="Baloo Paaji 2 Bold" size="37.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblExam" prefHeight="53.0" prefWidth="178.0" text="2000" textFill="WHITE">
+                           <font>
+                              <Font name="Toppan Bunkyu Midashi Gothic Extrabold" size="39.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="59.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/Exam.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets left="67.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </Pane>

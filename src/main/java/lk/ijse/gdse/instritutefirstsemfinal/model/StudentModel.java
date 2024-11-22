@@ -394,6 +394,21 @@ public class StudentModel {
         return studentName;
     }
 
+    public int getStudentCount() {
+        try {
+            // Execute the query to get the student count
+            ResultSet resultSet = CrudUtil.execute("SELECT COUNT(*) FROM student");
+
+            // Since COUNT(*) is a single value, we don't need a loop. Just get the value from the first row.
+            if (resultSet.next()) {
+                return resultSet.getInt(1); // Get the count from the first column
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 if there is an error or no result
+    }
+
 
 
 }

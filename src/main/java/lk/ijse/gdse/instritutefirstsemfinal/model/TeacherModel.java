@@ -354,4 +354,18 @@ public class TeacherModel {
         }
         return "Not in database";
     }
+
+    public int getTeacherCount() {
+        try {
+            ResultSet resultSet = CrudUtil.execute("SELECT COUNT(*) FROM teacher");
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

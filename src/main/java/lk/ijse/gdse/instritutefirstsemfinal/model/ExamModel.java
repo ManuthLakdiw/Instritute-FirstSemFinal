@@ -135,4 +135,18 @@ public class ExamModel {
         return null;
     }
 
+    public int getExamCount() {
+        try {
+            ResultSet resultSet = CrudUtil.execute("SELECT COUNT(*) FROM exam");
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }
