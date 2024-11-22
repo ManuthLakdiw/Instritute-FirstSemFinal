@@ -339,4 +339,21 @@ public class SubjectModel {
             return subjectIds;
         }
 
+
+    public String getSubjectNameFromId(String subjectId) {
+        String subjectName = null;
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("select sub_name from subject where sub_id = ?", subjectId);
+            if (resultSet.next()) {
+                subjectName = resultSet.getString("sub_name");
+            }
+            return subjectName;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return subjectId;
+    }
+
+
 }
