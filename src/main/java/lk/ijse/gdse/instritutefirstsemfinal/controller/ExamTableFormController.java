@@ -2,6 +2,8 @@ package lk.ijse.gdse.instritutefirstsemfinal.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.ExamDto;
 import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.ExamTm;
+import lk.ijse.gdse.instritutefirstsemfinal.dto.tm.StudentTm;
 import lk.ijse.gdse.instritutefirstsemfinal.model.ExamModel;
 
 import java.io.IOException;
@@ -26,6 +29,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class ExamTableFormController implements Initializable {
 
@@ -64,6 +68,8 @@ public class ExamTableFormController implements Initializable {
     private TextField txtFindExam;
 
     boolean isClicked = false;
+    FilteredList filter;
+
     @FXML
     void btnExamActionOnAction(ActionEvent event) {
         isClicked = true;
@@ -100,29 +106,51 @@ public class ExamTableFormController implements Initializable {
 
     @FXML
     void tblUserOnClicked(MouseEvent event) {
-        ExamTm isSelected = tblExam.getSelectionModel().getSelectedItem();
+        if (isClicked) {
+            ExamTm isSelected = tblExam.getSelectionModel().getSelectedItem();
 
-        ExamDto examDto = new ExamDto(
-                isSelected.getExamId(),
-                isSelected.getGrade(),
-                isSelected.getSubject(),
-                isSelected.getExamDate(),
-                isSelected.getExamType(),
-                isSelected.getExamDescription()
-        );
+            ExamDto examDto = new ExamDto(
+                    isSelected.getExamId(),
+                    isSelected.getGrade(),
+                    isSelected.getSubject(),
+                    isSelected.getExamDate(),
+                    isSelected.getExamType(),
+                    isSelected.getExamDescription()
+            );
 
-        examFormController.setDto(examDto);
-        examFormController.buttonAction();
+            examFormController.setDto(examDto);
+            examFormController.buttonAction();
+        }
+
 
 
     }
 
     @FXML
     void txtFindExamOnKeyRelesed(KeyEvent event) {
+        txtFindExam.textProperty().addListener((observable, oldValue, newValue) -> {
+            filter.setPredicate((Predicate<? super ExamTm>) (ExamTm examTm) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // Return all subjects if the search text is empty
+                } else {
+                    // Perform case-insensitive matching
+                    return examTm.getExamId().toLowerCase().contains(newValue.toLowerCase()) ||
+                            examTm.getSubject().toLowerCase().contains(newValue.toLowerCase()) ||
+                            examTm.getGrade().toLowerCase().contains(newValue.toLowerCase()); // how to pass Local date data type
 
+
+                }
+            });
+
+            SortedList<ExamTm> sortedList = new SortedList<>(filter);
+            sortedList.comparatorProperty().bind(tblExam.comparatorProperty());
+            tblExam.setItems(sortedList);
+        });
     }
 
     public void loadExamTable(){
+        txtFindExam.clear();
+        txtFindExam.requestFocus();
         ArrayList<ExamDto> examDtos = examModel.getAllExams();
         ObservableList<ExamTm> examTms = FXCollections.observableArrayList();
 
@@ -139,6 +167,8 @@ public class ExamTableFormController implements Initializable {
         }
 
         tblExam.setItems(examTms);
+
+        filter = new FilteredList(examTms, e -> true);
 
 
     }
