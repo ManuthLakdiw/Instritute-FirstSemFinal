@@ -118,4 +118,21 @@ public class ExamModel {
         }
         return false;
     }
+
+    public String[] getExamIDsfromSubject(String subject) {
+        ArrayList<String> examIDs = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("select exam_id from exam where subject_id = ? ", subject);
+            while (resultSet.next()) {
+                examIDs.add(resultSet.getString(1));
+            }
+            return examIDs.toArray(new String[examIDs.size()]);
+        }catch (SQLException e){
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
 }

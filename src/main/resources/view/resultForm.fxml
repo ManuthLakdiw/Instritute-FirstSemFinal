@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -11,9 +11,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.SearchableComboBox?>
 
 <Pane fx:id="resultPane" accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="788.0" stylesheets="@../style/Style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.ResultFormController">
    <children>
@@ -29,7 +29,7 @@
       </Label>
       <HBox layoutX="17.0" layoutY="245.0" prefHeight="32.0" prefWidth="753.0">
          <children>
-            <SearchableComboBox fx:id="searchableStudentComboBox" onAction="#searchableStudentComboBoxOnAction" prefHeight="32.0" prefWidth="266.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css" />
+            <ComboBox fx:id="cmbStudent" onAction="#cmbStudentOnAction" onKeyPressed="#cmbStudentOnActionOnKeyPressed" prefHeight="32.0" prefWidth="266.0" promptText="choose a Student" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css" />
             <TextField fx:id="txtMarks" onKeyPressed="#txtMarksOnKeyPressed" onKeyTyped="#txtMarksOnKeyTyped" prefHeight="32.0" prefWidth="88.0" promptText="0 -100" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-width: 1px 1px 1px 1px; -fx-border-radius: 5;">
                <opaqueInsets>
                   <Insets />
@@ -50,8 +50,13 @@
       </Label>
       <HBox layoutX="17.0" layoutY="155.0" prefHeight="49.0" prefWidth="753.0">
          <children>
-            <ComboBox fx:id="cmbExam" onAction="#cmbcmbExamOnAction" onKeyPressed="#cmbExamOnKeyPresssed" prefHeight="32.0" prefWidth="266.0" promptText="choose a Grade" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css" />
-            <ComboBox fx:id="cmbSubject" onAction="#cmbSubjectOnAction" onKeyPressed="#cmbSubjectTypeOnKeyPressed" prefHeight="32.0" prefWidth="227.0" promptText="choose a Exam Subject" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css">
+            <ComboBox fx:id="cmbGrade" onAction="#cmbGradeOnAction" onKeyPressed="#cmbGradeOnKeyPresssed" prefHeight="32.0" prefWidth="266.0" promptText="choose a Grade" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css" />
+            <ComboBox fx:id="cmbSubject" onAction="#cmbSubjectOnAction" onKeyPressed="#cmbSubjectTypeOnKeyPressed" prefHeight="32.0" prefWidth="227.0" promptText="choose a Subject" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css">
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="cmbExamID" onAction="#cmbExamIDOnAction" onKeyPressed="#cmbExamIDOnKeyPressed" prefHeight="32.0" prefWidth="200.0" promptText="choose a Exam ID" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" styleClass="combo-box" stylesheets="@../style/Style.css">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
@@ -84,14 +89,20 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <JFXCheckBox fx:id="cComboBoxExamAttendance" checkedColor="#03045e" graphicTextGap="6.0" onAction="#cComboBoxExamAttendanceOnAction" prefHeight="32.0" prefWidth="96.0" style="-fx-background-color: transparent; -fx-border-color: #03045E; -fx-border-radius: 5px;" text="Attendance" unCheckedColor="#03045e">
+            <JFXRadioButton fx:id="radioBtnNotPArticipant" onAction="#radioBtnNotPArticipantOnAction" prefHeight="32.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-border-radius: 5px; -fx-border-color: #03045E;" text="Not Participant">
+               <selectedColor>
+                  <Color red="1.0" />
+               </selectedColor>
+               <unSelectedColor>
+                  <Color red="0.0117647061124444" green="0.01568627543747425" blue="0.3686274588108063" />
+               </unSelectedColor>
+               <padding>
+                  <Insets bottom="9.0" left="5.0" />
+               </padding>
                <HBox.margin>
-                  <Insets left="391.0" />
+                  <Insets left="365.0" />
                </HBox.margin>
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </JFXCheckBox>
+            </JFXRadioButton>
          </children>
       </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="17.0" layoutY="348.0" prefHeight="50.0" prefWidth="573.0">
@@ -138,6 +149,16 @@
       <Label layoutX="313.0" layoutY="202.0" prefHeight="48.0" prefWidth="128.0" text="Marks">
          <font>
             <Font name="Arial Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="570.0" layoutY="112.0" prefHeight="48.0" prefWidth="128.0" text="Exam ID">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblExamIdDesc" layoutX="569.0" layoutY="192.0" prefHeight="17.0" prefWidth="200.0" textFill="#e46300">
+         <font>
+            <Font size="9.0" />
          </font>
       </Label>
    </children>

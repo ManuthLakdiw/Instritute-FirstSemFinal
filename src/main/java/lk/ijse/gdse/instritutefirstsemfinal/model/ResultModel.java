@@ -43,4 +43,40 @@ public class ResultModel {
         }
         return null;
     }
+
+    public String[] getExamSubjectsByGrade(String grade) {
+        ArrayList<String> subjectsList = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("SELECT subject_id FROM exam WHERE grade =?", grade);
+            while (resultSet.next()) {
+                subjectsList.add(resultSet.getString("subject_id"));
+            }
+            return subjectsList.toArray(new String[0]);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
+
+    public ArrayList<String> getStudentsByGradeAndSubject(String gradeId, String subjectId) {
+        ArrayList<String> studentNames = new ArrayList<>();
+        try {
+            ResultSet resultSet = CrudUtil.execute(
+                    "SELECT s.name FROM student s " +
+                            "JOIN student_subject ss ON s.s_id = ss.student_id " +
+                            "WHERE s.grade = ? AND ss.subject_id = ?",
+                    gradeId, subjectId
+            );
+
+            while (resultSet.next()) {
+                studentNames.add(resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return studentNames;
+    }
+
+
 }

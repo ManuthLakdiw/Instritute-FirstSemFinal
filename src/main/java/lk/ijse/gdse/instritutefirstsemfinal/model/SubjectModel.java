@@ -355,5 +355,20 @@ public class SubjectModel {
         return subjectId;
     }
 
+    public String[] getSubjectNamesBySUBID(String subjectId) {
+        ArrayList<String> subjectsList = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = CrudUtil.execute("select sub_name from subject where sub_id = ?", subjectId);
+            while (resultSet.next()) {
+                subjectsList.add(resultSet.getString("sub_name"));
+            }
+            return subjectsList.toArray(new String[0]);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

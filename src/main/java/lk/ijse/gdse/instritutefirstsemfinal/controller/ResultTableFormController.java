@@ -62,6 +62,7 @@ public class ResultTableFormController implements Initializable {
     @FXML
     private TableColumn<ResultTm, String> colSubject;
 
+
     @FXML
     private TableView<ResultTm> tblResult;
 
