@@ -110,40 +110,6 @@ public class ResultFormController implements Initializable {
 
     }
 
-    @FXML
-    void cmbSubjectOnAction(ActionEvent event) {
-        String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
-        String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
-
-        if (selectedSubject != null && selectedGrade != null) {
-            String subjectId = subjectModel.getSubjectIdFromName(selectedSubject);
-            String gradeId = gradeModel.getGradeIdFromName(selectedGrade);
-
-
-            ArrayList<String> studentNames = resultModel.getStudentsByGradeAndSubject(gradeId, subjectId);
-
-                if (studentNames != null && !studentNames.isEmpty()) {
-                    cmbStudent.getItems().clear();
-                    cmbStudent.getItems().addAll(studentNames);
-                }
-
-                String[] examIDs = examModel.getExamIDsfromSubject(subjectId);
-
-                cmbExamID.getItems().clear();
-
-                if (examIDs != null && examIDs.length > 0) {
-                    cmbExamID.getItems().addAll(examIDs);
-                } else {
-                    cmbExamID.getItems().clear();
-                    cmbExamID.setPromptText("No exams available");
-                }
-
-        } else {
-            System.out.println("Selected Subject is null and Grade is null");
-        }
-    }
-
-
 
 
     @FXML
@@ -155,17 +121,20 @@ public class ResultFormController implements Initializable {
     private void cmbGradeOnAction(ActionEvent event) {
         String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
 
+        // Clear the subject, student, and exam fields whenever the grade is changed
+        cmbSubject.getItems().clear();
+        cmbExamID.getItems().clear();
+        cmbStudent.getItems().clear();
+        lblExamIdDesc.setText("");
+
         if (selectedGrade != null) {
             // Get Grade ID from selected Grade Name
             String gradeId = gradeModel.getGradeIdFromName(selectedGrade);
 
-            // Fetch the subjects corresponding to the selected grade
+            // Fetch subjects corresponding to the selected grade
             String[] subjectIDs = resultModel.getExamSubjectsByGrade(gradeId);
-
-            // Create a set to store subject names
             Set<String> subjectNamesSet = new HashSet<>();
 
-            // Loop to fetch subject names from subject IDs
             for (String subjectID : subjectIDs) {
                 String subjectName = subjectModel.getSubjectNameFromId(subjectID);
                 if (subjectName != null) {
@@ -173,21 +142,56 @@ public class ResultFormController implements Initializable {
                 }
             }
 
-            // Clear previous items in the subject ComboBox and other related ComboBoxes
-            cmbSubject.getItems().clear();
-            cmbExamID.getItems().clear();
-            lblExamIdDesc.setText(""); // Clear any existing exam description
-
-            // Add the updated subject names to the subject ComboBox
+            // Add the fetched subjects to the subject dropdown
             cmbSubject.getItems().addAll(subjectNamesSet);
 
-            // Optionally, select the first subject if applicable
+            // Handle subject selection and update student list if necessary
             if (!subjectNamesSet.isEmpty()) {
-                cmbSubject.getSelectionModel().selectFirst();
+                String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
+                if (selectedSubject != null) {
+                    String subjectId = subjectModel.getSubjectIdFromName(selectedSubject);
+                    ArrayList<String> studentNames = resultModel.getStudentsByGradeAndSubject(gradeId, subjectId);
+                    if (studentNames != null && !studentNames.isEmpty()) {
+                        cmbStudent.getItems().addAll(studentNames);
+                    }
+                }
             }
         }
     }
 
+
+    @FXML
+    void cmbSubjectOnAction(ActionEvent event) {
+        String selectedSubject = cmbSubject.getSelectionModel().getSelectedItem();
+        String selectedGrade = cmbGrade.getSelectionModel().getSelectedItem();
+
+        // Clear the student and exam fields before updating them
+        cmbStudent.getItems().clear();
+        cmbExamID.getItems().clear();
+        lblExamIdDesc.setText("");
+
+        if (selectedSubject != null && selectedGrade != null) {
+            // Get Subject ID and Grade ID
+            String subjectId = subjectModel.getSubjectIdFromName(selectedSubject);
+            String gradeId = gradeModel.getGradeIdFromName(selectedGrade);
+
+            // Fetch students for the selected grade and subject
+            ArrayList<String> studentNames = resultModel.getStudentsByGradeAndSubject(gradeId, subjectId);
+            if (studentNames != null && !studentNames.isEmpty()) {
+                cmbStudent.getItems().addAll(studentNames);
+            }
+
+            // Fetch exams for the selected subject
+            String[] examIDs = examModel.getExamIDsfromSubject(subjectId);
+            if (examIDs != null && examIDs.length > 0) {
+                cmbExamID.getItems().addAll(examIDs);
+            } else {
+                cmbExamID.setPromptText("No exams available");
+            }
+        } else {
+            System.out.println("Selected Subject or Grade is null");
+        }
+    }
 
 
     public void cmbExamIDOnAction(ActionEvent actionEvent) {
