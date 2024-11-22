@@ -76,7 +76,7 @@
                   <Insets right="768.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnTeacher" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnTeacherOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #4a3549; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Teacher" textFill="WHITE">
+            <Button fx:id="btnTeacher" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnTeacherOnAction" prefHeight="35.0" prefWidth="145.0" style="-fx-background-color: #4a3549; -fx-background-radius: 5px;" styleClass="button-admin" stylesheets="@../style/Button.css" text="Actions" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>

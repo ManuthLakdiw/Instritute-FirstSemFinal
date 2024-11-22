@@ -127,6 +127,7 @@ public class MainLayoutFormController implements Initializable {
         btnSubject.setMouseTransparent(true);
         btnExam.setMouseTransparent(true);
         btnResult.setMouseTransparent(true);
+        btnReport.setMouseTransparent(true);
 
     }
 
@@ -224,5 +225,7 @@ public class MainLayoutFormController implements Initializable {
     }
 
     public void hBoxReportOnClicked(MouseEvent mouseEvent) {
+        applyHBoxBackground(hBoxReport);
+        navigateTo("/view/reportForm.fxml", "ReportForm");
     }
 }

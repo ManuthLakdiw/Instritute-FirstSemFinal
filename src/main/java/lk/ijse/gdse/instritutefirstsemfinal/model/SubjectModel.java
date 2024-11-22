@@ -149,13 +149,10 @@ public class SubjectModel {
     public boolean updateSubjectWithGrades(SubjectDto subjectDto, List<String> gradeIds) {
         Connection connection = null;
         try {
-            // Step 1: Establish a database connection
             connection = DBConnection.getInstance().getConnection();
 
-            // Step 2: Start transaction
             connection.setAutoCommit(false);
 
-            // Step 3: Update the subject in the `subject` table
             boolean isSubjectUpdated = CrudUtil.execute(
                     "UPDATE subject SET sub_name = ?, description = ? WHERE sub_id = ?",
                     subjectDto.getSubjectName(),
@@ -168,7 +165,6 @@ public class SubjectModel {
                 return false;
             }
 
-            // Step 4: Delete existing grade relationships in `subject_grade`
             boolean isGradesDeleted = CrudUtil.execute(
                     "DELETE FROM subject_grade WHERE subject_id = ?",
                     subjectDto.getSubjectId()
@@ -179,7 +175,6 @@ public class SubjectModel {
                 return false;
             }
 
-            // Step 5: Insert new grade relationships into `subject_grade`
             for (String gradeId : gradeIds) {
                 boolean isGradeRelationSaved = CrudUtil.execute(
                         "INSERT INTO subject_grade (subject_id, grade_id) VALUES (?, ?)",
@@ -193,7 +188,6 @@ public class SubjectModel {
                 }
             }
 
-            // Step 6: Commit the transaction
             connection.commit();
             return true;
         } catch (SQLException e) {
@@ -223,7 +217,6 @@ public class SubjectModel {
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
 
-            // Step 1: Delete from subject_grade table based on subject_id
             boolean isGradesDeleted = CrudUtil.execute(
                     "DELETE FROM subject_grade WHERE subject_id = ?",
                     subjectId
@@ -234,7 +227,6 @@ public class SubjectModel {
                 return false;
             }
 
-            // Step 2: Delete from subject table based on subject_id
             boolean isSubjectDeleted = CrudUtil.execute(
                     "DELETE FROM subject WHERE sub_id = ?",
                     subjectId
@@ -245,7 +237,6 @@ public class SubjectModel {
                 return false;
             }
 
-            // Commit the transaction
             connection.commit();
             return true;
 
@@ -274,16 +265,14 @@ public class SubjectModel {
         try {
             ResultSet resultSet = CrudUtil.execute("SELECT s.sub_id, s.sub_name, GROUP_CONCAT(DISTINCT g.grade ORDER BY g.grade) AS grade_names, s.description FROM subject AS s LEFT JOIN subject_grade AS sg ON s.sub_id = sg.subject_id LEFT JOIN grade AS g ON sg.grade_id = g.g_id WHERE s.sub_id = ? GROUP BY s.sub_id, s.sub_name, s.description ORDER BY s.sub_id;", subjectId);
 
-            // Only process the first row of ResultSet (there should only be one row for a given subjectId)
             if (resultSet.next()) {
                 String[] gradesArray = resultSet.getString(3) != null ? resultSet.getString(3).split(",") : new String[0];
 
-                // Create the SubjectDto object with data retrieved from the result set
                 SubjectDto subjectDto = new SubjectDto(
-                        resultSet.getString(1), // subjectId
-                        resultSet.getString(2), // subjectName
-                        gradesArray,            // gradesArray
-                        resultSet.getString(4)  // subjectDescription
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        gradesArray,
+                        resultSet.getString(4)
                 );
                 return subjectDto;
             }
@@ -309,13 +298,10 @@ public class SubjectModel {
         String subjectId = null;
 
         try {
-            // Prepare a query to retrieve the subject ID for a single subject name
             String query = "SELECT sub_id FROM subject WHERE sub_name = ?";
 
-            // Execute the query with the provided subject name
             ResultSet resultSet = CrudUtil.execute(query, subjectName);
 
-            // Extract the subject ID from the result set
             if (resultSet.next()) {
                 subjectId = resultSet.getString("sub_id");
             }
@@ -330,9 +316,9 @@ public class SubjectModel {
             List<String> subjectIds = new ArrayList<>();
 
             for (String subjectName : subjectNames) {
-                String subjectId = getSubjectIdFromName(subjectName); // Call your single retrieval method
+                String subjectId = getSubjectIdFromName(subjectName);
                 if (subjectId != null) {
-                    subjectIds.add(subjectId); // Add to list only if the ID is not null
+                    subjectIds.add(subjectId);
                 }
             }
 

@@ -79,21 +79,18 @@ public class TeacherModel {
         Connection connection = null;
 
         try {
-            // Get a connection to the database
             connection = DBConnection.getInstance().getConnection();
-            connection.setAutoCommit(false); // Start a transaction
+            connection.setAutoCommit(false);
 
-            // Insert teacher details into the teacher table
             String teacherSQL = "INSERT INTO teacher (t_id, name, phone_number, email, subject_id) VALUES (?, ?, ?, ?, ?)";
-            String subjectId = subjectModel.getSubjectIdFromName(teacherDto.getSubject()); // Fetch subject ID by name
+            String subjectId = subjectModel.getSubjectIdFromName(teacherDto.getSubject());
 
-            // Ensure that the subjectId is valid
+
             if (subjectId == null) {
                 connection.rollback();
-                return false; // Invalid subject
+                return false;
             }
 
-            // Execute the query using the CrudUtil (return value should be boolean or void)
             boolean teacherInserted = CrudUtil.execute(
                     teacherSQL,
                     teacherDto.getTeacherId(),
@@ -103,15 +100,13 @@ public class TeacherModel {
                     subjectId
             );
 
-            // Check if the insert was successful
             if (!teacherInserted) {
                 connection.rollback();
-                return false; // Teacher insert failed
+                return false;
             }
 
-            // Insert teacher-grade relationships
             for (String gradeName : grades) {
-                String gradeId = gradeModel.getGradeIdFromName(gradeName); // Fetch grade ID by name
+                String gradeId = gradeModel.getGradeIdFromName(gradeName);
 
                 if (gradeId != null) {
                     String teacherGradeSQL = "INSERT INTO teacher_grade (teacher_id, grade_id) VALUES (?, ?)";
@@ -119,21 +114,21 @@ public class TeacherModel {
 
                     if (!gradeInserted) {
                         connection.rollback();
-                        return false; // Grade insert failed
+                        return false;
                     }
                 } else {
                     connection.rollback();
-                    return false; // Invalid grade
+                    return false;
                 }
             }
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             return true;
 
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction on error
+                    connection.rollback();
                 } catch (SQLException rollbackEx) {
                     rollbackEx.printStackTrace();
                 }
@@ -144,7 +139,7 @@ public class TeacherModel {
         } finally {
             if (connection != null) {
                 try {
-                    connection.setAutoCommit(true); // Restore auto-commit
+                    connection.setAutoCommit(true);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -157,52 +152,43 @@ public class TeacherModel {
         Connection connection = null;
 
         try {
-            // Get a connection to the database
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false); // Start a transaction
 
-            // Fetch subject ID by subject name from TeacherDto
             String subjectId = subjectModel.getSubjectIdFromName(teacherDto.getSubject());
 
-            // Ensure that the subjectId is valid
             if (subjectId == null) {
                 connection.rollback();
-                return false; // Invalid subject
+                return false;
             }
 
-            // Check if teacher exists
             String checkTeacherSQL = "SELECT t_id FROM teacher WHERE t_id = ?";
             ResultSet resultSet = CrudUtil.execute(checkTeacherSQL, teacherDto.getTeacherId());
             if (!resultSet.next()) {
                 connection.rollback();
-                return false; // Teacher does not exist
+                return false;
             }
 
-            // Update teacher details in the teacher table
             String updateTeacherSQL = "UPDATE teacher SET name = ?, phone_number = ?, email = ?, subject_id = ? WHERE t_id = ?";
             boolean teacherUpdated = CrudUtil.execute(
                     updateTeacherSQL,
                     teacherDto.getName(),
                     teacherDto.getPhoneNumber(),
                     teacherDto.getEmail(),
-                    subjectId, // Updating with the subject ID
+                    subjectId,
                     teacherDto.getTeacherId()
             );
 
-            // Check if the update was successful
             if (!teacherUpdated) {
                 connection.rollback();
-                return false; // Teacher update failed
+                return false;
             }
 
-            // Update teacher-grade relationships
-            // First, delete existing grade assignments for the teacher
             String deleteTeacherGradesSQL = "DELETE FROM teacher_grade WHERE teacher_id = ?";
             CrudUtil.execute(deleteTeacherGradesSQL, teacherDto.getTeacherId());
 
-            // Insert new teacher-grade relationships
             for (String gradeName : grades) {
-                String gradeId = gradeModel.getGradeIdFromName(gradeName); // Fetch grade ID by name
+                String gradeId = gradeModel.getGradeIdFromName(gradeName);
 
                 if (gradeId != null) {
                     String insertTeacherGradeSQL = "INSERT INTO teacher_grade (teacher_id, grade_id) VALUES (?, ?)";
@@ -210,21 +196,21 @@ public class TeacherModel {
 
                     if (!gradeInserted) {
                         connection.rollback();
-                        return false; // Grade insert failed
+                        return false;
                     }
                 } else {
                     connection.rollback();
-                    return false; // Invalid grade
+                    return false;
                 }
             }
 
-            connection.commit(); // Commit transaction
+            connection.commit();
             return true;
 
         } catch (SQLException e) {
             if (connection != null) {
                 try {
-                    connection.rollback(); // Rollback transaction on error
+                    connection.rollback();
                 } catch (SQLException rollbackEx) {
                     rollbackEx.printStackTrace();
                 }
@@ -235,7 +221,7 @@ public class TeacherModel {
         } finally {
             if (connection != null) {
                 try {
-                    connection.setAutoCommit(true); // Restore auto-commit
+                    connection.setAutoCommit(true);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -263,17 +249,14 @@ public class TeacherModel {
                 String currentPhoneNumber = resultSet.getString("phone_number");
                 String currentEmail = resultSet.getString("email");
                 String currentSubject = resultSet.getString("subject");
-                String currentGrades = resultSet.getString("grades"); // DB grades (comma-separated)
+                String currentGrades = resultSet.getString("grades");
 
-                // Convert list of grades to comma-separated string
                 String gradesString = String.join(",", grades);
 
-                // **Debugging Print Statements** (Remove in production)
                 System.out.println("DB Name: " + currentName + " | Input Name: " + name);
                 System.out.println("DB Phone: " + currentPhoneNumber + " | Input Phone: " + phoneNumber);
                 System.out.println("DB Grades: " + currentGrades + " | Input Grades: " + gradesString);
 
-                // Validation of values
                 return currentName.equals(name) &&
                         currentPhoneNumber.equals(phoneNumber) &&
                         currentEmail.equals(email) &&
@@ -296,7 +279,7 @@ public class TeacherModel {
 
         try {
             connection = DBConnection.getInstance().getConnection();
-            connection.setAutoCommit(false); // Begin transaction
+            connection.setAutoCommit(false);
 
             String deleteTeacherGradesQuery = "DELETE FROM teacher_grade WHERE teacher_id = ?";
             isTeacherGradesDeleted = CrudUtil.execute(deleteTeacherGradesQuery, teacherId);

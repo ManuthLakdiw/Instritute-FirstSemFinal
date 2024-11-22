@@ -33,6 +33,7 @@ public class ResultModel {
 
 
     }
+
     public ArrayList<ResultDto> getAllResults() {
         ArrayList<ResultDto> results = new ArrayList<>();
         try {
@@ -148,6 +149,42 @@ public class ResultModel {
     }
 
 
+    public ArrayList<ResultDto> checkExitingResult(String resultId) {
+        ArrayList<ResultDto> results = new ArrayList<>();
 
+        try {
+            // SQL query execute කිරීම
+            ResultSet resultSet = CrudUtil.execute(
+                    "SELECT r.result_id, r.grade, e.subject_id, r.exam_id, r.student_id, r.marks, r.exam_grade, r.status " +
+                            "FROM result r " +
+                            "LEFT JOIN exam e ON r.exam_id = e.exam_id " +
+                            "WHERE r.result_id = ?",
+                    resultId // Placeholder එකට value pass කිරීම
+            );
+
+            while (resultSet.next()) {
+                String subject = subjectModel.getSubjectNameFromId(resultSet.getString("subject_id"));
+                String studentName = studentModel.getOneStudentById(resultSet.getString("student_id"));
+                String gradeName = gradeModel.getGradeNameFromID(resultSet.getString("grade"));
+
+                ResultDto resultDto = new ResultDto(
+                        resultSet.getString(1),
+                        gradeName,
+                        subject,
+                        resultSet.getString(4),
+                        studentName,
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8)
+                );
+
+                results.add(resultDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
 
 }

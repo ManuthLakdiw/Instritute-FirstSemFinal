@@ -174,15 +174,14 @@ public class ResultFormController implements Initializable {
         student = cmbStudent.getValue();
         examId = cmbExamID.getValue();
 
-        // Grade calculation
         gradeArchived = (marks >= 75) ? "A" : (marks >= 65) ? "B" : (marks >= 50) ? "C" : (marks >= 35) ? "S" : "W";
 
-        // Status calculation
         status = (radioBtnNotPArticipant.isSelected()) ? "Absent" : (marks >= 35) ? "Pass" : "Fail";
         if (status.equals("Absent")) {
             gradeArchived = "F";
         }
 
+        ArrayList<ResultDto> resultDtos = resultModel.checkExitingResult(lblResultID.getText());
         ResultDto dto = new ResultDto(
                 resultId,
                 grade,

@@ -708,11 +708,13 @@
 
                 boolean checkGrade = cmbGrade.getValue() == null;
 
+                boolean checkParent = txtParentName != null && !txtParentName.getText().matches(nameRegex);
+
                 boolean checkGrades = checkCBoxSubject != null
                         && !checkCBoxSubject.getCheckModel().getCheckedItems().isEmpty();
 
                 btnSave.setDisable(checkID || checkName || checkEmail || checkAddress
-                        || checkPhoneNumber || checkFee || checkDOB || checkGrade || !checkGrades);
+                        || checkPhoneNumber || checkFee || checkDOB || checkGrade || !checkGrades || checkParent);
             }
 
             public void isResetEnable() {

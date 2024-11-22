@@ -59,7 +59,7 @@ public class UserModel {
 
     public ArrayList<UserDto> getAllUsers() {
         try {
-            ArrayList<UserDto> users = new ArrayList<>(); // Initialize as empty
+            ArrayList<UserDto> users = new ArrayList<>();
             ResultSet rst = CrudUtil.execute("select * from user");
             while (rst.next()) {
                 UserDto userDto = new UserDto(
@@ -115,24 +115,20 @@ public class UserModel {
 
     public UserDto getUserByUserName(String usName) {
         try {
-            // Execute SQL query to fetch user details based on the user_name
             ResultSet rst = CrudUtil.execute("SELECT pass_word, email, phone_number FROM user WHERE user_name = ?", usName);
 
-            // Check if the ResultSet contains data
             if (rst.next()) {
-                // Create and return a UserDto object with the details from the ResultSet
                 return new UserDto(
-                        usName, // You can pass the userName as it's the parameter
-                        rst.getString("pass_word"), // Password from the ResultSet
-                        rst.getString("email"), // Email from the ResultSet
-                        rst.getString("phone_number") // Phone number from the ResultSet
+                        usName,
+                        rst.getString("pass_word"),
+                        rst.getString("email"),
+                        rst.getString("phone_number")
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Print stack trace if an exception occurs
+            e.printStackTrace();
         }
 
-        // If no user is found or an exception occurs, return null
         return null;
     }
 

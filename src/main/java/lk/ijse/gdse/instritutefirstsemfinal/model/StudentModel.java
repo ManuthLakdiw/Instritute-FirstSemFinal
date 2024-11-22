@@ -36,7 +36,6 @@ public class StudentModel {
     public ArrayList<StudentDto> getAllStudents() {
         ArrayList<StudentDto> students = new ArrayList<>();
         try {
-            // Execute updated query
             ResultSet resultSet = CrudUtil.execute(
                     "SELECT s.s_id AS 'Student ID', " +
                             "s.name AS 'Student Name', " +
@@ -57,7 +56,6 @@ public class StudentModel {
             );
 
             while (resultSet.next()) {
-                // Map each row to a StudentDto object
                 String id = resultSet.getString(1);
                 String name = resultSet.getString(2);
                 LocalDate birthday = resultSet.getDate(3) != null
@@ -71,11 +69,9 @@ public class StudentModel {
                 String grade = resultSet.getString(9);
                 String addedBy = resultSet.getString(11);
 
-                // Split the subjects string into an array
                 String subjectsString = resultSet.getString(10);
                 String[] subjects = subjectsString != null ? subjectsString.split(", ") : new String[0];
 
-                // Create a StudentDto object
                 StudentDto studentDto = new StudentDto(
                         id,
                         birthday,
@@ -396,17 +392,15 @@ public class StudentModel {
 
     public int getStudentCount() {
         try {
-            // Execute the query to get the student count
             ResultSet resultSet = CrudUtil.execute("SELECT COUNT(*) FROM student");
 
-            // Since COUNT(*) is a single value, we don't need a loop. Just get the value from the first row.
             if (resultSet.next()) {
-                return resultSet.getInt(1); // Get the count from the first column
+                return resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0; // Return 0 if there is an error or no result
+        return 0;
     }
 
 

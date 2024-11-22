@@ -8,6 +8,8 @@ module lk.ijse.gdse.instritutefirstsemfinal {
     requires java.mail;
     requires mysql.connector.j;
     requires org.controlsfx.controls;
+    requires net.sf.jasperreports.core;
+    requires com.fasterxml.jackson.annotation;
 
     opens lk.ijse.gdse.instritutefirstsemfinal.dto.tm to javafx.base;
     opens lk.ijse.gdse.instritutefirstsemfinal.controller to javafx.fxml;
