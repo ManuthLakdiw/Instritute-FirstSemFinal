@@ -154,10 +154,8 @@
             @FXML
             void btnDeleteOnAction(ActionEvent event) {
 
-                // Show confirmation alert to the user
                 Optional<ButtonType> buttonType = AlertUtil.ConfirmationAlert("Are you sure you want to delete this Student?", ButtonType.NO, ButtonType.YES);
                 if (buttonType.isPresent() && buttonType.get() == ButtonType.YES) {
-                    // Call deleteStudent method to perform the deletion
                     boolean isDeleted = studentModel.deleteStudent(lblStudentID.getText());
 
                     if (isDeleted) {
@@ -165,7 +163,6 @@
                         refreshPage();
                         studentTableFormController.loadTable();  // Update student table
                     } else {
-                        // Notify the user of failure
                         AlertUtil.informationAlert(UserFormController.class, null, true, "Student could not be deleted!");
                     }
                 }

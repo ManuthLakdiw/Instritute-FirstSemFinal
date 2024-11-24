@@ -51,7 +51,6 @@
       <TableView fx:id="tblUser" editable="true" layoutX="37.0" layoutY="157.0" onMouseClicked="#tblUserOnClicked" prefHeight="446.0" prefWidth="1024.0" style="-fx-border-color: #03045E; -fx-border-radius: 5; -fx-background-color: transparent;" stylesheets="@../style/Style.css">
          <columns>
             <TableColumn fx:id="colUserName" prefWidth="210.07430267333984" text="User Name" />
-            <TableColumn fx:id="colPassword" minWidth="0.0" prefWidth="207.42572021484375" text="Password" />
             <TableColumn fx:id="colContactNumber" minWidth="0.16748046875" prefWidth="257.7076416015625" text="Contact Number" />
             <TableColumn fx:id="colEmailAddress" editable="false" minWidth="-Infinity" prefWidth="346.7923583984375" text="Email Address" />
          </columns>

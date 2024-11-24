@@ -131,14 +131,11 @@ public class ExamTableFormController implements Initializable {
         txtFindExam.textProperty().addListener((observable, oldValue, newValue) -> {
             filter.setPredicate((Predicate<? super ExamTm>) (ExamTm examTm) -> {
                 if (newValue == null || newValue.isEmpty()) {
-                    return true; // Return all subjects if the search text is empty
+                    return true;
                 } else {
-                    // Perform case-insensitive matching
                     return examTm.getExamId().toLowerCase().contains(newValue.toLowerCase()) ||
                             examTm.getSubject().toLowerCase().contains(newValue.toLowerCase()) ||
-                            examTm.getGrade().toLowerCase().contains(newValue.toLowerCase()); // how to pass Local date data type
-
-
+                            examTm.getGrade().toLowerCase().contains(newValue.toLowerCase());
                 }
             });
 

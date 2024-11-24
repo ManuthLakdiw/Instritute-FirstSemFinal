@@ -140,7 +140,6 @@ public class UserTableFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colUserName.setCellValueFactory(new PropertyValueFactory<>("usName"));
-        colPassword.setCellValueFactory(new PropertyValueFactory<>("usPassword"));
         colContactNumber.setCellValueFactory(new PropertyValueFactory<>("usEmail"));
         colEmailAddress.setCellValueFactory(new PropertyValueFactory<>("usPhone"));
 

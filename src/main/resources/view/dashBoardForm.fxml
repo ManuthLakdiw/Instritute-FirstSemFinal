@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse.instritutefirstsemfinal.controller.DashBoardFormController">
@@ -102,5 +104,25 @@
             </HBox>
          </children>
       </HBox>
+      <HBox layoutX="459.0" layoutY="241.0" opacity="0.68" prefHeight="415.0" prefWidth="574.0" rotate="180.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="hbox1" stylesheets="@../style/DashBoard.css" />
+      <HBox layoutX="75.0" layoutY="242.0" opacity="0.68" prefHeight="415.0" prefWidth="378.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px;" styleClass="hbox1" stylesheets="@../style/DashBoard.css">
+         <children>
+            <VBox prefHeight="411.0" prefWidth="350.0">
+               <children>
+                  <Label prefHeight="22.0" prefWidth="445.0" text="Note">
+                     <padding>
+                        <Insets left="7.0" />
+                     </padding>
+                     <font>
+                        <Font name="Baloo 2 Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea focusColor="TRANSPARENT" prefHeight="142.0" prefWidth="338.0" style="-fx-background-radius: 5px; -fx-background-radius: 5px;" unFocusColor="TRANSPARENT" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Line endX="100.0" layoutX="-28.0" layoutY="-74.0" startX="100.00001525878906" startY="880.1038208007812" />
+      <Line endX="1118.6326904296875" endY="880.1038208007812" layoutX="-30.0" layoutY="-223.0" startX="100.00001525878906" startY="880.1038208007812" />
    </children>
 </Pane>

@@ -315,7 +315,6 @@ public class StudentModel {
         try {
             connection = DBConnection.getInstance().getConnection();
             if (connection == null) {
-                System.out.println("Failed to establish database connection.");
                 return false;
             }
             connection.setAutoCommit(false);
@@ -344,11 +343,9 @@ public class StudentModel {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error deleting student: " + e.getMessage());
             if (connection != null) {
                 try {
                     connection.rollback();
-                    System.out.println("Transaction rolled back.");
                 } catch (SQLException rollbackException) {
                     rollbackException.printStackTrace();
                 }

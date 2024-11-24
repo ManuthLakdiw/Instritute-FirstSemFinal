@@ -1,7 +1,7 @@
 <!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
 <jasperReport name="StudentsDEtailsReport" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="060e705b-f9e0-453e-b413-d779dbb1d501">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="studyHallDBConnection"/>
+	<property name="com.jasp	ersoft.studio.data.defaultdataadapter" value="studyHallDBConnection"/>
 	<parameter name="P_Date" class="java.lang.String"/>
 	<query language="SQL"><![CDATA[select * from student]]></query>
 	<field name="s_id" class="java.lang.String">
