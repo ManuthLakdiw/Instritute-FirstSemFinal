@@ -94,7 +94,7 @@ public class StudentTableFormController implements Initializable {
 
             Stage stage = new Stage();
             stage.initModality(null);
-            stage.setTitle("User Form");
+            stage.setTitle("Student Form");
             stage.setScene(new Scene(load));
 
             stage.initModality(null);

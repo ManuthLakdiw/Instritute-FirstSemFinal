@@ -149,4 +149,35 @@ public class ExamModel {
     }
 
 
+    public ExamDto getNextExam() {
+        try {
+            // Execute the SQL query and get the result set
+            ResultSet resultSet = CrudUtil.execute("""
+        SELECT e.exam_id, g.grade AS grade_name, s.sub_name AS subject_name, e.exam_type, e.date AS exam_date, DATEDIFF(e.date, CURDATE()) AS days_until_exam 
+        FROM exam e 
+        JOIN subject s ON e.subject_id = s.sub_id 
+        JOIN grade g ON e.grade = g.g_id 
+        WHERE e.date > CURDATE() 
+        ORDER BY e.date ASC LIMIT 1;
+        """);
+
+            if (resultSet != null && resultSet.next()) {
+                // Map the result set to ExamDto
+                return new ExamDto(
+                        resultSet.getString(1), // exam_id
+                        resultSet.getString(2), // grade_name
+                        resultSet.getString(3), // subject_name
+                        resultSet.getDate(5).toLocalDate(), // exam_date
+                        resultSet.getString(4), // exam_type
+                        resultSet.getString(6) // days_until_exam
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }
