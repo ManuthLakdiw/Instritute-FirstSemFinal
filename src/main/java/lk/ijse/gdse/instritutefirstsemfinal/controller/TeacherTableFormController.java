@@ -217,26 +217,29 @@ public class TeacherTableFormController implements Initializable {
         ArrayList<TeacherDto> teacherDtos = teacherModel.getAllTeachers();
         ObservableList<TeacherTm> teacherTms = FXCollections.observableArrayList();
 
-        for (TeacherDto teacherDto : teacherDtos) {
-            String grades = teacherDto.getGrades() != null && teacherDto.getGrades().length > 0
-                    ? String.join(", ", teacherDto.getGrades())
-                    : "N/A";
+        if (teacherDtos != null) {
+            for (TeacherDto teacherDto : teacherDtos) {
+                String grades = teacherDto.getGrades() != null && teacherDto.getGrades().length > 0
+                        ? String.join(", ", teacherDto.getGrades())
+                        : "N/A";
 
-            TeacherTm teacherTm = new TeacherTm(
-                    teacherDto.getTeacherId(),
-                    teacherDto.getName(),
-                    teacherDto.getPhoneNumber(),
-                    teacherDto.getEmail(),
-                    teacherDto.getSubject(),
-                    grades
-            );
+                TeacherTm teacherTm = new TeacherTm(
+                        teacherDto.getTeacherId(),
+                        teacherDto.getName(),
+                        teacherDto.getPhoneNumber(),
+                        teacherDto.getEmail(),
+                        teacherDto.getSubject(),
+                        grades
+                );
 
-            teacherTms.add(teacherTm);
+                teacherTms.add(teacherTm);
+            }
+
+            tblTeacher.setItems(teacherTms);
+
+            filter = new FilteredList(teacherTms, e -> true);
         }
 
-        tblTeacher.setItems(teacherTms);
-
-        filter = new FilteredList(teacherTms, e -> true);
 
 
     }

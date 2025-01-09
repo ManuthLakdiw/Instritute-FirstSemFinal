@@ -44,7 +44,7 @@ public class TeacherModel {
                             "FROM teacher AS t " +
                             "LEFT JOIN subject AS s ON t.subject_id = s.sub_id " +
                             "LEFT JOIN teacher_grade AS tg ON t.t_id = tg.teacher_id " +
-                            "LEFT JOIN grade AS g ON tg.grade_id = g.g_id " +
+                                "LEFT JOIN grade AS g ON tg.grade_id = g.g_id " +
                             "GROUP BY t.t_id, t.name, t.phone_number, t.email, s.sub_name " +
                             "ORDER BY t.t_id"
             );
@@ -338,6 +338,7 @@ public class TeacherModel {
         return "Not in database";
     }
 
+    
     public int getTeacherCount() {
         try {
             ResultSet resultSet = CrudUtil.execute("SELECT COUNT(*) FROM teacher");

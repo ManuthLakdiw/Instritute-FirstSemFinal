@@ -13,7 +13,7 @@ public class DBConnection {
     private Connection connection;
 
     String userName = "root";
-    String password = "Manu@213";
+    String password = "Manu2006";
     String url = "jdbc:mysql://localhost:3306/studyHall";
 
     private DBConnection() throws SQLException {

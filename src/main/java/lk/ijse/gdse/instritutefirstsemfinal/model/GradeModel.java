@@ -9,9 +9,7 @@ import java.util.*;
 
 public class GradeModel {
 
-
-
-
+    
     public ArrayList<GradeDto> getGrades() {
         ArrayList<GradeDto> gradeList = new ArrayList<>();
         try {
